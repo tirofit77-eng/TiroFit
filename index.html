@@ -361,6 +361,32 @@ details.rmore { margin-top: 12px } details.rmore > summary { font-size: 14px; co
 .excount .dots { display: inline-flex; gap: 4px } .excount .dots i { width: 10px; height: 10px; border-radius: 3px; border: 1.5px solid var(--muted); animation: none; opacity: 1 } .excount .dots i.on { background: var(--p-red); border-color: var(--p-red) }
 .exb.isdone { opacity: .72 } .exb.isdone .excount b, .exb.isdone .exsub { color: var(--p-green) } .exb.isdone .excount .dots i.on { background: var(--p-green); border-color: var(--p-green) }
 .exbtns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap } .exbtns .addset { padding: 7px 14px; font-size: 14px } .exbtns .linkbtn { font-size: 13.5px; color: var(--muted) }
+.decoder { display: grid; gap: 8px; padding: 12px 14px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line) }
+.decoder .dch { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap } .decoder .dch .label { margin-right: auto }
+.decoder .dch b { font-family: var(--numf, var(--display)); font-size: 24px; line-height: 1 } .decoder.up .dch b { color: var(--warn) } .decoder.down .dch b { color: var(--good) }
+.decoder .dch small { color: var(--muted); font-size: 13px } .decoder p { margin: 0; font-size: 14px }
+.dfac { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px } .dfac li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 8px; font-size: 13.5px; align-items: start }
+.dfac .dlb { font-family: var(--mono); font-size: 12px; padding: 2px 0; text-align: center; border-radius: 6px; background: var(--surface); border: 1px solid var(--line) } .dfac li.opp { opacity: .72 }
+.decoder .dfat { color: var(--muted); font-size: 13px }
+.dqs { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 8px } .dq { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13.5px } .dq .chips { flex-wrap: nowrap; gap: 6px } .dq .chip { padding: 4px 12px; min-height: 32px }
+.bank { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 12px } .bankhead { display: flex; justify-content: space-between; align-items: center; gap: 10px } .bankhead small, .bankrow small { display: block; color: var(--muted); font-size: 12.5px }
+.bankrow { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--surface-2) } .bankrow .bday { font: 800 15px var(--display); text-align: center; color: var(--a); letter-spacing: .06em }
+.bankrow .bx { background: none; border: 0; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0 4px } .bankbtns { display: flex; gap: 6px; align-items: center }
+.gp { margin: 0; padding: 10px 12px 10px 28px; display: grid; gap: 6px; font-size: 13.5px; border-radius: 10px; border: 1px solid var(--line) } .gp li b { color: var(--fg) }
+.planform { display: grid; gap: 10px; padding: 12px; border: 1px dashed var(--line); border-radius: 12px } .planform .field input { max-width: 160px }
+.days div.plan { box-shadow: inset 0 0 0 2px var(--a) } .plannote { font-size: 13px; color: var(--muted); margin: 8px 0 0 } .plannote b { color: var(--fg) }
+.lightbox { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface) } .lightbox b { display: block } .lightbox small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px }
+.lightbox.on { border-color: var(--p-blue); background: color-mix(in srgb, var(--p-blue) 10%, var(--surface)) }
+.gscore { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); text-align: center }
+.gscore small { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted) } .gscore b { display: block; font-family: var(--numf, var(--display)); font-size: 36px; line-height: 1.05 } .gscore .gs-you b { color: var(--a) }
+.gscore .gs-mid { display: grid; gap: 2px } .gscore .gs-mid span { font-weight: 800; color: var(--muted); font-size: 13px; display: inline-flex; align-items: center; gap: 4px; justify-content: center }
+.gscore.pop { animation: gpop .55s ease } @keyframes gpop { 35% { transform: scale(1.05) } }
+.burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none } .burst i { position: absolute; width: 7px; height: 7px; border-radius: 2px; animation: burst .9s ease-out forwards }
+@keyframes burst { to { transform: translate(var(--x), var(--y)) rotate(220deg); opacity: 0 } }
+.gres { margin: 0; font-size: 14px; text-align: center } .gsub { margin: 0; font-size: 12.5px; color: var(--muted); text-align: center }
+.ghostchip { display: inline-flex; align-items: center; gap: 5px; margin-top: 4px; font-size: 12px; font-family: var(--mono); color: var(--muted); padding: 2px 9px; border-radius: 999px; background: var(--surface-2); width: fit-content; max-width: 100% }
+.ghostchip em { font-style: normal; font-family: var(--body); font-weight: 700 } .ghostchip.win { color: var(--good); background: color-mix(in srgb, var(--good) 15%, var(--surface-2)) } .ghostchip.tie em { color: var(--fg) } .ghostchip.behind em { color: var(--warn) }
+.menusnap .mhead { font-weight: 700; font-size: 14px } .picks em.mn { font-style: normal; color: var(--muted) }
 .cweek { display: grid; gap: 10px } .cdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px } .cdays span { display: grid; justify-items: center; gap: 2px; padding: 6px 2px; border-radius: 8px; background: var(--surface-2); font-size: 11px; color: var(--muted) } .cdays span b { font: 600 13px var(--mono); color: var(--muted) } .cdays span.on b { color: var(--p-green) } .cdays span.sel { outline: 1.5px solid var(--line) }
 .recline { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit }
 .recline > b { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--rc); font: 700 20px var(--mono); color: var(--rc) }
@@ -940,10 +966,14 @@ function weekPlan(m) {
   const actAdj = st.eatBack ? Math.round(clamp(stepsAdj + cardioAdj, -1500, 1500) / 10) * 10 : 0;
   const weekBudget = st.target * 7 + actAdj;
   const left = 7 - idx;
-  const raw = (weekBudget - eatenPrev) / left;
-  const todayTarget = Math.round(clamp(raw, st.target - st.dayFlex, st.target + st.dayFlex) / 10) * 10;
+  const plans = (Array.isArray(st.plans) ? st.plans : []).filter(p => p && days.includes(p.d) && p.d >= T && num(p.extra) > 0);
+  const bank = sum(plans.map(p => num(p.extra)));
+  const raw = (weekBudget - eatenPrev - bank) / left;
+  const baseTarget = Math.round(clamp(raw, st.target - st.dayFlex - (bank ? 250 : 0), st.target + st.dayFlex) / 10) * 10;
+  const todayPlan = plans.find(p => p.d === T) || null;
+  const todayTarget = baseTarget + (todayPlan ? Math.round(num(todayPlan.extra) / 10) * 10 : 0);
   const perDay = days.map(d => ({ d, cal: dvOf(d)?.cal ?? null }));
-  return { ws, idx, days, perDay, eatenPrev, missing, eatenToday, todayTarget, clamped: Math.abs(raw - todayTarget) > 10, raw,
+  return { ws, idx, days, perDay, eatenPrev, missing, eatenToday, todayTarget, clamped: Math.abs(raw - baseTarget) > 10, raw, plans, bank, baseTarget, todayPlan, bankPerDay: bank ? Math.round(bank / left / 10) * 10 : 0,
     weekBudget, actAdj, stepsAdj, cardioAdj, stepsSum, cardioSum, weekEaten: eatenPrev - missing * st.target + eatenToday, left };
 }
 
@@ -1214,18 +1244,22 @@ function workoutHtml(D, noChips) {
   const chips = `<div class="chips" data-chips="lift">${liftChoices().map(o => `<button type="button" class="chip" data-val="${esc(o)}" aria-pressed="${e.lift === o}">${esc(o)}</button>`).join("")}</div>`;
   const showEx = e.lift && e.lift !== "Rest";
   const known = Object.keys(liftHist()).sort();
+  const GS = ghostScore(D, order);
   const block = ex => {
     const rows = sets.map((s, i) => [s, i]).filter(([s]) => s.ex === ex);
     const last = lastSession(ex, D.d), best = bestBefore(ex, D.d);
-    const tg = setTarget(sw[ex] || ex, D.d, tpl), done = rows.filter(([x]) => num(x.w) != null && num(x.r) != null).length, goal = nextGoal(last);
+    const tg = setTarget(sw[ex] || ex, D.d, tpl), done = rows.filter(([x]) => num(x.w) != null && num(x.r) != null).length;
+    if (e.light && tg.sets > 1) tg.sets -= 1;
+    const goal = e.light ? lightGoal(last) : nextGoal(last), gh = e.light ? null : GS.rows.find(x => x.ex === ex);
     const isDone = done >= tg.sets, sub = isDone ? "Done" : [goal ? goal.replace(/^try /i, "Try ").replace(/x/, "×") : last ? `Last ${last.set.replace("x", "×")}` : "First time: pick a weight", tg.reps ? `${tg.reps} reps` : ""].filter(Boolean).join(" · ");
-    return `<div class="exb ${isDone ? "isdone" : ""}"><div class="exline"><div class="exname"><b>${esc(ex)}</b>${sw[ex] ? `<small class="swapped">for ${esc(sw[ex])} · <button type="button" class="linkbtn" data-unswap="${esc(ex)}">undo</button></small>` : ""}<span class="exsub">${esc(sub)}</span></div>
+    return `<div class="exb ${isDone ? "isdone" : ""}"><div class="exline"><div class="exname"><b>${esc(ex)}</b>${sw[ex] ? `<small class="swapped">for ${esc(sw[ex])} · <button type="button" class="linkbtn" data-unswap="${esc(ex)}">undo</button></small>` : ""}<span class="exsub">${esc(sub)}</span>${gh ? ghostChip(gh) : ""}</div>
       <div class="excount"><span class="dots">${Array.from({ length: Math.max(tg.sets, done) }, (_, k) => `<i class="${k < done ? "on" : ""}"></i>`).join("")}</span><b>${done}/${tg.sets}</b></div></div>
       ${S.swap === ex ? swapHtml(ex) : ""}
       ${rows.map(([s, i]) => { const v = e1rm(num(s.w), num(s.r)); const pr = v && best && v > best.e * 1.001; return `<div class="setrow"><input type="number" step="any" inputmode="decimal" data-set-i="${i}" data-sk="w" value="${esc(s.w ?? "")}" placeholder="${last ? esc(last.set.split("x")[0]) : "lb"}" aria-label="Weight"><span>×</span><input type="number" step="any" inputmode="numeric" data-set-i="${i}" data-sk="r" value="${esc(s.r ?? "")}" placeholder="reps" aria-label="Reps">${pr ? `<span class="pill good">PR</span>` : `<span></span>`}<button type="button" class="x" data-delset="${i}" aria-label="Remove set">×</button></div>`; }).join("")}
       <div class="exbtns">${isDone ? "" : `<button type="button" class="btn addset" data-addset="${esc(ex)}">+ Log set</button>`}${S.swap === ex ? "" : `<button type="button" class="linkbtn" data-swap="${esc(ex)}">Swap exercise</button>`}${isDone ? `<button type="button" class="linkbtn" data-addset="${esc(ex)}">Add another set</button>` : ""}</div></div>`;
   };
   return `${noChips ? (showEx ? "" : `<p class="muted" style="margin:0;font-size:14px">Pick a session above, then log sets here.</p>`) : `<div class="field"><span class="label">Workout</span>${chips}</div>`}
+    ${showEx && !e.light && GS.rows.length ? ghostBoard(GS, D) : ""}
     ${showEx ? `<div class="workout">${order.length ? order.map(block).join("") : `<p class="muted" style="margin:0;font-size:14px">${e.lift === "Other" ? "Add the exercises you did." : "This template has no exercises yet. Add them below, or set them up in Settings."}</p>`}
       <div class="addex"><input id="f-newex" list="exlist" placeholder="Add an exercise" aria-label="Exercise name"><datalist id="exlist">${known.map(k => `<option value="${esc(k)}">`).join("")}</datalist><button type="button" class="btn" id="addex">Add</button></div></div>` : ""}`;
 }
@@ -1257,6 +1291,7 @@ function bindWorkout(form, D) {
   });
   const ax = document.getElementById("addex");
   if (ax) ax.onclick = () => { const n = document.getElementById("f-newex").value.trim().slice(0, 60); if (!n) return; D.e.sets = (Array.isArray(D.e.sets) ? D.e.sets : []).concat([{ ex: n, w: null, r: null }]); render(); };
+  ghostCheck(D);
 }
 
 // ----- exercise swaps: same muscle, different equipment -----
@@ -1559,6 +1594,7 @@ function vGains() {
   <form class="view" id="dayform" autocomplete="off">
   <div class="dayrow"><button type="button" class="btn ghost" id="prevd" aria-label="Previous day">‹</button><div class="dayname"><b>Training</b><span>${isT ? "Today · " : ""}${esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }))}</span></div><input id="f-date" type="date" value="${d}" max="${addD(today(), 1)}" aria-label="Pick a day"><button type="button" class="btn ghost" id="nextd" aria-label="Next day">›</button></div>
   <button type="button" class="recline" data-go="today" style="--rc:${REC_COL(rcT.score)}"><b>${rcT.score}</b><span><em>Recovery · ${esc(rcT.label)}</em><small>${esc(rcT.headline)}</small></span><i aria-hidden="true">›</i></button>
+  ${lightOffer(e, rcT)}
   ${cardioWeekCard(d, e)}
   <section class="card view" style="gap:12px">${zh(1, "Workout", e.lift ? `${nSets} set${nSets === 1 ? "" : "s"} logged` : "pick a session")}
     ${e.lift && !S.pickLift ? `<div class="liftpick"><b>${esc(e.lift)}</b><button type="button" class="linkbtn" id="changelift">Change</button></div>` : `<div class="chips" data-chips="lift">${liftChoices().map(o => `<button type="button" class="chip" data-val="${esc(o)}" aria-pressed="${e.lift === o}">${esc(o)}</button>`).join("")}</div>`}
@@ -2313,7 +2349,8 @@ function weekCard(m) {
     ${prog("Calories", w.weekEaten, w.weekBudget, f0, `${act} ${paceSub}`.trim())}
     ${prog("Steps", w.stepsSum, st.stepsWk, f0)}
     ${prog(`Cardio (${cUnit()})`, w.cardioSum, cGoal(), cFmt)}
-    <div class="days">${w.perDay.map((x, i) => { const c = x.cal; const cls = c == null ? "" : c > st.target + 150 ? "over" : c < st.target - 150 ? "under" : ""; return `<div class="${cls} ${i === w.idx ? "today" : ""}">${dn[i]}<b>${c == null ? "–" : (c / 1000).toFixed(1) + "k"}</b></div>`; }).join("")}</div>
+    <div class="days">${w.perDay.map((x, i) => { const c = x.cal; const cls = c == null ? "" : c > st.target + 150 ? "over" : c < st.target - 150 ? "under" : ""; return `<div class="${cls} ${i === w.idx ? "today" : ""} ${w.plans.some(p => p.d === x.d) ? "plan" : ""}">${dn[i]}<b>${c == null ? "–" : (c / 1000).toFixed(1) + "k"}</b></div>`; }).join("")}</div>
+    ${bankHtml(w)}
   </section>`;
 }
 function vCoach() {
@@ -2440,6 +2477,8 @@ function coachContext() {
   tryit("recovery_today", () => { const rc = recovery(T, S.entries[T] || {}); return { score: rc.score, label: rc.label, headline: rc.headline, training_days_in_a_row: rc.run, upper_days_since: rc.upper.days, lower_days_since: rc.lower.days, drinks_yesterday: rc.yAlc }; });
   tryit("last_21_days", () => Object.keys(S.entries).sort().slice(-21).map(d => { const e = S.entries[d], dv = derive(e); const sets = Array.isArray(e.sets) ? e.sets.filter(x => num(x.w) != null && num(x.r) != null) : [];
     return { d, w: e.w ?? null, cal: dv.cal ?? null, p: dv.p ?? null, c: dv.c ?? null, f: dv.f ?? null, drinks: dv.alcN || 0, sleep: e.sleep ?? null, feel_1to5: e.rec ?? null, bloated: e.bloat === "Y" || null, steps: e.steps ?? null, cardio: e[cKey()] ?? null, workout: e.lift ?? null, sets: sets.length || null, top_sets: sets.slice(0, 6).map(x => `${x.ex || ""} ${x.w}x${x.r}`.trim()), notes: e.notes || null }; }));
+  tryit("planned_big_nights", () => { const p = (S.settings.plans || []).filter(x => x.d >= T); return p.length ? p.map(x => ({ date: x.d, label: x.label, extra_cal: x.extra })) : null; });
+  tryit("scale_today", () => { const x = decode(T, S.entries[T] || {}); return x && !x.none ? { change_lb: x.delta, since: x.pd, reasons: x.F.map(f => `${f.key} ${f.lb > 0 ? "+" : ""}${f.lb} lb`), answers_about_yesterday: (S.entries[T] || {}).dq || null } : null; });
   tryit("split", () => templates().map(t => ({ day: t.name, exercises: t.ex.map(x => parseEx(x).name) })));
   tryit("split_check", () => { const c = splitCheck(); return { weekly_sets_per_muscle: c.wk, times_per_week: c.freq, app_tips: c.recs.slice(0, 6).map(x => x[1]) }; });
   tryit("body_fat", () => { const b = bfList().at(-1); return b ? { date: b.date, pct: b.pct ?? b.bf ?? null } : null; });
@@ -2651,6 +2690,222 @@ function recPlate(sc, size = 84) {
   return `<svg class="rplate" width="${size}" height="${size}" viewBox="0 0 84 84" role="img" aria-label="Readiness ${sc} out of 100"><circle cx="42" cy="42" r="41" style="fill:${c}"/><circle cx="42" cy="42" r="34" fill="none" stroke="rgba(0,0,0,.2)" stroke-width="1.5"/><circle cx="42" cy="42" r="12" fill="#d9dadc" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/><circle cx="42" cy="42" r="5" fill="#131313"/>
     <text x="42" y="22" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="15" fill="${ink}">${sc}</text><text x="42" y="69" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="7" letter-spacing="1.6" fill="${ink}" opacity=".85">READY</text></svg>`;
 }
+// ----- scale decoder: why the scale moved, from yesterday's log plus a few questions -----
+const WDN = d => parse(d).toLocaleDateString(undefined, { weekday: "long" });
+const hm12 = t => { const [h, m] = String(t).split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
+const DQ = {
+  late: "Ate late last night?", salty: "Salty or takeout dinner?", hard: "Hard or new workout, or sore today?",
+  drinks: "Drinks last night?", potty: "Weighed before the bathroom?", light: "Lighter or earlier dinner than usual?", sweat: "Sweated a lot (long cardio, heat, sauna)?",
+};
+function decode(d, e) {
+  const w = num(e?.w); if (w == null) return null;
+  let pd = null, pw = null;
+  for (let i = 1; i <= 4; i++) { const k = addD(d, -i), x = num(S.entries[k]?.w); if (x != null) { pd = k; pw = x; break; } }
+  if (pd == null) return { none: true };
+  const delta = Math.round((w - pw) * 10) / 10; if (Math.abs(delta) > 8) return null;
+  const up = delta > 0, flat = Math.abs(delta) < 0.4, yd = addD(d, -1), Y = S.entries[yd] || {}, yv = derive(Y), ans = e.dq || {};
+  const base = []; for (let i = 2; i <= 15; i++) { const x = S.entries[addD(d, -i)]; if (x) base.push(derive(x)); }
+  const bAvg = k => { const v = base.map(b => k === "na" ? b.micro?.na : b[k]).filter(v => v != null && v > 0); return v.length >= 3 ? avg(v) : null; };
+  const F = [], add = (key, lb, why) => { lb = Math.round(lb * 10) / 10; if (Math.abs(lb) >= 0.1) F.push({ key, lb, why }); };
+  const cA = bAvg("c"); if (yv.c != null && cA != null) add("carbs", clamp((yv.c - cA) * 4 / 454, -2.5, 2.5), `${f0(yv.c)}g carbs yesterday vs your usual ${f0(cA)}g. Each gram your muscles store holds about 3 g of water.`);
+  const nA = bAvg("na"), nY = yv.micro?.na;
+  if (nY != null && nA != null && yv.microN >= Math.max(1, yv.mealN - 1)) add("salt", clamp((nY - nA) / 1000 * 0.6, -1.5, 2), `${f0(nY)} mg sodium yesterday vs your usual ${f0(nA)} mg. Salt holds water for a day or two.`);
+  else if (ans.salty === "Y") add("salt", 0.7, "Salty or takeout dinner. Restaurant food often carries 2 to 3 times the salt, and salt holds water for a day or two.");
+  const kA = bAvg("cal"); if (yv.cal != null && kA != null) add("food", clamp((yv.cal - kA) / 1000 * 0.35, -0.8, 1.2), `${f0(yv.cal)} cal yesterday vs your usual ${f0(kA)}. More food in means more still on its way through.`);
+  const mt = /^\d\d:\d\d$/.test(String(Y.meal || "")) ? Y.meal : null;
+  let lt = mt ? +mt.slice(0, 2) + +mt.slice(3) / 60 : null; if (lt != null && lt < 4) lt += 24;
+  if (lt != null && lt >= 20.5) add("late", lt >= 22 ? 0.7 : 0.4, `Last meal at ${hm12(mt)}. That food hasn't cleared yet this morning.`);
+  else if (lt != null && lt <= 18.5 && !up) add("late", -0.3, `Last meal at ${hm12(mt)}. A long overnight gap means less in you at weigh-in.`);
+  else if (lt == null && ans.late === "Y") add("late", 0.5, "You ate late. That food hasn't cleared yet this morning.");
+  else if (lt == null && ans.light === "Y") add("late", -0.4, "Lighter or earlier dinner, so less food in you at weigh-in.");
+  const aY = yv.alcN || 0, a2 = derive(S.entries[addD(d, -2)]).alcN || 0;
+  if (aY >= 1) add("drinks", up ? Math.min(1.2, 0.25 * aY) : -Math.min(1, 0.2 * aY), up ? `${f1n(aY)} drink${aY === 1 ? "" : "s"} last night. Mixers, bar food and inflammation tend to show up the next morning.` : `${f1n(aY)} drink${aY === 1 ? "" : "s"} last night. Alcohol flushes water first, so the scale can dip today and bounce back tomorrow.`);
+  else if (a2 >= 2 && up) add("drinks", Math.min(0.8, 0.2 * a2), `${f1n(a2)} drinks two nights ago. The dip the day after drinking often rebounds on day two.`);
+  else if (ans.drinks === "Y" && !Y.alc) add("drinks", up ? 0.5 : -0.4, up ? "Drinks last night. They tend to show up as water the next morning." : "Drinks last night. Alcohol flushes water first, so this dip may bounce back.");
+  const sl = num(e.sleep);
+  if (sl != null && sl < 6) add("sleep", 0.4, `${f1(sl)} hours of sleep. Short sleep raises cortisol, and cortisol holds water.`);
+  else if (sl != null && sl >= 7.5 && !up) add("sleep", -0.2, `${f1(sl)} hours of sleep. Good sleep helps you let go of held water.`);
+  const rg = regionOf(Y);
+  if (rg && rg !== "cardio") add("train", hitsPart(rg, "lower") || ans.hard === "Y" ? 0.6 : 0.3, `${Y.lift} yesterday. Trained muscles hold extra water while they repair${hitsPart(rg, "lower") ? ", legs most of all" : ""}.`);
+  else if (ans.hard === "Y") add("train", 0.5, "Hard or new workout. Muscles hold water while they repair.");
+  if (ans.sweat === "Y") add("sweat", -0.6, "Lots of sweating. That water comes back once you drink and eat normally.");
+  if (ans.potty === "Y") add("potty", 0.4, "Weighed before the bathroom. That alone can be half a pound or more.");
+  if (e.bloat === "Y") add("bloat", 0.4, "You felt bloated at weigh-in. That's gut contents and gas, not fat.");
+  let maint = null; try { maint = recommend(compute()).maint; } catch {}
+  const fat = yv.cal != null && maint ? (yv.cal - maint) / 3500 : null;
+  F.sort((a, b) => ((Math.sign(b.lb) === Math.sign(delta)) - (Math.sign(a.lb) === Math.sign(delta))) || Math.abs(b.lb) - Math.abs(a.lb));
+  const qs = [];
+  if (Math.abs(delta) >= 0.6) {
+    if (up) { if (lt == null) qs.push("late"); if (!F.some(f => f.key === "salt") || ans.salty) qs.push("salty"); if (!rg) qs.push("hard"); if (!Y.alc && !Y.drinks) qs.push("drinks"); qs.push("potty"); }
+    else { if (lt == null) qs.push("light"); qs.push("sweat"); if (!Y.alc && !Y.drinks) qs.push("drinks"); }
+  }
+  return { w, pw, pd, yd, delta, up, flat, F, fat, qs: qs.slice(0, 4), ans };
+}
+function decoderHtml(d, e) {
+  const x = decode(d, e); if (!x) return "";
+  if (x.none) return `<div class="decoder flat"><div class="dch"><span class="label">Scale decoder</span></div><p class="muted" style="font-size:13px">Weigh in again tomorrow and I'll explain what moved the scale.</p></div>`;
+  const since = x.pd === x.yd ? "since yesterday" : `since ${WDN(x.pd)}`;
+  const same = x.F.filter(f => Math.sign(f.lb) === Math.sign(x.delta)), opp = x.F.filter(f => Math.sign(f.lb) !== Math.sign(x.delta));
+  const expl = sum(same.map(f => f.lb));
+  let head;
+  if (x.flat) head = `Steady. Moves under half a pound are normal day-to-day noise.`;
+  else if (x.up) head = !same.length ? `Up ${f1(x.delta)} lb and nothing in yesterday's log explains it. That's a normal water swing. Answer a couple of questions below and I'll look again.` : `Up ${f1(x.delta)} lb, and it's mostly water and food, not fat.${Math.abs(expl) >= x.delta * 0.8 ? " Yesterday's log covers about all of it." : ""}`;
+  else head = !same.length ? `Down ${f1(-x.delta)} lb. Fast drops are mostly water, so let the trend confirm it.` : `Down ${f1(-x.delta)} lb. Some of that is water leaving, so let the trend confirm it.`;
+  const fatTxt = x.fat == null ? "" : x.up ? (x.fat > 0.02 ? `Real fat from yesterday's food: about ${f1(x.fat)} lb at most. A pound of fat takes a 3,500 calorie surplus.` : `Yesterday was at or under maintenance, so this isn't fat gain.`) : (x.fat < -0.02 ? `Real fat lost yesterday: about ${f1(-x.fat)} lb.` : "");
+  const li = (f, cls) => `<li class="${cls}"><span class="dlb">${f.lb > 0 ? "+" : "−"}${Math.abs(f.lb).toFixed(1)}</span><span>${esc(f.why)}</span></li>`;
+  const qrow = k => `<div class="dq"><span>${esc(DQ[k])}</span><div class="chips">${["Y", "N"].map(v => `<button type="button" class="chip" data-dq="${k}" data-val="${v}" aria-pressed="${x.ans[k] === v}">${v === "Y" ? "Yes" : "No"}</button>`).join("")}</div></div>`;
+  return `<div class="decoder ${x.flat ? "flat" : x.up ? "up" : "down"}">
+    <div class="dch"><span class="label">Scale decoder</span><b>${x.delta > 0 ? "+" : x.delta < 0 ? "−" : ""}${f1(Math.abs(x.delta))} lb</b><small>${esc(since)}</small></div>
+    <p>${esc(head)}</p>
+    ${!x.flat && x.F.length ? `<ul class="dfac">${same.map(f => li(f, "")).join("")}${opp.map(f => li(f, "opp")).join("")}</ul>` : ""}
+    ${!x.flat && fatTxt ? `<p class="dfat">${esc(fatTxt)}</p>` : ""}
+    ${x.qs.length ? `<div class="dqs"><span class="label">About yesterday</span>${x.qs.map(qrow).join("")}</div>` : ""}
+  </div>`;
+}
+// ----- plan ahead: bank calories for a big night -----
+const PLAN_PRESETS = [["Night out", 800], ["Big dinner", 600], ["Party", 1200], ["Date night", 500]];
+function upcomingPlans() { const T = today(); return (Array.isArray(S.settings.plans) ? S.settings.plans : []).filter(p => p && p.d >= T).sort((a, b) => a.d < b.d ? -1 : 1); }
+function gamePlan(p, perDay) {
+  const tips = [
+    `<b>Before:</b> eat your normal meals, about ${f0(perDay)} lighter a day. Trim oils, sauces and snacks first and keep protein the same.`,
+    `<b>Day of:</b> protein at breakfast and lunch, plenty of water. Don't skip meals to save up, that's how nights go sideways.`,
+    `<b>At the table:</b> lead with protein, pick one splurge (dessert, fries or the drinks) and enjoy it.`,
+    `<b>Drinks:</b> spirits with soda water or diet mixers, or light beer. A water between rounds.`,
+    `<b>Next morning:</b> the scale will likely jump 1 to 3 lb from salt, carbs and drinks. It's water and it fades in 2 or 3 days of normal eating.`,
+  ];
+  return `<ol class="gp">${tips.map(t => `<li>${t}</li>`).join("")}</ol>`;
+}
+function bankHtml(w) {
+  const T = today(), P = upcomingPlans(), f = S.planForm;
+  const per = p => { if (!w.days.includes(p.d)) return "Banks from the days before it that week."; return `Banking about ${f0(w.bankPerDay)} a day from today${w.clamped ? ", as much as the week allows" : ""}.`; };
+  const days = [...Array(8)].map((_, k) => addD(T, k));
+  return `<div class="bank">
+    <div class="bankhead"><div><b>Plan ahead</b><small>Big night coming? Bank calories for it from your other days.</small></div>${f ? "" : `<button type="button" class="btn" data-plan-open>Plan a night</button>`}</div>
+    ${P.map(p => { const i = (S.settings.plans || []).indexOf(p); return `<div class="bankrow"><span class="bday">${esc(parse(p.d).toLocaleDateString(undefined, { weekday: "short" }).toUpperCase())}</span><span><b>${esc(p.label || "Big night")}</b> +${f0(p.extra)} cal<small>${esc(p.d === T ? "Today. It's all banked, so enjoy it." : per(p))}</small></span><span class="bankbtns"><button type="button" class="btn" data-plan-gp="${i}">${S.planGP === i ? "Hide plan" : "Game plan"}</button><button type="button" class="bx" data-plan-del="${i}" aria-label="Remove plan">×</button></span></div>
+      ${S.planGP === i ? `${gamePlan(p, p.d === T ? 0 : w.bankPerDay || Math.round(p.extra / 6 / 10) * 10)}${S.sample ? `<button type="button" class="linkbtn" data-plan-ai="${i}" style="justify-self:start">Ask the coach for a plan made for you</button>` : ""}` : ""}`; }).join("")}
+    ${f ? `<div class="planform">
+      <div class="field"><span class="label">Which day?</span><div class="chips">${days.map(d => `<button type="button" class="chip" data-plan-day="${d}" aria-pressed="${f.d === d}">${d === T ? "Today" : esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "numeric", day: "numeric" }))}</button>`).join("")}</div></div>
+      <div class="field"><span class="label">What's the plan?</span><div class="chips">${PLAN_PRESETS.map(([n, c], i) => `<button type="button" class="chip" data-plan-pre="${i}" aria-pressed="${f.label === n}">${n} +${c}</button>`).join("")}</div></div>
+      <div class="field"><label for="plan-extra">Extra calories</label><input id="plan-extra" type="number" inputmode="numeric" step="50" value="${esc(f.extra ?? "")}" placeholder="800"></div>
+      <div class="chips"><button type="button" class="btn primary" data-plan-save>Bank it</button><button type="button" class="btn ghost" data-plan-cancel>Cancel</button></div></div>` : ""}
+  </div>`;
+}
+// ----- lighter version on low recovery days -----
+function lightOffer(e, rc) {
+  if (!e.lift || e.lift === "Rest" || regionOf(e) === "cardio") return "";
+  if (!e.light && rc.score >= 65) return "";
+  return e.light ? `<div class="lightbox on"><span><b>Lighter version on</b><small>Last session's weights, stop 2 reps short of failure, one less set where you do more than one. Your ghost is resting today.</small></span><button type="button" class="btn" data-light>Back to full</button></div>`
+    : `<div class="lightbox"><span><b>Recovery ${rc.score}. Want the lighter version?</b><small>Same exercises at last session's weights. Stop 2 reps short and drop a set where you do more than one. You still get the session in and bounce back faster.</small></span><button type="button" class="btn primary" data-light>Go lighter</button></div>`;
+}
+function lightGoal(last) { if (!last) return ""; const [w, r] = String(last.set).split("x").map(Number); return w && r ? `Light: ${w}x${Math.max(1, r - 2)}, 2 in reserve` : ""; }
+// ----- beat your ghost: race yourself from last session -----
+const GHOST_SVG = `<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1.5a5 5 0 0 0-5 5v7.6l1.7-1.3 1.6 1.3L8 12.8l1.7 1.3 1.6-1.3 1.7 1.3V6.5a5 5 0 0 0-5-5z" fill="currentColor"/><circle cx="6.2" cy="6.9" r="1.05" fill="var(--surface)"/><circle cx="9.8" cy="6.9" r="1.05" fill="var(--surface)"/></svg>`;
+function ghostScore(D, order) {
+  const e = D.e, H = liftHist(), sets = Array.isArray(e.sets) ? e.sets : [], mine = {};
+  sets.forEach(s => { const v = e1rm(num(s.w), num(s.r)); if (v && s.ex && (!mine[s.ex] || v > mine[s.ex].e)) mine[s.ex] = { e: v, set: `${s.w}x${s.r}` }; });
+  const rows = [];
+  (order || [...new Set(sets.map(s => s.ex).filter(Boolean))]).forEach(ex => {
+    const a = (H[ex] || []).filter(x => x.d < D.d), last = a[a.length - 1]; if (!last) return;
+    const m = mine[ex], r = m ? m.e / last.e - 1 : null;
+    rows.push({ ex, last, mine: m || null, pct: r, st: !m ? "pend" : r > 0.005 ? "win" : r < -0.005 ? "behind" : "tie" });
+  });
+  const n = k => rows.filter(x => x.st === k).length;
+  return { rows, won: rows.filter(x => x.st === "win"), w: n("win"), t: n("tie"), b: n("behind"), p: n("pend"), H };
+}
+function ghostRecord(H, before) {
+  const day = {};
+  Object.values(H).forEach(a => { for (let i = 1; i < a.length; i++) { if (a[i].d >= before) break; const r = a[i].e / a[i - 1].e - 1, o = day[a[i].d] || (day[a[i].d] = { w: 0, l: 0 }); if (r > 0.005) o.w++; else if (r < -0.005) o.l++; } });
+  const ds = Object.keys(day).sort(); let W = 0, L = 0, T = 0, streak = 0;
+  ds.forEach(d => { const o = day[d]; if (o.w > o.l) { W++; streak++; } else if (o.l > o.w) { L++; streak = 0; } else { T++; } });
+  return { W, L, T, streak, n: ds.length };
+}
+function ghostBoard(G, D) {
+  const rec = ghostRecord(G.H, D.d), done = G.p === 0;
+  const res = !done ? "" : G.w > G.b ? `<p class="gres"><b>You beat your ghost ${G.w} to ${G.b}.</b> ${rec.streak ? `That's ${rec.streak + 1} sessions in a row.` : "Next session's ghost just got tougher."}</p>`
+    : G.b > G.w ? `<p class="gres"><b>Ghost takes it ${G.b} to ${G.w}.</b> It happens. Get it back next session.</p>` : `<p class="gres"><b>Dead even, ${G.w} to ${G.b}.</b> Next time, one more rep.</p>`;
+  return `<div class="gscore" id="gscore"><div class="gs-you"><small>You</small><b>${G.w}</b></div><div class="gs-mid"><span>${GHOST_SVG} VS</span><small>${G.p ? `${G.p} to play` : "Final"}${G.t ? ` · ${G.t} tied` : ""}</small></div><div class="gs-gh"><small>Ghost</small><b>${G.b}</b></div></div>
+    ${res || `<p class="gsub">Your ghost is you from last session. Beat its best set on an exercise to take the point.${rec.n ? ` Season record ${rec.W}–${rec.L}${rec.T ? `–${rec.T}` : ""}${rec.streak > 1 ? `, ${rec.streak} straight wins` : ""}.` : ""}</p>`}`;
+}
+function ghostChip(g) {
+  const L = g.last.set.replace("x", "×"), [w, r] = String(g.last.set).split("x").map(Number);
+  const tag = g.st === "win" ? `Beat it +${(g.pct * 100).toFixed(g.pct < 0.1 ? 1 : 0)}%` : g.st === "tie" ? "Tied" : g.st === "behind" ? `Behind · ${w}×${r + 1} wins it` : "to beat";
+  return `<span class="ghostchip ${g.st}">${GHOST_SVG} ${esc(L)} <em>${esc(tag)}</em></span>`;
+}
+function ghostCheck(D) {
+  if (D.e.light) { S.ghostSeen = null; return; }
+  const g = ghostScore(D), k = D.d + "|" + (D.e.lift || "");
+  if (S.ghostSeen && S.ghostSeen.k === k) { const nw = g.won.filter(x => !S.ghostSeen.won.includes(x.ex)); if (nw.length) { const x = nw[0]; toast(`You beat your ghost on ${x.ex}: ${x.mine.set.replace("x", "×")} vs ${x.last.set.replace("x", "×")}`); burst(document.getElementById("gscore")); try { navigator.vibrate?.(40); } catch {} } }
+  S.ghostSeen = { k, won: g.won.map(x => x.ex) };
+}
+function burst(el) {
+  if (!el) return; el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const b = document.createElement("div"); b.className = "burst";
+  for (let i = 0; i < 18; i++) { const s = document.createElement("i"), a = i / 18 * Math.PI * 2, r = 60 + Math.random() * 50; s.style.setProperty("--x", Math.cos(a) * r + "px"); s.style.setProperty("--y", Math.sin(a) * r * 0.6 + "px"); s.style.background = ["var(--p-yellow)", "var(--a)", "var(--p-green)", "var(--p-blue)"][i % 4]; b.appendChild(s); }
+  el.appendChild(b); setTimeout(() => b.remove(), 950);
+}
+// ----- menu snap: photo a menu, get the best orders for what's left -----
+function menuLeft(D) {
+  const dv = derive(D.e); let tgt = S.settings.target; try { if (D.d === today()) tgt = weekPlan(compute()).todayTarget; } catch {}
+  const g = macroGoals(tgt); return { cal: Math.max(0, Math.round(tgt - (dv.cal ?? 0))), p: Math.max(0, Math.round(g.p - (dv.p ?? 0))), c: Math.max(0, Math.round((g.c ?? 0) - (dv.c ?? 0))), f: Math.max(0, Math.round(g.f - (dv.f ?? 0))) };
+}
+function menuSnapHtml(D) {
+  if (!S.sample || !S.imgOK) return "";
+  const M = S.menu && S.menu.d === D.d ? S.menu : null, L = menuLeft(D);
+  return `<section class="card view menusnap" style="gap:12px">${zh(2, "Menu snap", "at a restaurant")}
+    <p class="muted" style="margin:0;font-size:13px">Snap the menu and I'll pick the best orders for the ${f0(L.cal)} cal and ${f0(L.p)}g protein you have left.</p>
+    <div class="chips"><label class="btn primary" for="menu-photo">${M?.list ? "Snap another menu" : "Snap a menu"}</label><input id="menu-photo" type="file" accept="image/*" capture="environment" hidden></div>
+    ${M?.busy ? `<p class="muted" style="margin:0;font-size:14px">Reading the menu…</p>` : ""}
+    ${M?.err ? `<p class="muted" style="margin:0;font-size:14px">${esc(M.err)}</p>` : ""}
+    ${M?.list ? `${M.place ? `<div class="mhead">${esc(M.place)}</div>` : ""}<ol class="picks">${M.list.map((x, i) => `<li><div class="pn"><b>${esc(x.name)}</b><span class="mono">${f0(x.cal)} cal · ${f0(x.p)}p ${f0(x.c)}c ${f0(x.f)}f</span><span class="ptags">${x.cal <= L.cal ? `<em class="ok">fits</em>` : `<em class="ov">${f0(x.cal - L.cal)} over</em>`}${x.why ? `<em class="mn">${esc(x.why)}</em>` : ""}</span></div><button type="button" class="btn" data-menulog="${i}" ${x.logged ? "disabled" : ""}>${x.logged ? "Logged" : "Log"}</button></li>`).join("")}</ol>
+      <p class="scorecap" style="margin:0">Estimated from the menu, so restaurant portions can run bigger.</p>` : ""}
+  </section>`;
+}
+async function runMenu(file) {
+  if (!file || !S.sample) return;
+  const D = draft(), L = menuLeft(D);
+  S.menu = { d: D.d, busy: true }; render();
+  const prompt = `This is a photo of a restaurant menu. The person has ${L.cal} calories, ${L.p} g protein, ${L.c} g carbs and ${L.f} g fat left today. Their goal: ${S.settings.goal}. Read the menu and pick the 5 best orders for what they have left: high protein per calorie, fits the calories left or close to it, and something a person would actually enjoy ordering. You may add one simple change (sauce on the side, swap fries for a side salad or veggies, half portion, no bun). Estimate calories and macros the way the restaurant actually serves it: restaurant portions run large, and count cooking oil, butter and sauces. Best first. Return JSON only: {"place": "restaurant or menu name if visible, else empty", "picks": [{"name": "dish as written plus any change", "cal": number, "p": number, "c": number, "f": number, "why": "under 10 words"}]}. If the photo isn't a menu, return {"place": "", "picks": [], "note": "what you see instead"}.`;
+  try {
+    const r = await S.sample.json(prompt, { images: [file] });
+    const list = (Array.isArray(r?.picks) ? r.picks : []).filter(x => x && x.name && num(x.cal) > 0).slice(0, 5).map(x => ({ name: String(x.name).slice(0, 70), cal: Math.round(num(x.cal)), p: Math.round(num(x.p) || 0), c: Math.round(num(x.c) || 0), f: Math.round(num(x.f) || 0), why: String(x.why || "").slice(0, 70) }));
+    S.menu = list.length ? { d: D.d, list, place: String(r?.place || "").slice(0, 40) } : { d: D.d, err: r?.note ? `That didn't look like a menu (${String(r.note).slice(0, 80)}). Try a closer, straighter shot.` : "I couldn't read a menu in that photo. Try a closer, straighter shot." };
+  } catch (err) { S.menu = { d: D.d, err: errCopy(err?.code) }; }
+  render();
+}
+document.addEventListener("change", ev => { if (ev.target.id === "menu-photo") { const f = ev.target.files?.[0]; ev.target.value = ""; runMenu(f); } });
+document.addEventListener("input", ev => { if (ev.target.id === "plan-extra" && S.planForm) S.planForm.extra = num(ev.target.value); });
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-dq],[data-light],[data-menulog],[data-plan-open],[data-plan-day],[data-plan-pre],[data-plan-save],[data-plan-cancel],[data-plan-del],[data-plan-gp],[data-plan-ai]"); if (!t) return;
+  const ds = t.dataset;
+  if (ds.dq) { const D = draft(), q = { ...(D.e.dq || {}) }; if (q[ds.dq] === ds.val) delete q[ds.dq]; else q[ds.dq] = ds.val; if (Object.keys(q).length) D.e.dq = q; else delete D.e.dq; autosave(); const dc = document.getElementById("decoder"); if (dc) dc.innerHTML = decoderHtml(D.d, D.e); return; }
+  if ("light" in ds) { const D = draft(); if (D.e.light) delete D.e.light; else D.e.light = true; autosave(); render(); toast(D.e.light ? "Lighter version on. Smart call." : "Full session back on."); return; }
+  if (ds.menulog != null) {
+    const x = S.menu?.list?.[+ds.menulog]; if (!x || x.logged) return;
+    const D = draft(), meals = Array.isArray(D.e.meals) ? D.e.meals : [];
+    if (!meals.length && num(D.e.food) != null) { meals.push({ name: "Earlier food (typed total)", cal: num(D.e.food), p: num(D.e.p) || 0, c: num(D.e.c) || 0, f: num(D.e.f) || 0 }); delete D.e.food; }
+    meals.push({ name: `${S.menu.place ? S.menu.place + " " : ""}${x.name}`.slice(0, 80), cal: x.cal, p: x.p, c: x.c, f: x.f, src: "menu", slot: defSlot(D.d) });
+    D.e.meals = meals; x.logged = true; autosave(); toast(`Logged ${f0(x.cal)} cal`); render(); return;
+  }
+  const T = today();
+  if ("planOpen" in ds) { S.planForm = { d: addD(T, ((5 - (parse(T).getDay() + 6) % 7) + 7) % 7 || 0), label: "Night out", extra: 800 }; render(); return; }
+  if (ds.planDay) { if (!S.planForm) return; S.planForm.d = ds.planDay; render(); return; }
+  if (ds.planPre != null) { if (!S.planForm) return; const [n, c] = PLAN_PRESETS[+ds.planPre]; S.planForm.label = n; S.planForm.extra = c; render(); return; }
+  if ("planCancel" in ds) { S.planForm = null; render(); return; }
+  if ("planSave" in ds) {
+    const f = S.planForm, x = Math.round(clamp(num(f?.extra) || 0, 0, 3000) / 10) * 10; if (!f?.d || !x) { toast("Pick a day and how many extra calories."); return; }
+    const keep = (Array.isArray(S.settings.plans) ? S.settings.plans : []).filter(p => p && p.d >= addD(T, -7) && p.d !== f.d);
+    S.settings.plans = [...keep, { d: f.d, extra: x, label: f.label || "Big night" }].sort((a, b) => a.d < b.d ? -1 : 1);
+    S.planForm = null; S.planGP = S.settings.plans.findIndex(p => p.d === f.d); saveSettings(); render(); toast(`Banked ${f0(x)} cal for ${WDN(f.d)}`); return;
+  }
+  if (ds.planDel != null) { const P = [...(S.settings.plans || [])]; P.splice(+ds.planDel, 1); S.settings.plans = P; S.planGP = null; saveSettings(); render(); return; }
+  if (ds.planGp != null) { S.planGP = S.planGP === +ds.planGp ? null : +ds.planGp; render(); return; }
+  if (ds.planAi != null) {
+    const p = (S.settings.plans || [])[+ds.planAi]; if (!p) return; let per = 0; try { per = weekPlan(compute()).bankPerDay; } catch {}
+    sendCoachTalk(`I've got a ${String(p.label || "big night").toLowerCase()} on ${WDN(p.d)} (${p.d}). I banked ${p.extra} extra calories for it in TiroFit${per ? `, so my other days are about ${per} lower` : ""}. Give me a game plan: how to eat the days before, the day of (what to eat early, what to order, how to handle drinks), and the next morning, including what the scale will probably do and why that's fine.`);
+    setTimeout(() => document.querySelector(".coachtalk")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60); return;
+  }
+});
 function recBody(rc) {
   const part = (lab, p) => `<div class="rpart" style="--pc:${p.pct >= 100 ? "var(--p-green)" : p.pct >= 50 ? "var(--p-yellow)" : "var(--p-red)"}"><div><span>${lab}</span><b>${p.pct}%</b></div><div class="st"><i style="width:${p.pct}%"></i></div><small>${p.days == null ? "Fully recovered" : p.days === 1 ? "Trained yesterday" : `Trained ${p.days} days ago`}</small></div>`;
   return `<div class="rtop">${recPlate(rc.score)}<div style="min-width:0"><span class="rlab" style="--rc:${REC_COL(rc.score)}">${rc.label}</span><p class="rhd">${esc(rc.headline)}</p></div></div>
@@ -2845,6 +3100,7 @@ function todayBox() {
   return `${eventHtml()}<div class="dayhero"><div><div class="label">${left >= 0 ? "Left today" : "Over today"}</div><div class="jersey">${f0(Math.abs(left))}</div></div>
       <div class="streakbox" title="Days in a row you've logged"><b>${sk}</b><span>Streak</span></div></div>
     <div class="daysub"><span>Target <b>${f0(w.todayTarget)}</b></span><span>Logged <b>${f0(dv.cal ?? 0)}</b></span>${dv.alcCal ? `<span>Alcohol <b>${f0(dv.alcCal)}</b></span>` : ""}</div>
+    ${w.todayPlan ? `<p class="plannote"><b>${esc(w.todayPlan.label || "Big night")} today.</b> ${f0(w.todayPlan.extra)} extra calories are banked for it, so enjoy it.</p>` : w.bank ? `<p class="plannote">Banking about <b>${f0(w.bankPerDay)}</b> today for ${esc(w.plans[0].label || "your big night")} ${esc(WDN(w.plans[0].d))}.</p>` : ""}
     ${macroLeft(dv, w.todayTarget)}
     ${nudgeHtml()}`;
 }
@@ -2927,6 +3183,7 @@ function vToday() {
     <div class="field"><label for="f-w">Morning weight (lb)</label><div class="bignum"><button type="button" data-bump="w" data-by="-0.2" aria-label="Down 0.2">−</button><input id="f-w" data-k="w" type="number" inputmode="decimal" step="any" value="${esc(v("w"))}" placeholder="${f1(compute().trend ?? 155)}"><button type="button" data-bump="w" data-by="0.2" aria-label="Up 0.2">+</button></div></div>
     ${F.sleep ? `<div class="grid2">${nf("f-sleep", "sleep", "Sleep last night (hrs)", 0.25, "7.5")}<div></div></div>` : ""}
     ${F.recovery ? `<div class="field"><span class="label">How your body feels</span><div class="chips feel" data-chips="rec">${FEEL.map(([n, t]) => `<button type="button" class="chip" data-val="${n}" aria-pressed="${e.rec === n}"><b>${n}</b><small>${t}</small></button>`).join("")}</div></div>` : ""}
+    <div id="decoder">${decoderHtml(d, e)}</div>
     </div></section>
   <section class="card rec" aria-label="Recovery">${zh(Z(), "Recovery", "readiness")}<div id="recbox">${recBody(recovery(d, e))}</div>
     ${F.lift ? `<div class="chips" style="margin-top:14px;align-items:center"><span class="muted" style="font-size:14px">${e.lift ? `Training: <b style="color:var(--fg)">${esc(e.lift)}</b>` : "No session logged yet"}</span><button type="button" class="btn" data-go="gains">${e.lift ? "Open workout" : "Log workout"}</button></div>` : ""}</section>
@@ -3021,6 +3278,7 @@ function vFood() {
     <div class="est ${est ? "" : "hidden"}" id="estbox">${est ? estHtml(est) : ""}</div>
     ${usualsHtml()}
     ${!S.sample ? `<p class="muted" style="margin:0;font-size:13px">Photo, label and description estimates need the page open in claude.ai.</p>` : ""}</section>
+  ${menuSnapHtml(D)}
   ${eatOutHtml(D)}
   <section class="card view" style="gap:12px">${zh(3, "Meals", `${meals.length} item${meals.length === 1 ? "" : "s"}`)}
     ${timingHtml(D)}
@@ -3371,7 +3629,7 @@ function bind() {
 }
 function bindLog(form) {
   const D = draft();
-  const refreshBox = () => { const tb = document.getElementById("todaybox"); if (tb) tb.innerHTML = boxFor(); const rb = document.getElementById("recbox"); if (rb) rb.innerHTML = recBody(recovery(D.d, D.e)); };
+  const refreshBox = () => { const tb = document.getElementById("todaybox"); if (tb) tb.innerHTML = boxFor(); const rb = document.getElementById("recbox"); if (rb) rb.innerHTML = recBody(recovery(D.d, D.e)); const dc = document.getElementById("decoder"); if (dc) dc.innerHTML = decoderHtml(D.d, D.e); };
   form.addEventListener("input", () => autosave());
   form.addEventListener("click", ev => { if (ev.target.closest("[data-bump]")) autosave(); });
   form.querySelectorAll("details[data-fold]").forEach(x => x.ontoggle = () => { S.open = { ...(S.open || {}), [x.dataset.fold]: x.open }; });
