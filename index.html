@@ -169,6 +169,7 @@ tr.click:hover td { background: var(--surface-2) }
 .drinkrow .cnt { font: 600 20px var(--display); min-width: 28px; text-align: center; font-variant-numeric: tabular-nums }
 .drinkrow button { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font-size: 18px; cursor: pointer }
 .dkrow { display: flex; gap: 8px }
+.ctopics .chip:disabled { opacity: .5 } .coachtalk .chatlog { max-height: 420px }
 .coachhead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px }
 .chatlog { display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; padding: 2px; margin-bottom: 10px; overscroll-behavior: contain }
 .msg { display: flex; flex-direction: column; max-width: 86% }
@@ -2283,6 +2284,7 @@ function vCoach() {
       <div class="ends"><span>${sgn(lo * 100, 1)}%/wk</span><span>goal ${sgn(r.gmin * 100, 2)} to ${sgn(r.gmax * 100, 2)}%</span><span>${sgn(hi * 100, 1)}%/wk</span></div>
     </div>
   </section>
+  ${coachTalkHtml()}
   ${weekCard(m)}
       ${r.notes.length ? `<section class="card"><h2>Worth a look</h2><ul class="notes">${r.notes.map(([c, t]) => `<li class="${c}">${esc(t)}</li>`).join("")}</ul></section>` : ""}
   <div class="stats">
@@ -2367,6 +2369,65 @@ function chartCals(m) {
 }
 
 // ----- Coach chat: talk about your day, and it logs food, drinks, weight, sleep and more -----
+// ----- Ask your coach: open coaching chat on Progress > Coach, with topic starters -----
+const COACH_TOPICS = [
+  ["Sleep", "Look at my sleep. How is it affecting my training, recovery and weight, and what should I change?"],
+  ["Recovery", "How recovered am I right now, and how should I train today and the next few days?"],
+  ["Weigh-ins", "Help me read my weigh-ins. Is my trend on track for my goal, and is anything throwing the scale off?"],
+  ["Food", "Coach me on my eating: calories, protein and the one thing to change this week."],
+  ["Training", "How is my training going? Give me suggestions for my next few sessions."],
+  ["Split help", "Look at my split and tell me what you'd tweak and why."],
+];
+function coachContext() {
+  const st = S.settings, out = {}, T = today();
+  const tryit = (k, f) => { try { const v = f(); if (v != null) out[k] = v; } catch {} };
+  tryit("profile", () => ({ goal: st.goal, daily_target_cal: st.target, protein_per_lb: st.protein, training_for: prof().name, about: st.about || null, weekly_targets: { steps: st.stepsWk, cardio: cGoal(), cardio_unit: cUnit(), workouts: st.liftsWk } }));
+  tryit("coach", () => { const m = compute(), rc = recommend(m); return { trend_weight_lb: m.trend, weekly_rate_pct: rc.rate != null ? +(rc.rate * 100).toFixed(2) : null, goal_rate_pct: [+(rc.gmin * 100).toFixed(2), +(rc.gmax * 100).toFixed(2)], estimated_maintenance: rc.maint, recommendation: rc.text, recommended_target: rc.rec, notes: (rc.notes || []).map(x => x[1]) }; });
+  tryit("this_week", () => { const w = weekPlan(compute()); return { eat_today: w.todayTarget, eaten_so_far: w.weekEaten, week_budget: w.weekBudget, steps: w.stepsSum, cardio: w.cardioSum }; });
+  tryit("recovery_today", () => { const rc = recovery(T, S.entries[T] || {}); return { score: rc.score, label: rc.label, headline: rc.headline, training_days_in_a_row: rc.run, upper_days_since: rc.upper.days, lower_days_since: rc.lower.days, drinks_yesterday: rc.yAlc }; });
+  tryit("last_21_days", () => Object.keys(S.entries).sort().slice(-21).map(d => { const e = S.entries[d], dv = derive(e); const sets = Array.isArray(e.sets) ? e.sets.filter(x => num(x.w) != null && num(x.r) != null) : [];
+    return { d, w: e.w ?? null, cal: dv.cal ?? null, p: dv.p ?? null, c: dv.c ?? null, f: dv.f ?? null, drinks: dv.alcN || 0, sleep: e.sleep ?? null, feel_1to5: e.rec ?? null, bloated: e.bloat === "Y" || null, steps: e.steps ?? null, cardio: e[cKey()] ?? null, workout: e.lift ?? null, sets: sets.length || null, top_sets: sets.slice(0, 6).map(x => `${x.ex || ""} ${x.w}x${x.r}`.trim()), notes: e.notes || null }; }));
+  tryit("split", () => templates().map(t => ({ day: t.name, exercises: t.ex.map(x => parseEx(x).name) })));
+  tryit("split_check", () => { const c = splitCheck(); return { weekly_sets_per_muscle: c.wk, times_per_week: c.freq, app_tips: c.recs.slice(0, 6).map(x => x[1]) }; });
+  tryit("body_fat", () => { const b = bfList().at(-1); return b ? { date: b.date, pct: b.pct ?? b.bf ?? null } : null; });
+  tryit("pattern", () => { const pt = patterns(); return pt ? `${WD[pt.w]}s average ${pt.ex} cal over a normal day` : null; });
+  tryit("event", () => { const ev = eventInfo(); return ev ? `${ev.name} in ${ev.days} days` : null; });
+  return out;
+}
+function coachTalkHtml() {
+  const list = chatOf("coach"), busy = S.chatBusy === "coach", ok = !!S.sample;
+  const bub = m => `<div class="msg ${m.role}"><div class="bub">${esc(m.text).replace(/\n/g, "<br>")}</div></div>`;
+  return `<section class="card coachtalk"><div class="coachhead"><h2 style="margin:0">Ask your coach</h2>${list.length && !busy ? `<button type="button" class="linkbtn" data-cclear>New chat</button>` : ""}</div>
+    <p class="muted" style="margin:0 0 10px;font-size:14px">${ok ? "Pick a topic or ask anything. I'll look at your log, your trend and your split before I answer." : "The coach chat is coming to this version soon. Open TiroFit in claude.ai to use it today."}</p>
+    <div class="chips ctopics">${COACH_TOPICS.map(([t]) => `<button type="button" class="chip" data-ctopic="${esc(t)}" ${busy || !ok ? "disabled" : ""}>${esc(t)}</button>`).join("")}</div>
+    ${list.length || busy ? `<div class="chatlog" id="coachlog" style="margin-top:12px">${list.slice(-14).map(bub).join("")}${busy ? `<div class="msg assistant"><div class="bub" id="coachlive"><span class="dots"><i></i><i></i><i></i></span></div></div>` : ""}</div>` : ""}
+    ${ok ? `<div class="chatin" style="margin-top:12px"><textarea id="coach-q" rows="1" placeholder="Ask about sleep, food, training, anything" aria-label="Ask your coach" ${busy ? "disabled" : ""}>${esc(S.coachDraft || "")}</textarea><button type="button" class="btn primary" id="coachsend" ${busy ? "disabled" : ""}>Ask</button></div>` : ""}</section>`;
+}
+async function sendCoachTalk(text) {
+  text = String(text || "").trim(); if (!text || !S.sample || S.chatBusy) return;
+  const list = chatOf("coach"); list.push({ role: "user", text }); S.coachDraft = ""; S.chatBusy = "coach"; render();
+  const lg0 = document.getElementById("coachlog"); if (lg0) lg0.scrollTop = lg0.scrollHeight;
+  const st = S.settings;
+  const sys = `You are the head coach inside TiroFit, a nutrition, training and recovery app built around a balanced lifestyle: weekly averages over perfect days, room for drinks and meals out, and back-to-back training days are fine when life gets busy. Coach like a sharp, experienced, evidence-based coach who knows this person: warm, direct and specific.
+Today is ${today()}. Use THEIR numbers below (sleep, weights, calories, protein, workouts, recovery, split) and refer to real days and values. Give real coaching: what you see, why it matters, and what to do. Prefer practical, research-backed guidance (sleep 7 to 9 h, protein about 0.7 to 1 g per lb, progressive overload, weekly volume per muscle, trend weight over single weigh-ins). Never guilt them; plan around real life.
+Format: plain text, no markdown headings or bold. 2 to 4 short paragraphs or a few lines starting with "• ". Keep it under about 170 words. End with one clear action for today or this week. If data is missing for the question, say what to log and still give your best advice. Ask at most one follow-up question.
+${st.coachNotes ? `What you know about them from earlier conversations: ${st.coachNotes}\n` : ""}Their data: ${JSON.stringify(coachContext())}`;
+  const msgs = [{ role: "user", content: sys + "\n\nThe conversation follows." }, { role: "assistant", content: "Got it. I've looked through everything." }, ...list.slice(-12).map(m => ({ role: m.role === "user" ? "user" : "assistant", content: m.text }))];
+  try {
+    const res = await S.sample(msgs, { cache: false, modelTier: "default", onText: ({ text: t }) => { const el = document.getElementById("coachlive"); if (el && t && t !== "Thinking...") { el.textContent = t; const lg = document.getElementById("coachlog"); if (lg) lg.scrollTop = lg.scrollHeight; } } });
+    list.push({ role: "assistant", text: (res?.text || "").trim() || "Ask me that one more time?" });
+  } catch (err) { list.push({ role: "assistant", text: errCopy(err?.code) }); }
+  if (list.length > 40) list.splice(0, list.length - 40);
+  S.chatBusy = null; await saveChat("coach"); render();
+  const lg = document.getElementById("coachlog"); if (lg) lg.scrollTop = lg.scrollHeight;
+}
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-ctopic]"); if (t) { const tp = COACH_TOPICS.find(x => x[0] === t.dataset.ctopic); if (tp) sendCoachTalk(tp[1]); return; }
+  if (ev.target.closest("#coachsend")) { const q = document.getElementById("coach-q"); if (q) sendCoachTalk(q.value); return; }
+  if (ev.target.closest("[data-cclear]")) { S.chat = S.chat || {}; S.chat.coach = []; saveChat("coach"); render(); }
+});
+document.addEventListener("input", ev => { if (ev.target.id === "coach-q") { const q = ev.target; S.coachDraft = q.value; q.style.height = "auto"; q.style.height = Math.min(140, q.scrollHeight) + "px"; } });
+document.addEventListener("keydown", ev => { if (ev.target.id === "coach-q" && ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); sendCoachTalk(ev.target.value); } });
 function chatOf(d) { S.chat = S.chat || {}; return S.chat[d] || (S.chat[d] = []); }
 async function saveChat(d) {
   S.chat[d] = chatOf(d).slice(-40);
