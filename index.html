@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="icon" href="/icons/icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="TiroFit"><meta name="theme-color" content="#0a0a0a"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>TiroFit</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2075,6 +2075,27 @@ function renderScan() {
 }
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && S.scan) closeScanner(); });
 
+// ---------- backup and restore (standalone) ----------
+function backupObj() { const o = local.read(); return { tirofitBackup: 1, exported: new Date().toISOString().slice(0, 10), entries: S.entries, settings: S.settings, bf: S.bf, foods: S.foods, templates: S.templates || o.templates, strength: S.strength || o.strength, seen: S.seen || o.seen, chat: S.chat || o.chat }; }
+document.addEventListener("click", ev => {
+  if (ev.target.closest("[data-backup]")) {
+    const b = backupObj(), blob = new Blob([JSON.stringify(b)], { type: "application/json" }), a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "tirofit-backup-" + b.exported + ".json"; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+  if (ev.target.closest("[data-restore]")) {
+    const inp = document.createElement("input"); inp.type = "file"; inp.accept = "application/json,.json,text/plain";
+    inp.onchange = async () => { const f = inp.files && inp.files[0]; if (!f) return;
+      let o; try { o = JSON.parse(await f.text()); } catch { return toast("That file isn't a TiroFit backup."); }
+      if (!o || typeof o !== "object" || !o.entries || typeof o.entries !== "object") return toast("That file isn't a TiroFit backup.");
+      const days = Object.keys(o.entries).length;
+      if (!confirm(`Restore ${days} days from this backup? It replaces what's on this device now.`)) return;
+      const keep = {}; ["entries", "settings", "bf", "foods", "templates", "strength", "seen", "chat"].forEach(k => { if (o[k] != null) keep[k] = o[k]; });
+      if (keep.settings) keep.settings.setupDone = true;
+      local.write(keep); toast("Restored. Loading your log…"); setTimeout(() => location.reload(), 600); };
+    inp.click();
+  }
+});
+
 // ---------- storage ----------
 const LS = "cbc.v1";
 const local = { read() { try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch { return {}; } }, write(o) { try { localStorage.setItem(LS, JSON.stringify(o)); } catch {} } };
@@ -2676,6 +2697,7 @@ function setupHtml() {
   const w = num(u.w), sugg = w ? Math.round(w * 15 * (1 + (GOALS[u.goal]?.r[1] || 0) * 20) / 50) * 50 : null;
   return `<section class="card setup"><div class="label">Welcome to TiroFit</div><h2 style="margin:4px 0 6px">Let's set you up</h2>
     <p class="muted" style="margin:0 0 12px;font-size:14px">Four quick answers. You can change any of it later under You.</p>
+    <p style="margin:0 0 14px;font-size:14px">Already have a TiroFit backup file? <button type="button" class="linkbtn" data-restore>Restore from backup</button></p>
     <div class="grid2"><div class="field"><label for="su-name">First name</label><input id="su-name" value="${esc(u.name || "")}" autocomplete="given-name"></div>
     <div class="field"><label for="su-w">Weight today (lb)</label><input id="su-w" type="number" inputmode="decimal" step="any" value="${esc(u.w || "")}"></div></div>
     <div class="field"><span class="label">Goal</span><div class="chips">${Object.entries(GOALS).map(([k, v]) => `<button type="button" class="chip" data-sugoal="${k}" aria-pressed="${u.goal === k}" title="${esc(v.d)}">${k}</button>`).join("")}</div></div>
@@ -3108,6 +3130,8 @@ function vPrefs() {
     ${sw("skipFlagged", "Leave weigh-ins after heavy drinking out of averages")}
     <p class="muted" style="margin:8px 0 0;font-size:13px">Bloating, late meals, eating after drinking and short sleep are flagged and tracked but always count.</p></section>
   <section class="card"><h2>About you</h2><div class="field"><label for="s-about">Used for photo estimates</label><input id="s-about" type="text" value="${esc(st.about)}" placeholder="Age, height, sex, how often you train"></div></section>
+  <section class="card"><h2>Backup</h2><p class="muted" style="margin:0 0 10px;font-size:14px">Your log is saved on this device. Download a backup now and then so you never lose it, or restore one from another phone.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-backup>Download backup</button><button type="button" class="btn" data-restore>Restore from backup</button></div></section>
   <section class="card"><h2>Look</h2>
     <div class="looks">${Object.entries(LOOKS).map(([k, [n, d, cs]]) => `<button type="button" data-look-set="${k}" aria-pressed="${(LOOKS[st.look] ? st.look : "classic") === k}"><span class="sw2">${cs.map(c => `<i style="background:${c}"></i>`).join("")}</span>${n}<small>${d}</small></button>`).join("")}</div>
     ${(LOOKS[st.look] ? st.look : "classic") === "classic" ? `<div class="field" style="margin-top:14px"><span class="label">Accent</span><div class="swatches">${Object.entries(ACCENTS).map(([k, c]) => `<button type="button" class="sw" data-accent="${k}" aria-pressed="${st.accent === k}" aria-label="${k}" style="background:${c}"></button>`).join("")}</div></div>
