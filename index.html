@@ -1390,7 +1390,7 @@ function splitTalkHtml() {
   return `<div class="talk"><div class="label" style="margin-bottom:6px">Talk it through</div>
     ${notes.length ? `<ul class="exnotes">${notes.map(([k, v]) => `<li><b>${esc(k)}</b><span>${esc(v)}</span><button type="button" class="tipx" data-delnote="${esc(k)}" aria-label="Forget this note">×</button></li>`).join("")}</ul>` : ""}
     <div class="chatlog" id="splitlog">${list.slice(-10).map(m => `<div class="msg ${m.role}"><div class="bub">${esc(m.text).replace(/\n/g, "<br>")}</div>${m.did?.length ? `<div class="did">${m.did.map(x => `<span>${esc(x)}</span>`).join("")}</div>` : ""}</div>`).join("") || `<p class="muted" style="margin:0;font-size:14px">Push back on a tip or tell me what an exercise really hits. I'll remember it and the split check will adjust.</p><div class="chips ${S.sample ? "" : "hidden"}" style="margin-top:10px">${starters.map(s => `<button type="button" class="chip" data-splitstarter="${esc(s)}">${esc(s)}</button>`).join("")}</div>`}${busy ? `<div class="msg assistant"><div class="bub" id="splitlive"><span class="dots"><i></i><i></i><i></i></span></div></div>` : ""}</div>
-    ${S.sample ? `<div class="chatin"><textarea id="split-q" rows="1" placeholder="e.g. my machine row also hits rear delts" aria-label="Talk about your split" ${busy ? "disabled" : ""}>${esc(S.splitDraft || "")}</textarea><button type="button" class="btn primary" id="splitsend" ${busy ? "disabled" : ""}>Send</button></div>` : `<p class="muted" style="margin:8px 0 0;font-size:13px">Talking it through needs the page open in claude.ai.</p>`}</div>`;
+    ${S.sample ? `<div class="chatin"><textarea id="split-q" rows="1" placeholder="e.g. my machine row also hits rear delts" aria-label="Talk about your split" ${busy ? "disabled" : ""}>${esc(S.splitDraft || "")}</textarea><button type="button" class="btn primary" id="splitsend" ${busy ? "disabled" : ""}>Send</button></div>` : `<p class="muted" style="margin:8px 0 0;font-size:13px">Talking it through is coming soon.</p>`}</div>`;
 }
 async function sendSplitTalk(text) {
   text = String(text || "").trim(); if (!text || !S.sample || S.chatBusy) return;
@@ -2061,7 +2061,7 @@ function renderScan() {
       : `<span class="mono">${esc(sc.code)}</span> ${sc.reached ? "isn't in Open Food Facts yet" : "couldn't be looked up online from this view"}. Snap the Nutrition Facts panel and Claude copies the numbers. It's saved to this barcode, so the next scan fills in instantly.`}</p>
     ${S.sample && S.imgOK ? `<div class="field"><label for="labelname">Product name (optional)</label><input id="labelname" value="${esc(sc.nm || "")}" placeholder="Fairlife Core Power, chocolate"></div>
       <div class="chips"><label class="btn primary" for="labelphoto">${sc.busy ? "Reading the label…" : "Photo of the label"}</label><input id="labelphoto" type="file" accept="image/*" capture="environment" hidden ${sc.busy ? "disabled" : ""}></div>`
-      : `<p class="muted" style="margin:0;font-size:14px">Reading labels needs the page open in claude.ai. You can still add it with Add manually.</p>`}
+      : `<p class="muted" style="margin:0;font-size:14px">Reading labels is coming soon. You can still add it with Add manually.</p>`}
     ${sc.err ? `<div style="color:var(--bad);font-size:14px">${esc(sc.err)}</div>` : ""}
     ${sc.labelOnly ? "" : `<div><button type="button" class="btn ghost" id="scanagain">Scan another</button></div>`}`;
   el.innerHTML = `<div class="sheet"><div class="sheethead"><span class="label">${sc.labelOnly ? "Nutrition label" : "Barcode"}</span><button type="button" class="btn ghost" id="scanclose">Close</button></div>${body}</div>`;
@@ -2096,11 +2096,11 @@ async function boot() {
   let db = null;
   try { db = await window.claude?.use?.("db"); } catch {}
   const localOnly = msg => { S.store = null; S.loaded = true; S.loadedLog = S.loadedStrength = S.loadedSeen = true; banner(msg); render(true); checkNew(); };
-  if (!db) return localOnly("Saving on this device only. Open the page signed in to claude.ai to sync your log.");
+  if (!db) return localOnly("Saving on this device only. Accounts and sync are coming soon.");
   // each person's log lives in their own private space: data/users/<id>/app/...
   let user = null, uid = null, owner = false;
   try { user = await window.claude?.use?.("user"); if (user) { uid = await user.id(); owner = await user.isOwner(); } } catch {}
-  if (!uid) return localOnly("Saving on this device only. Sign in to claude.ai to sync your log.");
+  if (!uid) return localOnly("Saving on this device only. Accounts and sync are coming soon.");
   const base = "data/users/" + uid + "/app";
   const raw = db, st = { doc: p => raw.doc(base + "/" + p), collection: p => raw.collection(base + "/" + p) };
   try { await db.doc(base).set({ v: 1, seen: Date.now() }); }
@@ -2925,7 +2925,7 @@ function vBody() {
       ${be?.res ? `<div class="est"><div><span class="label">Estimate</span><div class="num" style="font-size:40px">${be.res.best}%</div><div class="muted">Range ${be.res.low} to ${be.res.high}%</div></div>
         ${be.res.cues?.length ? `<ul class="cues">${be.res.cues.slice(0, 4).map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}${be.res.tips ? `<div class="muted" style="font-size:13px">${esc(be.res.tips)}</div>` : ""}
         <div class="chips"><button type="button" class="btn primary" id="bfsaveest">Save ${be.res.best}%</button><button type="button" class="btn ghost" id="bfdiscard">Discard</button></div></div>` : ""}`
-    : `<p class="muted" style="margin:0">Photo estimates need the page open in claude.ai. You can still log a test result below.</p>`}
+    : `<p class="muted" style="margin:0">Photo estimates are coming soon. You can still log a test result below.</p>`}
   </section>
   <section class="card view"><h2 style="margin:0">Log a test result</h2>
     <div class="field"><span class="label">Method</span><div class="chips" data-bfm>${BF_METHODS.filter(x => x !== "Photo estimate (AI)").map(x => `<button type="button" class="chip" data-val="${x}" aria-pressed="${(S.bfMethod || "DEXA") === x}">${x}</button>`).join("")}</div></div>
