@@ -360,6 +360,7 @@ details.rmore { margin-top: 12px } details.rmore > summary { font-size: 14px; co
 .excount .dots { display: inline-flex; gap: 4px } .excount .dots i { width: 10px; height: 10px; border-radius: 3px; border: 1.5px solid var(--muted); animation: none; opacity: 1 } .excount .dots i.on { background: var(--p-red); border-color: var(--p-red) }
 .exb.isdone { opacity: .72 } .exb.isdone .excount b, .exb.isdone .exsub { color: var(--p-green) } .exb.isdone .excount .dots i.on { background: var(--p-green); border-color: var(--p-green) }
 .exbtns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap } .exbtns .addset { padding: 7px 14px; font-size: 14px } .exbtns .linkbtn { font-size: 13.5px; color: var(--muted) }
+.cweek { display: grid; gap: 10px } .cdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px } .cdays span { display: grid; justify-items: center; gap: 2px; padding: 6px 2px; border-radius: 8px; background: var(--surface-2); font-size: 11px; color: var(--muted) } .cdays span b { font: 600 13px var(--mono); color: var(--muted) } .cdays span.on b { color: var(--p-green) } .cdays span.sel { outline: 1.5px solid var(--line) }
 .recline { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit }
 .recline > b { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--rc); font: 700 20px var(--mono); color: var(--rc) }
 .recline em { display: block; font-style: normal; font-weight: 600; font-size: 16px } .recline small { display: block; color: var(--muted); font-size: 13.5px; line-height: 1.35; margin-top: 2px } .recline > i, .morerow > i { font-style: normal; font-size: 24px; color: var(--muted) }
@@ -878,6 +879,15 @@ function compute() {
 }
 
 // This week's budget: eat over one day and the rest of the week drops, eat under and it rises.
+function cardioWeekCard(d, e) {
+  const ws = monday(d), days = [...Array(7)].map((_, k) => addD(ws, k)), dn = ["M", "T", "W", "T", "F", "S", "S"];
+  const val = x => num((x === d ? e : S.entries[x])?.[cKey()]);
+  const vals = days.map(val), done = sum(vals.filter(v => v != null)), goal = cGoal() || 0, left = Math.max(0, goal - done);
+  const sess = vals.filter(v => v > 0).length, isNow = ws === monday(today());
+  const sub = goal ? (left ? `${cFmt(left)} ${CU() ? (left === 1 ? "mile" : "miles") : "min"} to go${isNow ? " this week" : ""} · ${sess} session${sess === 1 ? "" : "s"}` : `Target hit · ${sess} session${sess === 1 ? "" : "s"}`) : `${sess} session${sess === 1 ? "" : "s"}`;
+  return `<section class="card cweek">${prog(`Cardio ${isNow ? "this week" : "that week"} (${cUnit()})`, done, goal, cFmt, sub)}
+    <div class="cdays">${days.map((x, k) => `<span class="${vals[k] > 0 ? "on" : ""}${x === d ? " sel" : ""}"><b>${vals[k] > 0 ? cFmt(vals[k]) : "·"}</b>${dn[k]}</span>`).join("")}</div></section>`;
+}
 function weekPlan(m) {
   const st = S.settings, T = today(), ws = monday(T), bw = m.trend ?? st.fallbackBw;
   const idx = (parse(T).getDay() + 6) % 7;
@@ -1516,6 +1526,7 @@ function vGains() {
   <form class="view" id="dayform" autocomplete="off">
   <div class="dayrow"><button type="button" class="btn ghost" id="prevd" aria-label="Previous day">‹</button><div class="dayname"><b>Training</b><span>${isT ? "Today · " : ""}${esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }))}</span></div><input id="f-date" type="date" value="${d}" max="${addD(today(), 1)}" aria-label="Pick a day"><button type="button" class="btn ghost" id="nextd" aria-label="Next day">›</button></div>
   <button type="button" class="recline" data-go="today" style="--rc:${REC_COL(rcT.score)}"><b>${rcT.score}</b><span><em>Recovery · ${esc(rcT.label)}</em><small>${esc(rcT.headline)}</small></span><i aria-hidden="true">›</i></button>
+  ${cardioWeekCard(d, e)}
   <section class="card view" style="gap:12px">${zh(1, "Workout", e.lift ? `${nSets} set${nSets === 1 ? "" : "s"} logged` : "pick a session")}
     ${e.lift && !S.pickLift ? `<div class="liftpick"><b>${esc(e.lift)}</b><button type="button" class="linkbtn" id="changelift">Change</button></div>` : `<div class="chips" data-chips="lift">${liftChoices().map(o => `<button type="button" class="chip" data-val="${esc(o)}" aria-pressed="${e.lift === o}">${esc(o)}</button>`).join("")}</div>`}
     ${workoutHtml(D, true)}
