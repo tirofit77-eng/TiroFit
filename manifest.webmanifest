@@ -4,7 +4,7 @@
   "description": "Calorie, training and recovery coach built around balancing the week.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
+  "background_color": "#08070b",
   "theme_color": "#0a0a0a",
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },

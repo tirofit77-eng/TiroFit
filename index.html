@@ -631,6 +631,38 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 .vrow .vb .band { position: absolute; left: 41.7%; width: 41.7%; top: 0; bottom: 0; background: color-mix(in srgb, var(--p-green) 18%, transparent); border-left: 1px dashed color-mix(in srgb, var(--p-green) 60%, transparent); border-right: 1px dashed color-mix(in srgb, var(--p-green) 60%, transparent) }
 .vrow .vb .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; opacity: .9 }
 .vrow b { text-align: right; font-weight: 600 } .vrow small { color: var(--muted); font-size: 11px }
+
+/* ===== Club, purple swap: purple takes the gold role and gold takes the purple role ===== */
+:root[data-look="club"][data-swap] { --bg: #121110; --surface: #1b1a18; --surface-2: #252320; --line: #33302b; --fg: #f1ece3; --muted: #a39b8f;
+  --gold: #a35cff; --gold-soft: rgba(163,92,255,.16); --wood: #8a5f3a;
+  --purple: #e2b65c; --purple-glow: rgba(226,182,92,.55); --copper: #d4874a; --cream: #efe2c6;
+  --p-red: var(--purple); --p-blue: var(--cream); --p-yellow: var(--copper); --p-green: #a35cff; --steel: #4a4640; --steel-2: #6b655c;
+  --t-bronze: #d4874a; --t-silver: #efe2c6; --t-gold: #a35cff; --t-elite: #e2b65c;
+  --good: #a35cff; --warn: #d4874a; --bad: #ff5c9a; --a: #a35cff; --on-a: #121110; --a-soft: rgba(163,92,255,.14); color-scheme: dark; --paper: #f4f1ea }
+:root[data-look="club"][data-swap] body { background: radial-gradient(120% 60% at 50% -12%, rgba(163,92,255,.14), transparent 62%) fixed, linear-gradient(180deg, #151413, #0f0e0d) fixed; background-color: #121110 }
+:root[data-look="club"][data-swap] header.top { background: #0c0b0a; color: var(--fg); margin: 0 -16px 18px; padding: 13px 16px 12px; border-radius: 0 0 10px 10px;
+  box-shadow: 0 1px 0 rgba(163,92,255,.55), 0 10px 28px -12px rgba(163,92,255,.45) }
+:root[data-look="club"][data-swap] .brand i b { color: var(--gold) !important; text-shadow: 0 0 10px rgba(163,92,255,.55) }
+:root[data-look="club"][data-swap] .goalchip { background: transparent; color: var(--gold); border: 1px solid rgba(163,92,255,.5); border-radius: 4px; font-family: var(--mono); font-weight: 500; letter-spacing: .12em; font-size: 10.5px }
+:root[data-look="club"][data-swap] .card { background: linear-gradient(180deg, #1d1b19, #181715); border-color: #2e2b27; border-top-color: rgba(163,92,255,.32); border-radius: 8px; box-shadow: 0 10px 24px -18px #000 }
+:root[data-look="club"][data-swap] .btn.primary { background: var(--gold); border-color: var(--gold); color: #121110; text-transform: uppercase; letter-spacing: .08em; font-size: 12.5px; font-weight: 700; box-shadow: 0 0 18px -4px rgba(163,92,255,.55) }
+:root[data-look="club"][data-swap] nav.tabs { background: #0c0b0a; border-top: 1px solid rgba(163,92,255,.28); box-shadow: 0 -10px 26px -14px rgba(163,92,255,.35) }
+:root[data-look="club"][data-swap] nav.tabs button[aria-current="page"] { color: var(--gold); box-shadow: inset 0 2px 0 var(--gold); text-shadow: 0 0 10px rgba(163,92,255,.6) }
+:root[data-look="club"][data-swap] nav.tabs button[aria-current="page"] svg { filter: drop-shadow(0 0 4px rgba(163,92,255,.6)) }
+:root[data-look="club"][data-swap] .board, :root[data-look="club"][data-swap] .hero { --bg: #100f0e; --surface: #1b1a18; --surface-2: rgba(0,0,0,.38); --line: #3a332b; --fg: #f4efe6; --muted: #b3a998; --steel: #5c544a; --steel-2: #463f37;
+  color: var(--fg); border: 1px solid #3a2c1f !important; border-top-color: rgba(163,92,255,.6) !important;
+  background: linear-gradient(180deg, rgba(14,12,10,.80), rgba(14,12,10,.90)), repeating-linear-gradient(90deg, #6b4a2d 0 26px, #2a1d12 26px 28px, #5b3e25 28px 54px, #2a1d12 54px 56px, #74512f 56px 82px, #2a1d12 82px 84px);
+  box-shadow: inset 0 1px 0 rgba(163,92,255,.5), inset 0 22px 30px -24px rgba(163,92,255,.55), 0 14px 30px -18px #000 }
+:root[data-look="club"][data-swap] .board .jersey, :root[data-look="club"][data-swap] .hero .big { text-shadow: 0 0 24px rgba(163,92,255,.18) }
+:root[data-look="club"][data-swap] .zh b { background: transparent; color: var(--gold); border: 1px solid rgba(163,92,255,.7); padding: 4px 5px 3px; text-shadow: 0 0 8px rgba(163,92,255,.5) }
+:root[data-look="club"][data-swap] .segtabs { border-color: rgba(163,92,255,.6) }
+:root[data-look="club"][data-swap] .segtabs button + button { border-left-color: rgba(163,92,255,.6) }
+:root[data-look="club"][data-swap] .est { background: rgba(163,92,255,.07); border-color: rgba(163,92,255,.55) }
+:root[data-look="club"][data-swap] .gradeL { color: var(--gold); text-shadow: 0 0 18px rgba(163,92,255,.4) }
+:root[data-look="club"][data-swap] .badges .badge.got { border-color: color-mix(in srgb, var(--tc, #a35cff) 40%, #2c2925); background: radial-gradient(90% 60% at 50% 0%, rgba(226,182,92,.12), transparent 70%), linear-gradient(180deg, #1c1a17, #141311) }
+:root[data-look="club"][data-swap] body { background: radial-gradient(120% 55% at 50% -12%, rgba(163,92,255,.13), transparent 62%) fixed, radial-gradient(80% 40% at 100% 100%, rgba(226,182,92,.10), transparent 70%) fixed, linear-gradient(180deg, #151413, #0f0e0d) fixed; background-color: #121110 }
+:root[data-look="club"][data-swap] .pill.good { color: #a35cff; background: rgba(163,92,255,.14) }
+:root[data-look="club"][data-swap] { --gold-soft: rgba(163,92,255,.16); --purple-glow: rgba(226,182,92,.55); --a: #a35cff; --on-a: #ffffff; --a-soft: rgba(163,92,255,.16); --t-gold: #e2b65c; --t-elite: #a35cff }
 </style>
 
 <div class="wrap">
@@ -662,7 +694,7 @@ const GOALS = {
   "Lean bulk": { r: [0.001, 0.0025, 0.004], d: "Gain slowly, mostly muscle" },
   "Reverse diet": { r: [-0.001, 0, 0.0025], d: "Add food until weight is flat" }
 };
-const LOOKS = { club: ["Club", "Matte black, wood panels, gold light", ["#121110", "#6b4a2d", "#e2b65c", "#f1ece3", "#d24a3c"]], studio: ["Daylight", "Light concrete, black boards, plate colors", ["#e9e9e6", "#131313", "#c8372d", "#24579e", "#e2a41c"]], iron: ["Iron", "Black and gray, plate-color pops", ["#111213", "#c9ccd1", "#e5483a", "#2f7fe0", "#f0c419"]], chalk: ["Chalk", "Light gray, barbells, old-school plates", ["#e3e4e6", "#1d1e21", "#c4412f", "#2d5b9a", "#d99a1e"]], classic: ["Original", "Pick light or dark and an accent", ["#f3f5f8", "#2457d6", "#141a22"]] };
+const LOOKS = { club: ["Club", "Matte black, wood panels, gold light", ["#121110", "#6b4a2d", "#e2b65c", "#f1ece3", "#d24a3c"]], neon: ["Club Purple", "Same club look, purple light with gold touches", ["#121110", "#6b4a2d", "#a35cff", "#e2b65c", "#f1ece3"]], studio: ["Daylight", "Light concrete, black boards, plate colors", ["#e9e9e6", "#131313", "#c8372d", "#24579e", "#e2a41c"]], iron: ["Iron", "Black and gray, plate-color pops", ["#111213", "#c9ccd1", "#e5483a", "#2f7fe0", "#f0c419"]], chalk: ["Chalk", "Light gray, barbells, old-school plates", ["#e3e4e6", "#1d1e21", "#c4412f", "#2d5b9a", "#d99a1e"]], classic: ["Original", "Pick light or dark and an accent", ["#f3f5f8", "#2457d6", "#141a22"]] };
 const DRINKS = { light: ["Light beer", 100], beer: ["Beer", 150], seltzer: ["Seltzer", 100], wine: ["Glass of wine", 125], shot: ["Shot", 100], mixed: ["Mixed drink", 200] };
 const FIELDS = { food: "Food log (search, scan, photo, describe)", macros: "Protein / carbs / fat totals", drinks: "Alcohol", sleep: "Sleep", recovery: "Recovery", bloat: "Bloated", meal: "Last meal time", steps: "Steps", cardio: "Cardio", lift: "Workout (sets and reps)", waist: "Waist", notes: "Notes" };
 // cardio can be tracked by minutes or by miles (incline treadmill)
@@ -2185,7 +2217,8 @@ function applyLook() {
   const st = S.settings, r = document.documentElement;
   const look = LOOKS[st.look] ? st.look : "classic";
   if (look === "classic") { r.removeAttribute("data-look"); r.style.setProperty("--a", ACCENTS[st.accent] || ACCENTS.cobalt); if (st.theme === "system") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", st.theme); }
-  else { r.setAttribute("data-look", look); r.style.removeProperty("--a"); r.setAttribute("data-theme", look === "iron" || look === "club" ? "dark" : "light"); }
+  else { r.setAttribute("data-look", look === "neon" ? "club" : look); r.style.removeProperty("--a"); r.setAttribute("data-theme", look === "iron" || look === "club" || look === "neon" ? "dark" : "light"); }
+  if (look === "neon") r.setAttribute("data-swap", ""); else r.removeAttribute("data-swap");
   document.getElementById("goalchip").textContent = st.goal;
   document.getElementById("brandsub").textContent = st.name ? `${st.name}'s log` : "Balance the week, not the day";
 }
