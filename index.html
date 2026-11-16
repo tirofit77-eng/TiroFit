@@ -2174,7 +2174,7 @@ document.addEventListener("click", ev => {
       if (!confirm(`Restore ${days} days from this backup? It replaces what's on this device now.`)) return;
       const keep = {}; ["entries", "settings", "bf", "foods", "templates", "strength", "seen", "chat"].forEach(k => { if (o[k] != null) keep[k] = o[k]; });
       if (keep.settings) keep.settings.setupDone = true;
-      local.write(keep); toast("Restored. Loading your log…"); setTimeout(() => location.reload(), 600); };
+      local.write(keep, true); cloudDirty(); toast("Restored. Loading your log…"); setTimeout(() => location.reload(), 600); };
     inp.click();
   }
 });
@@ -2234,7 +2234,114 @@ async function webAiReady() { if (window.claude) return false; try { const r = a
 
 // ---------- storage ----------
 const LS = "cbc.v1";
-const local = { read() { try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch { return {}; } }, write(o) { try { localStorage.setItem(LS, JSON.stringify(o)); } catch {} } };
+const local = { read() { try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch { return {}; } }, write(o, raw) { try { if (!raw) stampLocal(o); localStorage.setItem(LS, JSON.stringify(o)); } catch {} if (!raw) cloudDirty(); } };
+// ---------- accounts and sync (web app): /api/sync keeps one copy of the log per account ----------
+// Every change is stamped per day (and per section for settings, foods, etc.), so two phones merge cleanly: newest wins.
+const SYNC_KEYS = ["settings", "bf", "foods", "templates", "strength", "seen", "chat"];
+function stampLocal(o) {
+  let prev = {}; try { prev = JSON.parse(localStorage.getItem(LS) || "{}"); } catch {}
+  const T = o._t = { e: { ...(prev._t?.e || {}) }, k: { ...(prev._t?.k || {}) } }, now = Date.now(), pe = prev.entries || {}, ne = o.entries || {};
+  new Set([...Object.keys(pe), ...Object.keys(ne)]).forEach(d => { if (JSON.stringify(pe[d]) !== JSON.stringify(ne[d])) T.e[d] = now; });
+  SYNC_KEYS.forEach(k => { if (o[k] !== undefined && JSON.stringify(prev[k]) !== JSON.stringify(o[k])) T.k[k] = now; });
+}
+function mergeSync(L, R) {
+  L = L || {}; R = R || {}; const LT = L._t || {}, RT = R._t || {}, out = { _t: { e: {}, k: {} } }, le = L.entries || {}, re = R.entries || {};
+  out.entries = {};
+  new Set([...Object.keys(le), ...Object.keys(re), ...Object.keys(LT.e || {}), ...Object.keys(RT.e || {})]).forEach(d => {
+    const lt = LT.e?.[d] || 0, rt = RT.e?.[d] || 0;
+    const w = rt > lt ? re[d] : lt > rt ? le[d] : (le[d] !== undefined && re[d] !== undefined ? (JSON.stringify(le[d]).length >= JSON.stringify(re[d]).length ? le[d] : re[d]) : (le[d] ?? re[d]));
+    if (w !== undefined) out.entries[d] = w; const t = Math.max(lt, rt); if (t) out._t.e[d] = t;
+  });
+  SYNC_KEYS.forEach(k => {
+    const lt = LT.k?.[k] || 0, rt = RT.k?.[k] || 0, lv = L[k], rv = R[k];
+    let v = rt > lt ? (rv ?? lv) : (lv ?? rv);
+    if ((k === "foods" || k === "bf" || k === "chat") && lv && rv && typeof lv === "object" && typeof rv === "object" && !Array.isArray(lv)) v = rt > lt ? { ...lv, ...rv } : { ...rv, ...lv };
+    if (v !== undefined) out[k] = v; const t = Math.max(lt, rt); if (t) out._t.k[k] = t;
+  });
+  return out;
+}
+const AUTH = "tf.auth", SYNCM = "tf.sync";
+const cloud = { ver: 0, at: null, err: null, busy: false, timer: null, get auth() { try { return JSON.parse(localStorage.getItem(AUTH) || "null"); } catch { return null; } } };
+try { const m = JSON.parse(localStorage.getItem(SYNCM) || "null"); if (m) { cloud.ver = m.ver || 0; cloud.at = m.at || null; } } catch {}
+const saveCloudMeta = () => { try { localStorage.setItem(SYNCM, JSON.stringify({ ver: cloud.ver, at: cloud.at })); } catch {} };
+const setAuth = a => { try { if (a) localStorage.setItem(AUTH, JSON.stringify(a)); else { localStorage.removeItem(AUTH); localStorage.removeItem(SYNCM); cloud.ver = 0; cloud.at = null; } } catch {} };
+async function syncApi(method, body) {
+  const a = cloud.auth, r = await fetch("/api/sync", { method, headers: { "content-type": "application/json", ...(a?.token && method !== "POST" ? { authorization: "Bearer " + a.token } : {}) }, body: body ? JSON.stringify(body) : undefined });
+  let j = {}; try { j = await r.json(); } catch {}
+  if (r.status === 401 && method !== "POST") { setAuth(null); toast("Signed out. Sign in again under You to keep syncing."); render(); }
+  return [r.status, j];
+}
+function cloudDirty() { if (!cloud.auth || window.claude) return; clearTimeout(cloud.timer); cloud.timer = setTimeout(() => { cloud.timer = null; cloudPush(); }, 1500); }
+async function cloudPush(retry) {
+  if (!cloud.auth) return; if (cloud.busy) { cloudDirty(); return; }
+  cloud.busy = true; refreshAcct();
+  try {
+    const [st, r] = await syncApi("PUT", { data: local.read(), ver: cloud.ver });
+    if (st === 200) { cloud.ver = r.ver; cloud.at = r.at; cloud.err = null; saveCloudMeta(); }
+    else if (st === 409 && !retry) { cloud.busy = false; applyMerged(mergeSync(local.read(), r.data), r.ver); return cloudPush(true); }
+    else if (st !== 401) cloud.err = r.message || "Couldn't sync. I'll try again.";
+  } catch { cloud.err = "Offline. Your log will sync when you're back online."; }
+  cloud.busy = false; refreshAcct();
+}
+async function cloudPull() {
+  if (!cloud.auth || window.claude || cloud.busy) return;
+  cloud.busy = true; refreshAcct();
+  try {
+    const [st, r] = await syncApi("GET"); cloud.busy = false;
+    if (st !== 200) { if (st !== 401) cloud.err = r.message || "Couldn't sync. I'll try again."; refreshAcct(); return; }
+    const L = local.read(), m = r.data ? mergeSync(L, r.data) : L; cloud.ver = r.ver;
+    if (JSON.stringify(m) !== JSON.stringify(L)) applyMerged(m, r.ver);
+    if (!r.data || JSON.stringify(m) !== JSON.stringify(r.data)) await cloudPush();
+    else { cloud.at = r.at || Date.now(); cloud.err = null; saveCloudMeta(); refreshAcct(); }
+  } catch { cloud.busy = false; cloud.err = "Offline. Your log will sync when you're back online."; refreshAcct(); }
+}
+function applyMerged(m, ver) {
+  local.write(m, true); cloud.ver = ver; saveCloudMeta();
+  S.entries = m.entries || {}; if (m.bf) S.bf = m.bf; if (m.templates) S.templates = m.templates; if (m.seen) S.seen = m.seen; if (m.strength) S.strength = m.strength; if (m.foods) S.foods = m.foods; if (m.chat) S.chat = m.chat;
+  if (m.settings) S.settings = mergeSettings(m.settings);
+  if (S.draft && !autoT) S.draft = null;
+  applyLook(); render();
+}
+const ago = t => { const x = (Date.now() - t) / 1000; return x < 60 ? "just now" : x < 3600 ? `${Math.round(x / 60)} min ago` : x < 86400 ? `${Math.round(x / 3600)} h ago` : new Date(t).toLocaleDateString(); };
+function acctInner() {
+  const a = cloud.auth;
+  if (a) return `<h2>Account</h2><p class="muted" style="margin:0 0 6px;font-size:14px">Signed in as <b style="color:var(--fg)">${esc(a.user)}</b>. Your log saves online, so if you lose or erase your phone, sign in again and it all comes back. Sign in on another phone or computer and it stays in sync.</p>
+    <p class="muted" style="margin:0 0 10px;font-size:13px">${cloud.busy ? "Syncing…" : cloud.err ? esc(cloud.err) : cloud.at ? `Last synced ${ago(cloud.at)}` : "Not synced yet"}</p>
+    <div class="chips"><button type="button" class="btn" data-acct-sync>Sync now</button><button type="button" class="btn ghost" data-acct-out>Sign out</button></div>`;
+  return `<h2>Account</h2><p class="muted" style="margin:0 0 10px;font-size:14px">Sign in so your log is saved online. If you lose or erase your phone, just sign in again and everything comes back.</p>
+    <div class="grid2"><div class="field"><label for="acct-user">Username or email</label><input id="acct-user" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(S.acctUser || "")}"></div>
+    <div class="field"><label for="acct-pass">Password</label><input id="acct-pass" type="password" autocomplete="current-password" placeholder="8+ characters"></div></div>
+    <div class="chips" style="margin-top:10px"><button type="button" class="btn primary" data-acct="login" ${S.acctBusy ? "disabled" : ""}>${S.acctBusy ? "One sec…" : "Sign in"}</button><button type="button" class="btn" data-acct="signup" ${S.acctBusy ? "disabled" : ""}>Create account</button></div>
+    ${S.acctMsg ? `<p style="margin:8px 0 0;font-size:13.5px;color:var(--bad)">${esc(S.acctMsg)}</p>` : ""}
+    <p class="muted" style="margin:8px 0 0;font-size:12.5px">There's no password reset yet, so pick one you'll remember.</p>`;
+}
+function acctHtml() { return window.claude ? "" : `<section class="card" id="acctcard">${acctInner()}</section>`; }
+function refreshAcct() { const el = document.getElementById("acctcard"); if (el && !el.contains(document.activeElement)) el.innerHTML = acctInner(); }
+async function cloudAuth(action) {
+  const u = (document.getElementById("acct-user")?.value || "").trim(), p = document.getElementById("acct-pass")?.value || "";
+  S.acctUser = u; if (!u || !p) { S.acctMsg = "Enter a username and password."; render(); return; }
+  S.acctMsg = null; S.acctBusy = true; render();
+  try {
+    const [st, r] = await syncApi("POST", { action, user: u, pass: p });
+    if (st !== 200) S.acctMsg = r.message || "Couldn't sign in. Try again.";
+    else {
+      setAuth({ token: r.token, user: r.user }); cloud.ver = 0;
+      // a fresh phone: the saved account wins over this phone's default settings
+      const L = local.read(); if (Object.keys(L.entries || {}).length < 3) { L._t = { e: L._t?.e || {}, k: {} }; local.write(L, true); }
+      S.acctBusy = false; banner(null); await cloudPull();
+      toast(action === "signup" ? "Account made. Your log is saved online now." : "Signed in. Your log is synced.");
+    }
+  } catch { S.acctMsg = "Can't reach the server. Check your connection."; }
+  S.acctBusy = false; render();
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-acct],[data-acct-sync],[data-acct-out]"); if (!b) return;
+  if (b.dataset.acct) cloudAuth(b.dataset.acct);
+  else if ("acctSync" in b.dataset) cloudPull();
+  else if ("acctOut" in b.dataset) { setAuth(null); render(); toast("Signed out. Your log stays on this phone."); }
+});
+document.addEventListener("keydown", ev => { if (ev.key === "Enter" && ev.target.id === "acct-pass") { ev.preventDefault(); cloudAuth("login"); } });
+document.addEventListener("visibilitychange", () => { if (!cloud.auth || window.claude) return; if (document.visibilityState === "visible") cloudPull(); else if (cloud.timer) { clearTimeout(cloud.timer); cloud.timer = null; cloudPush(); } });
 function persistLocal() { const o = local.read(); o.entries = S.entries; o.settings = S.settings; o.bf = S.bf; o.foods = S.foods; local.write(o); }
 async function saveEntry(d, e) { S.entries[d] = e; if (S.store) await S.store.doc("log/" + d).set(e); else persistLocal(); }
 async function saveBf(id, v) { S.bf[id] = v; if (S.store) await S.store.doc("bf/" + id).set(v); else persistLocal(); }
@@ -2252,12 +2359,12 @@ async function boot() {
   try { const sm = (await window.claude?.use?.("sample")) || (await webAiReady() ? webSample() : null); if (sm) { S.sample = sm; const lim = await sm.limits().catch(() => null); S.imgOK = !!lim?.images; S.imgMax = lim?.images?.maxCount || 1; if (DAYV[S.view] || S.view === "body") render(); } } catch {}
   let db = null;
   try { db = await window.claude?.use?.("db"); } catch {}
-  const localOnly = msg => { S.store = null; S.loaded = true; S.loadedLog = S.loadedStrength = S.loadedSeen = true; banner(msg); render(true); checkNew(); };
-  if (!db) return localOnly("Saving on this device only. Accounts and sync are coming soon.");
+  const localOnly = msg => { S.store = null; S.loaded = true; S.loadedLog = S.loadedStrength = S.loadedSeen = true; banner(cloud.auth && !window.claude ? null : msg); render(true); checkNew(); cloudPull(); };
+  if (!db) return localOnly("Saving on this phone only. Sign in under You so you never lose your log.");
   // each person's log lives in their own private space: data/users/<id>/app/...
   let user = null, uid = null, owner = false;
   try { user = await window.claude?.use?.("user"); if (user) { uid = await user.id(); owner = await user.isOwner(); } } catch {}
-  if (!uid) return localOnly("Saving on this device only. Accounts and sync are coming soon.");
+  if (!uid) return localOnly("Saving on this phone only. Sign in under You so you never lose your log.");
   const base = "data/users/" + uid + "/app";
   const raw = db, st = { doc: p => raw.doc(base + "/" + p), collection: p => raw.collection(base + "/" + p) };
   try { await db.doc(base).set({ v: 1, seen: Date.now() }); }
@@ -3113,7 +3220,7 @@ function setupHtml() {
   const u = S.setup || (S.setup = { goal: "Maintain", trainFor: "bodybuilding" });
   const w = num(u.w), sugg = w ? Math.round(w * 15 * (1 + (GOALS[u.goal]?.r[1] || 0) * 20) / 50) * 50 : null;
   return `<section class="card setup"><div class="label">Welcome to TiroFit</div><h2 style="margin:4px 0 6px">Let's set you up</h2>
-    <p class="muted" style="margin:0 0 12px;font-size:14px">Four quick answers. You can change any of it later under You.</p>
+    <p class="muted" style="margin:0 0 12px;font-size:14px">Four quick answers. You can change any of it later under You.</p>${!window.claude ? `<p style="margin:-4px 0 12px;font-size:14px">Already have a TiroFit account? <button type="button" class="linkbtn" data-go="prefs">Sign in</button> and your log comes back.</p>` : ""}
     <p style="margin:0 0 14px;font-size:14px">Already have a TiroFit backup file? <button type="button" class="linkbtn" data-restore>Restore from backup</button></p>
     <div class="grid2"><div class="field"><label for="su-name">First name</label><input id="su-name" value="${esc(u.name || "")}" autocomplete="given-name"></div>
     <div class="field"><label for="su-w">Weight today (lb)</label><input id="su-w" type="number" inputmode="decimal" step="any" value="${esc(u.w || "")}"></div></div>
@@ -3549,6 +3656,7 @@ function vPrefs() {
   const nf = (id, lab, val, step, help) => `<div class="field"><label for="${id}">${lab}</label><input id="${id}" data-set="${id.slice(2)}" type="number" step="any" value="${val}">${help ? `<span class="muted" style="font-size:12px">${help}</span>` : ""}</div>`;
   const sw = (k, lab) => `<div class="toggle"><span>${lab}</span><button type="button" class="switch" role="switch" aria-checked="${!!st[k]}" data-flag="${k}" aria-label="${lab}"></button></div>`;
   return `<div class="view">
+  ${acctHtml()}
   <section class="card"><h2>Goal</h2><div class="seg">${Object.entries(GOALS).map(([g, o]) => `<button type="button" data-goal="${g}" aria-pressed="${st.goal === g}">${g}<small>${o.d}</small></button>`).join("")}</div></section>
   <section class="card" id="calccard"><h2>Maintenance calculator</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">How many calories you burn on a normal day, so you know where to start.</p>${calcHtml("pf", S.calcDraft || (S.calcDraft = { ...calcDefaults(), ...Object.fromEntries(Object.entries(st.calc || {}).filter(([, v]) => v != null)) }))}</section>
   <section class="card"><h2>Calories &amp; macros</h2><div class="grid2">
@@ -3581,7 +3689,7 @@ function vPrefs() {
     ${sw("skipFlagged", "Leave weigh-ins after heavy drinking out of averages")}
     <p class="muted" style="margin:8px 0 0;font-size:13px">Bloating, late meals, eating after drinking and short sleep are flagged and tracked but always count.</p></section>
   <section class="card"><h2>About you</h2><div class="field"><label for="s-about">Used for photo estimates</label><input id="s-about" type="text" value="${esc(st.about)}" placeholder="Age, height, sex, how often you train"></div></section>
-  <section class="card"><h2>Backup</h2><p class="muted" style="margin:0 0 10px;font-size:14px">Your log is saved on this device. Download a backup now and then so you never lose it, or restore one from another phone.</p>
+  <section class="card"><h2>Backup</h2><p class="muted" style="margin:0 0 10px;font-size:14px">${cloud.auth ? "Your log syncs to your account. A backup file is an extra copy you can keep." : "Your log is saved on this phone. Download a backup now and then, or sign in above so it's saved online."}</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-backup>Download backup</button><button type="button" class="btn" data-restore>Restore from backup</button></div></section>
   <section class="card"><h2>Look</h2>
     <div class="looks">${Object.entries(LOOKS).map(([k, [n, d, cs]]) => `<button type="button" data-look-set="${k}" aria-pressed="${(LOOKS[st.look] ? st.look : "classic") === k}"><span class="sw2">${cs.map(c => `<i style="background:${c}"></i>`).join("")}</span>${n}<small>${d}</small></button>`).join("")}</div>
