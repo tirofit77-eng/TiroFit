@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="icon" href="/icons/icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Bad Day Okay"><meta name="theme-color" content="#0a0a0a"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="icon" href="/icons/icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Bad Day Okay"><meta name="theme-color" content="#FCF3DF"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Bad Day Okay</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -966,6 +966,31 @@ body.noscroll { overflow: hidden }
 .scans { display: flex; gap: 5px; justify-content: center; margin: 4px 0 10px } .scans span { width: 32px; height: 38px; border-bottom: 2.5px solid var(--fg); display: grid; place-items: center; font-weight: 800; font-size: 20px }
 .sclet { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap } .sclet button { width: 40px; height: 44px; border: 0; border-radius: 12px; background: #FCF1C7; font: inherit; font-weight: 800; font-size: 18px; color: var(--fg); cursor: pointer } .sclet button:disabled { opacity: .25 }
 .rgames { border-radius: 18px } .rgames button { font-size: 12.5px }
+/* ---- v62: opening screen ---- */
+#opening { position: fixed; inset: 0; z-index: 80; background: linear-gradient(180deg, #FCF3DF 0%, #FBF0D8 55%, #E4EBC9 100%); display: flex; flex-direction: column; overflow: hidden; transition: transform .45s cubic-bezier(.4,0,.2,1), opacity .45s; touch-action: none; user-select: none; color: #2F4F35; font-family: "DM Sans", system-ui, sans-serif }
+#opening.out { transform: translateY(-100%) !important; opacity: .4 }
+.op-cloud { position: absolute; background: #FBE6B5; opacity: .7; border-radius: 999px }
+.op-cloud::before { content: ""; position: absolute; background: inherit; border-radius: 50% }
+.op-cloud.c1 { width: 190px; height: 64px; left: -40px; top: 80px } .op-cloud.c1::before { width: 110px; height: 110px; left: 30px; top: -55px }
+.op-cloud.c2 { width: 150px; height: 54px; right: -30px; top: 290px } .op-cloud.c2::before { width: 90px; height: 90px; left: 26px; top: -44px }
+.op-top { position: relative; text-align: center; padding: calc(env(safe-area-inset-top, 0px) + 9vh) 20px 0 }
+.op-title { margin: 0; font-size: clamp(48px, 15vw, 70px); line-height: .95; font-weight: 800; letter-spacing: -.035em; color: #2F4F35 }
+.op-title span { color: #7CB083 }
+.op-smile { width: 130px; display: block; margin: 6px auto 0 }
+.opart { position: relative; width: 100%; height: auto; max-height: 34vh; margin-top: auto; display: block }
+.op-sun { animation: opRise 1.1s cubic-bezier(.2,.9,.3,1.1) both } .op-rays { transform-origin: 195px 186px; animation: opSpin 30s linear infinite }
+@keyframes opRise { from { transform: translateY(70px); opacity: 0 } } @keyframes opSpin { to { transform: rotate(360deg) } }
+.op-low { position: relative; background: #DDE7C2; padding: 4px 22px calc(env(safe-area-inset-bottom, 0px) + 14px); display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: -1px }
+.op-msg { background: #FCF3DF; border-radius: 30px; padding: 16px 20px; text-align: center; width: 100%; max-width: 380px; margin-top: -26px; box-shadow: 0 10px 24px -16px rgba(47,79,53,.5) }
+.op-msg b { display: block; font-size: 19px; font-weight: 800; color: #2F4F35 } .op-msg span { display: block; font-size: 14px; color: #5E9467; margin-top: 4px; line-height: 1.35 }
+.op-main { width: 100%; max-width: 340px; border: 0; border-radius: 999px; background: #4E7350; color: #fff; font: inherit; font-weight: 800; font-size: 18px; padding: 17px 22px; display: flex; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 10px 20px -10px rgba(47,79,53,.7) }
+.op-main i { font-style: normal; font-size: 22px; line-height: 1 }
+.op-row { display: flex; gap: 8px; width: 100%; max-width: 360px } .op-row button { flex: 1; border: 0; border-radius: 16px; background: #F3F1DC; color: #2F4F35; font: inherit; font-weight: 700; font-size: 13px; padding: 11px 4px; cursor: pointer }
+.op-swipe { border: 0; background: none; color: #5E9467; font: inherit; font-weight: 700; font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 0; cursor: pointer; animation: opBob 1.6s ease-in-out infinite }
+.op-swipe i { font-style: normal; font-size: 20px; line-height: .8 }
+@keyframes opBob { 50% { transform: translateY(-5px) } }
+@media (min-height: 760px) { .op-low { gap: 16px; padding-top: 8px } }
+@media (max-height: 700px) { .op-top { padding-top: calc(env(safe-area-inset-top, 0px) + 4vh) } .op-title { font-size: 46px } .op-smile { width: 100px } .opart { max-height: 30vh } }
 
 </style>
 
@@ -1031,7 +1056,7 @@ const cMinOf = e => (num(e?.cardio) || 0) + (num(e?.cardioMi) || 0) * 19;
 const LIFTS = ["Upper", "Lower", "Full body A", "Full body B", "Full body C", "Other", "Rest"];
 const BF_METHODS = ["Photo estimate (AI)", "DEXA", "BodPod", "InBody / BIA", "Calipers", "Smart scale", "Hydrostatic", "Own guess"];
 const DEF = { goal: "Maintain", target: 2200, maint0: 2700, protein: 0.9, fat: 0.3, alpha: 0.1, maxChg: 250, revStep: 125,
-  learn: 0.4, fallbackBw: 155, drinkThr: 3, skipFlagged: true, accent: "cobalt", theme: "system", name: "", look: "sunrise", lookV: 5, restAuto: true, restSec: 90, trainFor: "bodybuilding", coachNotes: "", eventName: "", eventDate: "",
+  learn: 0.4, fallbackBw: 155, drinkThr: 3, skipFlagged: true, accent: "cobalt", theme: "system", name: "", look: "sunrise", lookV: 5, restAuto: true, restSec: 90, opening: true, trainFor: "bodybuilding", coachNotes: "", eventName: "", eventDate: "",
   stepsWk: 70000, cardioWk: 80, liftsWk: 4, cardioCalMin: 7, cardioUnit: "min", cardioMiWk: 2.5, cardioCalMi: 0, cardioType: "incline", cardioMph: 3.15, cardioGrade: 9, eatBack: true, dayFlex: 500, about: "",
   fields: Object.fromEntries(Object.keys(FIELDS).map(k => [k, true])) };
 
@@ -4239,6 +4264,52 @@ const GAME = {
 };
 const restLine = () => `<div class="restline"><span><b>Rest timer · ${mmss(restLen())}</b>${S.settings.restAuto !== false ? "Starts by itself when you log a set's reps. " : ""}Play a quick game while you rest.</span><button type="button" class="btn" data-rest>Start</button></div>`;
 
+// ----- Opening screen: a calm hello you swipe up, instead of landing on a tab -----
+let openingShown = false;
+function openingLine() {
+  try {
+    if (!Object.keys(S.entries).length) return ["Welcome in.", "Progress over perfect. Bad days included."];
+    const B = bpData(), nm = S.settings.name, ok = B.mAvg != null && Math.abs(B.mAvg - B.tgt) <= B.tgt * 0.06, down = B.mChg != null && B.mChg <= -0.3 && !/bulk/i.test(S.settings.goal);
+    const h = new Date().getHours(), hi = h < 5 ? "Still up" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+    const big = ok || down ? "You're doing great." : B.mlog.length >= 3 ? "You're still on track." : "Every log counts.";
+    return [`${hi}${nm ? `, ${nm}` : ""}. ${big}`, `${B.mlog.length} of ${B.mdays.length} days logged this month. Keep going, one day at a time.`];
+  } catch { return ["You're doing great.", "Keep going, one day at a time."]; }
+}
+const sunSvg = () => `<svg viewBox="0 0 390 300" class="opart" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
+  <g class="op-sun"><g class="op-rays">${[-64, -32, 0, 32, 64].map((a, i) => `<rect x="186" y="58" width="18" height="44" rx="9" transform="rotate(${a} 195 186)" fill="${i % 2 ? "#F7CF6A" : "#F5A25D"}"/>`).join("")}</g>
+  <circle cx="195" cy="186" r="70" fill="#F5A25D"/><circle cx="195" cy="190" r="58" fill="#F7CF6A"/><path d="M175 176 q20 16 40 0" fill="none" stroke="#2F4F35" stroke-width="5" stroke-linecap="round"/></g>
+  <path d="M0 214 C 70 180, 140 196, 210 214 S 330 236, 390 196 V300 H0z" fill="#A9D3A8"/>
+  <path d="M0 240 C 90 206, 190 250, 280 236 S 360 214, 390 222 V300 H0z" fill="#7CB083"/>
+  <path d="M0 268 C 120 244, 230 284, 390 258 V300 H0z" fill="#5E9467"/>
+  <g fill="#4F8458"><ellipse cx="44" cy="206" rx="11" ry="20" transform="rotate(-22 44 206)"/><ellipse cx="62" cy="212" rx="8" ry="14" transform="rotate(24 62 212)"/><ellipse cx="338" cy="226" rx="9" ry="16" transform="rotate(-18 338 226)"/><ellipse cx="354" cy="222" rx="11" ry="20" transform="rotate(22 354 222)"/></g></svg>`;
+function showOpening(force) {
+  if ((openingShown && !force) || document.getElementById("opening")) return; openingShown = true;
+  if (!force && S.settings.opening === false) return;
+  const [a, b] = openingLine(), lift = S.settings.fields?.lift !== false;
+  const el = document.createElement("div"); el.id = "opening"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Welcome");
+  el.innerHTML = `<div class="op-cloud c1"></div><div class="op-cloud c2"></div>
+    <div class="op-top"><h1 class="op-title">Bad Day<br><span>Okay</span></h1><svg class="op-smile" viewBox="0 0 120 20" aria-hidden="true"><path d="M6 4 q54 22 108 0" fill="none" stroke="#F5A25D" stroke-width="7" stroke-linecap="round"/></svg></div>
+    ${sunSvg()}
+    <div class="op-low"><div class="op-msg"><b>${esc(a)}</b><span>${esc(b)}</span></div>
+      <button type="button" class="op-main" data-opgo="today">Start my day <i aria-hidden="true">›</i></button>
+      <div class="op-row"><button type="button" data-opgo="gains">${lift ? "Log workout" : "Log a walk"}</button><button type="button" data-opgo="food">Log food</button><button type="button" data-opgo="progress">Progress</button></div>
+      <button type="button" class="op-swipe" data-opgo="today"><i aria-hidden="true">⌃</i>Swipe up</button></div>`;
+  document.body.appendChild(el); document.body.classList.add("noscroll");
+  [700, 1800].forEach(t => setTimeout(() => { const m = el.querySelector(".op-msg"); if (!m || !document.body.contains(el)) return; const [x, y] = openingLine(); m.innerHTML = `<b>${esc(x)}</b><span>${esc(y)}</span>`; }, t));
+  let y0 = null, dy = 0;
+  const close = v => { el.classList.add("out"); el.style.transform = ""; document.body.classList.remove("noscroll"); setTimeout(() => el.remove(), 450);
+    if (v) { const b = document.querySelector(`#tabs [data-v="${v}"]`); if (b) b.click(); } };
+  el.addEventListener("click", ev => { const g = ev.target.closest("[data-opgo]"); if (g) close(g.dataset.opgo); });
+  el.addEventListener("pointerdown", ev => { y0 = ev.clientY; dy = 0; el.style.transition = "none"; });
+  el.addEventListener("pointermove", ev => { if (y0 == null) return; dy = Math.min(0, ev.clientY - y0); el.style.transform = `translateY(${dy}px)`; });
+  const end = () => { if (y0 == null) return; y0 = null; el.style.transition = ""; if (dy < -70) close("today"); else el.style.transform = ""; };
+  el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+  el.addEventListener("wheel", ev => { if (ev.deltaY > 30) close("today"); }, { passive: true });
+  el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === "Escape") close("today"); });
+}
+document.addEventListener("click", ev => { if (ev.target.closest("[data-openshow]")) showOpening(true); });
+setTimeout(() => showOpening(), 80);
+
 // ----- eating out: the best orders at each chain for what's left today -----
 const NOT_MEAL = /sauce|dressing|dip\b|lemonade|soda|tea\b|coffee|latte|frost|shake|milkshake|cookie|brownie|pie\b|fries|tots|hash brown$|chips|drink|syrup|creamer|ketchup|mayo|kid|cup of|cookie|dessert|toast$|tortilla|rice$|beans$|salsa|cheese$|guac|queso|sour cream|lettuce|fajita veg|bread$|bun$|patty$|donut|muffin|frappuccino|refresher|macchiato|cappuccino|mocha|chai|matcha|cold brew|coolatta|fritter|churro|turnover|onion rings|potato cakes|loaf|croissant$|bagel$/i;
 function chainsList() { return [...new Set(foodDb().filter(x => x.src === "rest").map(x => x.brand))]; }
@@ -4596,7 +4667,7 @@ function vPrefs() {
   return `<div class="view">
   ${acctHtml()}
   <section class="card"><h2>Your goals</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">${st.intake ? `Set ${esc(fmtD(st.intake.done))}. Answer again any time and the app reshapes around you.` : "Six quick questions, and the app shows what fits how you live."}</p><button type="button" class="btn primary" data-intake>${st.intake ? "Change my goals" : "Answer the questions"}</button>
-    ${sw("restAuto", "Start the rest timer after each set")}</section>
+    ${sw("restAuto", "Start the rest timer after each set")}${sw("opening", "Show the opening screen when the app opens")}</section>
   <section class="card"><h2>Goal</h2><div class="seg">${Object.entries(GOALS).map(([g, o]) => `<button type="button" data-goal="${g}" aria-pressed="${st.goal === g}">${g}<small>${o.d}</small></button>`).join("")}</div></section>
   <section class="card" id="calccard"><h2>Maintenance calculator</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">How many calories you burn on a normal day, so you know where to start.</p>${calcHtml("pf", S.calcDraft || (S.calcDraft = { ...calcDefaults(), ...Object.fromEntries(Object.entries(st.calc || {}).filter(([, v]) => v != null)) }))}</section>
   <section class="card"><h2>Calories &amp; macros</h2><div class="grid2">
