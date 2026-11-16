@@ -21,6 +21,18 @@ const same = (a, b) => { if (a.length !== b.length) return false; let d = 0; for
 const normUser = u => String(u || "").trim().toLowerCase();
 const okUser = u => /^[a-z0-9._@+-]{3,60}$/.test(u);
 
+export function makeAuth({ users, envSecret }) {
+  let secret = envSecret || null;
+  const getSecret = async () => { if (secret) return secret; let s = await users.get("__secret"); if (!s) { s = rand(32); await users.set("__secret", s); s = (await users.get("__secret")) || s; } return (secret = s); };
+  const sign = async p => hmac(await getSecret(), p);
+  const readToken = async req => {
+    const t = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, ""), [p, sig] = t.split(".");
+    if (!p || !sig || !same(sig, await sign(p))) return null;
+    try { const o = JSON.parse(unb64u(p)); return o.exp > Date.now() ? o : null; } catch { return null; }
+  };
+  return { sign, readToken, rand, same, b64u, unb64u, json };
+}
+
 export function makeHandler({ users, data, envSecret }) {
   let secret = envSecret || null;
   const getSecret = async () => { if (secret) return secret; let s = await users.get("__secret"); if (!s) { s = rand(32); await users.set("__secret", s); s = (await users.get("__secret")) || s; } return (secret = s); };
