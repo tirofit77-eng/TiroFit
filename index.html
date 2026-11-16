@@ -991,6 +991,8 @@ body.noscroll { overflow: hidden }
 @keyframes opBob { 50% { transform: translateY(-5px) } }
 @media (min-height: 760px) { .op-low { gap: 16px; padding-top: 8px } }
 @media (max-height: 700px) { .op-top { padding-top: calc(env(safe-area-inset-top, 0px) + 4vh) } .op-title { font-size: 46px } .op-smile { width: 100px } .opart { max-height: 30vh } }
+.xcest { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: #DDF0E1; border-radius: 16px; padding: 10px 12px; margin: 4px 0 8px }
+.xcest > div:first-child { display: flex; flex-direction: column; min-width: 0 } .xcest span, .xcest small { font-size: 13px } .xcest small { font-size: 12px }
 
 </style>
 
@@ -3162,6 +3164,8 @@ function xcBurn(a, min) { let bw = S.settings.fallbackBw; try { bw = compute().t
 function xcHtml(e) {
   const L = Array.isArray(e.xc) ? e.xc : [], groups = Object.entries(ACTS).filter(([g]) => g !== "Strength");
   return `<div class="xc"><div class="xchead"><span class="label">Other cardio</span>${L.length ? `<b class="mono">${f0(xcCal(e))} cal</b>` : ""}</div>
+    <div class="field"><label for="xc-desc">Describe it and I'll estimate</label><div class="dkrow"><input id="xc-desc" type="text" placeholder="45 min pickup basketball, 5 mile bike ride, hot yoga" autocomplete="off" value="${esc(S.xcEst?.d === draft().d ? S.xcEst.txt || "" : "")}"><button type="button" class="btn" data-xcdesc>Estimate</button></div></div>
+    ${xcEstHtml()}
     ${L.map((x, i) => `<div class="xcrow"><span>${esc(ACT[x.a]?.[0] || x.a)}</span><span class="mono">${f0(x.min)} min · ${f0(x.cal)} cal</span><button type="button" class="x" data-xcdel="${i}" aria-label="Remove">×</button></div>`).join("")}
     <div class="xcadd"><select id="xc-act" aria-label="Activity">${groups.map(([g, o]) => `<optgroup label="${g}">${Object.entries(o).map(([k, [n]]) => `<option value="${k}" ${k === (S.xcLast || "basketball") ? "selected" : ""}>${esc(n)}</option>`).join("")}</optgroup>`).join("")}</select>
       <input id="xc-min" type="number" inputmode="numeric" step="5" placeholder="min" aria-label="Minutes"><button type="button" class="btn" data-xcadd>Add</button></div>
@@ -4309,6 +4313,41 @@ function showOpening(force) {
 }
 document.addEventListener("click", ev => { if (ev.target.closest("[data-openshow]")) showOpening(true); });
 setTimeout(() => showOpening(), 80);
+// ----- describe your cardio and get an estimate -----
+function xcGuess(txt) {
+  const t = txt.toLowerCase(); let a = null, best = 0;
+  for (const [k, [n]] of Object.entries(ACT)) { const words = n.toLowerCase().split(/[^a-z]+/).filter(w => w.length > 3); const hit = words.filter(w => t.includes(w)).length; if (hit > best) { best = hit; a = k; } }
+  const h = t.match(/(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours)\b/), m = t.match(/(\d+)\s*(?:m|min|mins|minute|minutes)\b/);
+  const min = Math.round((h ? +h[1] * 60 : 0) + (m ? +m[1] : 0)) || (/half (an )?hour/.test(t) ? 30 : /an hour/.test(t) ? 60 : null);
+  return a && min ? { a, name: ACT[a][0], min, cal: xcBurn(a, min), why: "Matched from your description." } : null;
+}
+async function xcEstimate() {
+  const txt = (document.getElementById("xc-desc")?.value || "").trim(); if (!txt) { toast("Describe what you did first."); return; }
+  const D = draft(); S.xcEst = { d: D.d, txt, busy: true }; render();
+  let r = null;
+  if (S.sample) {
+    let bw = S.settings.fallbackBw; try { bw = compute().trend ?? bw; } catch {}
+    try {
+      const o = await S.sample.json(`Estimate this cardio session for a person who weighs about ${Math.round(bw)} lb. Count only calories burned above resting (net), using typical MET values and the effort they describe. If they don't say how long, assume a typical length and say so.\n\nWhat they did: ${JSON.stringify(txt)}\n\nIf it matches one of these activity keys, use it, otherwise use "other": ${Object.keys(ACT).join(", ")}\n\nReply with JSON only: {"a": "key or other", "name": "short activity name", "min": number, "cal": number, "why": "one short line on how you estimated it"}`, { modelTier: "quick" });
+      if (o && num(o.min) > 0 && num(o.cal) >= 0) r = { a: ACT[o.a] ? o.a : (o.name || "Cardio").slice(0, 40), name: ACT[o.a]?.[0] || o.name || "Cardio", min: Math.round(num(o.min)), cal: Math.round(num(o.cal) / 5) * 5, why: o.why || "" };
+    } catch {}
+  }
+  r = r || xcGuess(txt);
+  S.xcEst = r ? { d: D.d, txt, ...r } : { d: D.d, txt, fail: true }; render();
+}
+function xcEstHtml() {
+  const x = S.xcEst; if (!x || x.d !== draft().d) return "";
+  if (x.busy) return `<div class="xcest muted">Estimating…</div>`;
+  if (x.fail) return `<div class="xcest"><span class="muted" style="font-size:13px">${S.sample ? "Couldn't estimate that one." : "Add how long you went, like \"30 min\", or pick the activity below."}</span></div>`;
+  return `<div class="xcest"><div><b>${esc(x.name)}</b><span class="muted">${f0(x.min)} min · about ${f0(x.cal)} cal</span>${x.why ? `<small class="muted">${esc(x.why)}</small>` : ""}</div><div class="chips"><button type="button" class="btn primary" data-xcok>Add it</button><button type="button" class="btn ghost" data-xcno>Not right</button></div></div>`;
+}
+document.addEventListener("click", ev => {
+  const t = ev.target;
+  if (t.closest("[data-xcdesc]")) { xcEstimate(); return; }
+  if (t.closest("[data-xcno]")) { S.xcEst = null; render(); return; }
+  if (t.closest("[data-xcok]")) { const x = S.xcEst, D = draft(); if (!x || x.busy || x.fail) return; D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a: x.a, min: x.min, cal: x.cal, ...(ACT[x.a] ? {} : { note: x.txt.slice(0, 80) }) }]; S.xcEst = null; autosave(); render(); toast(`Added ${x.name}: ${f0(x.cal)} cal`); }
+});
+document.addEventListener("keydown", ev => { if (ev.key === "Enter" && ev.target.id === "xc-desc") { ev.preventDefault(); xcEstimate(); } });
 
 // ----- eating out: the best orders at each chain for what's left today -----
 const NOT_MEAL = /sauce|dressing|dip\b|lemonade|soda|tea\b|coffee|latte|frost|shake|milkshake|cookie|brownie|pie\b|fries|tots|hash brown$|chips|drink|syrup|creamer|ketchup|mayo|kid|cup of|cookie|dessert|toast$|tortilla|rice$|beans$|salsa|cheese$|guac|queso|sour cream|lettuce|fajita veg|bread$|bun$|patty$|donut|muffin|frappuccino|refresher|macchiato|cappuccino|mocha|chai|matcha|cold brew|coolatta|fritter|churro|turnover|onion rings|potato cakes|loaf|croissant$|bagel$/i;
