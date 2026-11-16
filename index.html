@@ -706,7 +706,7 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 :root[data-look="club"][data-swap] .pill.good { color: #a35cff; background: rgba(163,92,255,.14) }
 :root[data-look="club"][data-swap] { --gold-soft: rgba(163,92,255,.16); --purple-glow: rgba(226,182,92,.55); --a: #a35cff; --on-a: #ffffff; --a-soft: rgba(163,92,255,.16); --t-gold: #e2b65c; --t-elite: #a35cff }
 /* ----- Bad Day Okay: big picture, trail, tracking score, dice ----- */
-:root { --bp-g: #23736F; --bp-p: #E2703A; --hand: "Kalam", "Bradley Hand", cursive }
+:root { --bp-g: #7CC08F; --bp-p: #F5A25D; --bp-y: #F3D36B; --bp-gt: #3D8A55; --bp-pt: #C25E1A; --bp-r: #D9443E; --hand: "Kalam", "Bradley Hand", cursive }
 .bphero { margin: 4px 2px 12px }
 .bphero h1 { font-family: var(--display); font-size: 27px; line-height: 1.1; margin: 0; letter-spacing: -.02em }
 .bphero p { margin: 6px 0 0; color: var(--muted); font-size: 14.5px }
@@ -720,14 +720,14 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 .bpnum { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap }
 .bpnum b { font-family: var(--numf, var(--display)); font-size: 44px; line-height: 1; letter-spacing: -.03em }
 .bpnum span { color: var(--muted); font-size: 13px; padding-bottom: 5px }
-.bpnum em { margin-left: auto; font-style: normal; font-size: 12px; font-weight: 700; background: color-mix(in srgb, var(--bp-g) 14%, transparent); color: var(--bp-g); padding: 5px 10px; border-radius: 999px; white-space: nowrap }
+.bpnum em { margin-left: auto; font-style: normal; font-size: 12px; font-weight: 700; background: color-mix(in srgb, var(--bp-g) 14%, transparent); color: var(--bp-gt); padding: 5px 10px; border-radius: 999px; white-space: nowrap }
 .bpweek { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px }
 .bpweek span { display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--muted); padding: 8px 0; border-radius: 10px; background: var(--surface-2) }
 .bpweek b { font-size: 11.5px; color: var(--fg) }
-.bpweek .s-on { background: var(--bp-g); color: #fff } .bpweek .s-on b { color: #fff }
+.bpweek .s-on { background: var(--bp-g); color: var(--fg) }
 .bpweek .s-off { background: color-mix(in srgb, var(--bp-g) 30%, var(--surface)) }
 .bpweek .s-far { background: color-mix(in srgb, var(--bp-g) 14%, var(--surface)) }
-.bpweek .s-big { background: var(--bp-p); color: #fff } .bpweek .s-big b { color: #fff }
+.bpweek .s-big { background: var(--bp-p); color: var(--fg) }
 .bpweek .s-e { background: none; border: 1.5px dashed var(--line) }
 .bpweek .fut { background: none; border: 1.5px solid var(--line); opacity: .6 }
 .bpweek .now { outline: 2px solid var(--fg); outline-offset: 1px }
@@ -739,9 +739,9 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 .tr-e { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 2.5 2.5 }
 .tr-now { fill: var(--surface); stroke: var(--bp-g); stroke-width: 2.5 }
 .tr-arrow { stroke: var(--bp-p); stroke-width: 1.6; stroke-linecap: round }
-.tr-note { font-family: var(--hand); font-size: 14px; fill: var(--bp-p) }
+.tr-note { font-family: var(--hand); font-size: 14px; fill: var(--bp-pt) }
 .tr-lab { font-family: var(--hand); font-size: 13px; fill: var(--muted) }
-.tr-today { fill: var(--bp-g) }
+.tr-today { fill: var(--bp-gt) }
 .bpleg { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted) }
 .bpleg em { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; background: var(--surface-2) }
 .bpleg .s-on { background: var(--bp-g) } .bpleg .s-off { background: color-mix(in srgb, var(--bp-g) 45%, var(--surface)) } .bpleg .s-big { background: var(--bp-p) } .bpleg .s-e { background: none; border: 1.5px dashed var(--muted) }
@@ -750,10 +750,10 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 .bpyear i { display: block; width: 100%; background: color-mix(in srgb, var(--bp-g) 70%, var(--surface)); border-radius: 5px 5px 2px 2px }
 .bpyear i.hi { background: var(--bp-p) } .bpyear i.none { background: var(--line) }
 .bpgoal { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--bp-p); z-index: 1 }
-.bpgoal span { position: absolute; right: 0; top: -17px; font-size: 10px; font-weight: 700; color: var(--bp-p) }
+.bpgoal span { position: absolute; right: 0; top: -17px; font-size: 10px; font-weight: 700; color: var(--bp-pt) }
 .bpylab { display: flex; gap: 4px; margin-top: 3px } .bpylab span { flex: 1; text-align: center; font-size: 10px; color: var(--muted) }
 .bpzoom { background: color-mix(in srgb, var(--bp-p) 11%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--bp-p) 55%, transparent); border-radius: 12px; padding: 12px }
-.bpzt { color: var(--bp-p); font-size: 13px }
+.bpzt { color: var(--bp-pt); font-size: 13px }
 .bpzrow { display: flex; gap: 8px; align-items: flex-end; height: 70px; margin-top: 6px }
 .bpzrow div { flex: 1; display: grid; justify-items: center; align-content: end; gap: 3px; font-size: 10.5px; color: var(--muted) }
 .bpzrow i { display: block; width: 100%; background: var(--bp-p); border-radius: 6px; transform-origin: bottom; animation: bpgrow .6s ease-out both; animation-delay: calc(var(--i) * .2s) }
@@ -767,7 +767,7 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 .wb p { margin: 6px 0 12px }
 .asks { margin: 0 0 10px }
 .rough { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 13px }
-.closeok { font-size: 13px; color: var(--bp-g); margin: 8px 0 0 }
+.closeok { font-size: 13px; color: var(--bp-gt); margin: 8px 0 0 }
 .dicebox { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 12px }
 .dierow { display: flex; gap: 16px; align-items: center }
 .die { width: 66px; height: 66px; border-radius: 14px 18px 12px 16px; background: var(--bp-p); display: grid; grid-template-columns: repeat(3, 1fr); padding: 10px; gap: 3px; border: 2px solid var(--fg); cursor: pointer; flex: none; transform: rotate(-10deg); box-shadow: 3px 3px 0 var(--fg) }
@@ -779,42 +779,45 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 @media (prefers-reduced-motion: reduce) { .die.rolling, .bpzrow i, .dicepick { animation: none } }
 
 /* ----- the Bad Day Okay look: warm sand, deep teal, burnt orange, inked edges ----- */
-:root[data-look="sunrise"] { --bg: #F8F4EE; --surface: #FFFFFF; --surface-2: #F1EAE1; --line: #E2D6C8; --fg: #26211D; --muted: #7D7166;
-  --good: #23736F; --warn: #C9822F; --bad: #D0602C; --a: #23736F; --on-a: #ffffff; --a-soft: #DCECEA;
-  --p-red: #E2703A; --p-blue: #23736F; --p-yellow: #D9A441; --p-green: #3E9A7A; --steel: #CDBFB0; --steel-2: #A8998A;
+:root[data-look="sunrise"] { --bg: #FBF8F0; --surface: #FFFFFF; --surface-2: #F3EFE4; --line: #E6DFCF; --fg: #26231D; --muted: #7A7366;
+  --good: #3D8A55; --warn: #D9A13A; --bad: #D9443E; --a: #3D8A55; --on-a: #ffffff; --a-soft: #E3F3E6;
+  --p-red: #F5A25D; --p-blue: #7CC08F; --p-yellow: #F3D36B; --p-green: #7CC08F; --steel: #CDBFB0; --steel-2: #A8998A;
   --display: "Bricolage Grotesque", system-ui, sans-serif; --body: "Bricolage Grotesque", system-ui, sans-serif; --numf: "Bricolage Grotesque", system-ui, sans-serif;
   --r: 16px; color-scheme: light }
-:root[data-look="sunrise"] body { background: linear-gradient(180deg, #F2DCC8 0, #F8F4EE 300px) no-repeat, radial-gradient(#ebe0d3 1px, transparent 1px) 0 0 / 18px 18px, #F8F4EE }
-:root[data-look="sunrise"] header.top, :root[data-look="sunrise"] body::before { background: color-mix(in srgb, #F8F4EE 88%, transparent); backdrop-filter: blur(8px) }
+:root[data-look="sunrise"] body { background: linear-gradient(180deg, #FBEDB8 0, #FBF8F0 300px) no-repeat, radial-gradient(#ece5d3 1px, transparent 1px) 0 0 / 18px 18px, #FBF8F0 }
+:root[data-look="sunrise"] header.top, :root[data-look="sunrise"] body::before { background: color-mix(in srgb, #FBF8F0 88%, transparent); backdrop-filter: blur(8px) }
 :root[data-look="sunrise"] .card { background: var(--surface); border: 1.5px solid var(--fg); border-radius: 6px 18px 8px 16px; box-shadow: none }
 :root[data-look="sunrise"] h2 { font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -.01em; text-transform: none; font-stretch: 100% }
 :root[data-look="sunrise"] .label, :root[data-look="sunrise"] .field > label, :root[data-look="sunrise"] .field > .label { font-family: var(--body); font-weight: 600; letter-spacing: .1em; color: var(--muted) }
 :root[data-look="sunrise"] .btn { border: 1.5px solid var(--fg); border-radius: 4px 14px 6px 12px; font-weight: 700; background: var(--surface); color: var(--fg) }
-:root[data-look="sunrise"] .btn.primary { background: var(--bp-g); color: #fff; box-shadow: 3px 3px 0 var(--fg) }
+:root[data-look="sunrise"] .btn.primary { background: var(--bp-g); color: var(--fg); box-shadow: 3px 3px 0 var(--fg) }
 :root[data-look="sunrise"] .btn.ghost { border-color: var(--line) }
 :root[data-look="sunrise"] .chip { border: 1.5px solid var(--fg); border-radius: 4px 12px 6px 10px; background: var(--surface); color: var(--fg) }
-:root[data-look="sunrise"] .chip[aria-pressed=true] { background: var(--bp-g); color: #fff; border-color: var(--fg) }
+:root[data-look="sunrise"] .chip[aria-pressed=true] { background: var(--bp-g); color: var(--fg); border-color: var(--fg) }
 :root[data-look="sunrise"] .brand { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -.02em; font-stretch: 100%; color: var(--fg) }
-:root[data-look="sunrise"] .brand i { font-style: normal; color: var(--bp-g) }
-:root[data-look="sunrise"] .brand small { font-family: var(--hand); font-size: 15px; letter-spacing: 0; color: var(--bp-p) }
+:root[data-look="sunrise"] .brand i { font-style: normal; color: var(--bp-gt) }
+:root[data-look="sunrise"] .brand small { font-family: var(--hand); font-size: 15px; letter-spacing: 0; color: var(--bp-pt) }
 :root[data-look="sunrise"] input, :root[data-look="sunrise"] textarea, :root[data-look="sunrise"] select { border-radius: 8px }
 :root[data-look="sunrise"] #tabs { background: var(--surface); border-top: 1.5px solid var(--fg) }
-:root[data-look="sunrise"] #tabs button[aria-current=page] { color: var(--bp-g) }
-:root[data-look="sunrise"] .msg.assistant .bub { background: #FBEFE6; font-family: var(--hand); font-size: 16px; line-height: 1.4 }
-:root[data-look="sunrise"] .msg.user .bub { background: var(--bp-g); color: #fff }
+:root[data-look="sunrise"] #tabs button[aria-current=page] { color: var(--bp-gt) }
+:root[data-look="sunrise"] .msg.assistant .bub { background: #FCF3D3; font-family: var(--hand); font-size: 16px; line-height: 1.4 }
+:root[data-look="sunrise"] .msg.user .bub { background: #DDF0E1; color: var(--fg) }
 
 :root[data-look="sunrise"] .brand { text-transform: none }
-:root[data-look="sunrise"] .board { --bg: #F8F4EE; --surface: #FFFFFF; --surface-2: #F1EAE1; --line: #E2D6C8; --fg: #26211D; --muted: #7D7166; --steel: #CDBFB0; --steel-2: #A8998A; background: #FFFFFF; color: var(--fg); border-color: var(--fg) !important }
-:root[data-look="sunrise"] .board .streakbox { background: #F1EAE1; border: 1.5px solid var(--fg); border-radius: 6px 14px 8px 12px; color: var(--fg); box-shadow: none; text-shadow: none }
-:root[data-look="sunrise"] .board .streakbox b { color: var(--bp-g); text-shadow: none; font-family: var(--display) }
-:root[data-look="sunrise"] .board .nudge, :root[data-look="sunrise"] .plannote { background: #FBEFE6 }
+:root[data-look="sunrise"] .board { --bg: #FBF8F0; --surface: #FFFFFF; --surface-2: #F3EFE4; --line: #E6DFCF; --fg: #26231D; --muted: #7A7366; --steel: #CDBFB0; --steel-2: #A8998A; background: #FFFFFF; color: var(--fg); border-color: var(--fg) !important }
+:root[data-look="sunrise"] .board .streakbox { background: #FCF3D3; border: 1.5px solid var(--fg); border-radius: 6px 14px 8px 12px; color: var(--fg); box-shadow: none; text-shadow: none }
+:root[data-look="sunrise"] .board .streakbox b { color: var(--bp-gt); text-shadow: none; font-family: var(--display) }
+:root[data-look="sunrise"] .board .nudge, :root[data-look="sunrise"] .plannote { background: #FCF3D3; border-radius: 8px; padding: 6px 10px }
 :root[data-look="sunrise"] .jersey { font-family: var(--display); letter-spacing: -.03em; text-shadow: none; color: var(--fg) }
 :root[data-look="sunrise"] .zh b, :root[data-look="sunrise"] .zh .bb > * { display: none }
 :root[data-look="sunrise"] .zh span { font: 800 17px/1.1 var(--display); letter-spacing: -.01em; text-transform: none; font-stretch: 100% }
-:root[data-look="sunrise"] .zh small { font-family: var(--hand); font-size: 14px; color: var(--bp-p) }
+:root[data-look="sunrise"] .zh small { font-family: var(--hand); font-size: 14px; color: var(--bp-pt) }
 :root[data-look="sunrise"] nav.tabs button { font-family: var(--body); text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 600 }
 :root[data-look="sunrise"] .segtabs button { font-family: var(--body); text-transform: none; letter-spacing: 0; font-weight: 700 }
-:root[data-look="sunrise"] .segtabs button[aria-selected=true] { background: var(--bp-g); color: #fff }
+:root[data-look="sunrise"] .segtabs button[aria-selected=true] { background: var(--bp-g); color: var(--fg) }
+
+:root[data-look="sunrise"] .wb { background: #FCF3D3 }
+:root[data-look="sunrise"] .decoder.up .dch b { color: var(--bp-pt) }
 
 </style>
 
@@ -847,7 +850,7 @@ const GOALS = {
   "Lean bulk": { r: [0.001, 0.0025, 0.004], d: "Gain slowly, mostly muscle" },
   "Reverse diet": { r: [-0.001, 0, 0.0025], d: "Add food until weight is flat" }
 };
-const LOOKS = { sunrise: ["Bad Day Okay", "Warm sand, deep teal, burnt orange", ["#F8F4EE", "#23736F", "#E2703A", "#26211D", "#F2DCC8"]], club: ["Club", "Matte black, wood panels, gold light", ["#121110", "#6b4a2d", "#e2b65c", "#f1ece3", "#d24a3c"]], neon: ["Club Purple", "Same club look, purple light with gold touches", ["#121110", "#6b4a2d", "#a35cff", "#e2b65c", "#f1ece3"]], studio: ["Daylight", "Light concrete, black boards, plate colors", ["#e9e9e6", "#131313", "#c8372d", "#24579e", "#e2a41c"]], iron: ["Iron", "Black and gray, plate-color pops", ["#111213", "#c9ccd1", "#e5483a", "#2f7fe0", "#f0c419"]], chalk: ["Chalk", "Light gray, barbells, old-school plates", ["#e3e4e6", "#1d1e21", "#c4412f", "#2d5b9a", "#d99a1e"]], classic: ["Original", "Pick light or dark and an accent", ["#f3f5f8", "#2457d6", "#141a22"]] };
+const LOOKS = { sunrise: ["Bad Day Okay", "Soft cream with pastel green, yellow and orange", ["#FBF8F0", "#7CC08F", "#F3D36B", "#F5A25D", "#26231D"]], club: ["Club", "Matte black, wood panels, gold light", ["#121110", "#6b4a2d", "#e2b65c", "#f1ece3", "#d24a3c"]], neon: ["Club Purple", "Same club look, purple light with gold touches", ["#121110", "#6b4a2d", "#a35cff", "#e2b65c", "#f1ece3"]], studio: ["Daylight", "Light concrete, black boards, plate colors", ["#e9e9e6", "#131313", "#c8372d", "#24579e", "#e2a41c"]], iron: ["Iron", "Black and gray, plate-color pops", ["#111213", "#c9ccd1", "#e5483a", "#2f7fe0", "#f0c419"]], chalk: ["Chalk", "Light gray, barbells, old-school plates", ["#e3e4e6", "#1d1e21", "#c4412f", "#2d5b9a", "#d99a1e"]], classic: ["Original", "Pick light or dark and an accent", ["#f3f5f8", "#2457d6", "#141a22"]] };
 const DRINKS = { light: ["Light beer", 100], beer: ["Beer", 150], seltzer: ["Seltzer", 100], wine: ["Glass of wine", 125], shot: ["Shot", 100], mixed: ["Mixed drink", 200] };
 const FIELDS = { food: "Food log (search, scan, photo, describe)", macros: "Protein / carbs / fat totals", drinks: "Alcohol", sleep: "Sleep", recovery: "Recovery", bloat: "Bloated", meal: "Last meal time", steps: "Steps", cardio: "Cardio", lift: "Workout (sets and reps)", waist: "Waist", notes: "Notes" };
 // cardio can be tracked by minutes or by miles (incline treadmill)
