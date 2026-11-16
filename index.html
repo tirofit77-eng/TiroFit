@@ -399,6 +399,9 @@ details.rmore { margin-top: 12px } details.rmore > summary { font-size: 14px; co
 .lobox { display: grid; gap: 8px; margin: 4px 0 8px; padding: 10px 12px; border: 1px dashed currentColor; border-radius: 8px; font-size: 13.5px } .lobox p { margin: 0 } .lobox ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px }
 .lobox li { display: flex; justify-content: space-between; gap: 10px } .lobox li small { display: block; opacity: .65; font-size: 12px } .lobox li b { font: 600 12.5px var(--mono); white-space: nowrap } .lobox li em { font-style: normal; color: var(--p-green, var(--good)) }
 :root .receipt .lobox .btn.ghost { color: inherit; border-color: currentColor } :root .receipt .atechips .chip { background: transparent; color: inherit; border-color: rgba(127,127,127,.45) } :root .receipt .atechips .chip[aria-pressed="true"] { color: inherit; background: rgba(127,127,127,.25); border-color: currentColor }
+.xc { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px } .xchead { display: flex; justify-content: space-between; align-items: baseline }
+.xcrow { display: grid; grid-template-columns: minmax(0, 1fr) auto 28px; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); font-size: 14px } .xcrow .mono { font-size: 12.5px; color: var(--muted) } .xcrow .x { border: 0; background: none; color: var(--muted); font-size: 20px; cursor: pointer }
+.xcadd { display: grid; grid-template-columns: minmax(0, 1fr) 76px auto; gap: 8px }
 .cweek { display: grid; gap: 10px } .cdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px } .cdays span { display: grid; justify-items: center; gap: 2px; padding: 6px 2px; border-radius: 8px; background: var(--surface-2); font-size: 11px; color: var(--muted) } .cdays span b { font: 600 13px var(--mono); color: var(--muted) } .cdays span.on b { color: var(--p-green) } .cdays span.sel { outline: 1.5px solid var(--line) }
 .recline { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit }
 .recline > b { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--rc); font: 700 20px var(--mono); color: var(--rc) }
@@ -975,7 +978,8 @@ function weekPlan(m) {
   const calPerStep = 0.04 * bw / 150;
   const stepsAdj = (stepsSum - st.stepsWk / 7 * steps.length) * calPerStep;
   const cardioAdj = (cardioSum - cGoal() / 7 * counted) * cRate(bw);
-  const actAdj = st.eatBack ? Math.round(clamp(stepsAdj + cardioAdj, -1500, 1500) / 10) * 10 : 0;
+  const xcAdj = sum(upto.map(d => xcCal(S.entries[d])));
+  const actAdj = st.eatBack ? Math.round(clamp(stepsAdj + cardioAdj + xcAdj, -1500, 1500) / 10) * 10 : 0;
   const weekBudget = st.target * 7 + actAdj;
   const left = 7 - idx;
   const plans = (Array.isArray(st.plans) ? st.plans : []).filter(p => p && days.includes(p.d) && p.d >= T && num(p.extra) > 0);
@@ -986,7 +990,7 @@ function weekPlan(m) {
   const todayTarget = baseTarget + (todayPlan ? Math.round(num(todayPlan.extra) / 10) * 10 : 0);
   const perDay = days.map(d => ({ d, cal: dvOf(d)?.cal ?? null }));
   return { ws, idx, days, perDay, eatenPrev, missing, eatenToday, todayTarget, clamped: Math.abs(raw - baseTarget) > 10, raw, plans, bank, baseTarget, todayPlan, bankPerDay: bank ? Math.round(bank / left / 10) * 10 : 0,
-    weekBudget, actAdj, stepsAdj, cardioAdj, stepsSum, cardioSum, weekEaten: eatenPrev - missing * st.target + eatenToday, left };
+    weekBudget, actAdj, stepsAdj, cardioAdj, xcAdj, stepsSum, cardioSum, weekEaten: eatenPrev - missing * st.target + eatenToday, left };
 }
 
 function recommend(m) {
@@ -1612,6 +1616,7 @@ function vGains() {
     ${e.lift && !S.pickLift ? `<div class="liftpick"><b>${esc(e.lift)}</b><button type="button" class="linkbtn" id="changelift">Change</button></div>` : `<div class="chips" data-chips="lift">${liftChoices().map(o => `<button type="button" class="chip" data-val="${esc(o)}" aria-pressed="${e.lift === o}">${esc(o)}</button>`).join("")}</div>`}
     ${workoutHtml(D, true)}
     ${F.steps || F.cardio ? `<div class="grid2">${F.steps ? `<div class="field"><label for="f-steps">Steps</label><input id="f-steps" data-k="steps" type="number" inputmode="numeric" step="any" value="${esc(e.steps ?? "")}" placeholder="10000"></div>` : ""}${F.cardio ? `<div class="field"><label for="f-cardio">${CTYPES[S.settings.cardioType || "incline"][0]} (${cUnit()})</label><input id="f-cardio" data-k="${cKey()}" type="number" inputmode="decimal" step="any" value="${esc(e[cKey()] ?? "")}" placeholder="${CU() ? "0.75" : "20"}"></div>` : ""}</div>` : ""}
+    ${xcHtml(e)}
     <div class="savebar"><span class="msg" id="savemsg">${S.entries[d] ? "Saved. Changes save as you go." : "Changes save as you go."}</span></div></section>
   </form>
   ${moreHtml()}
@@ -2461,7 +2466,7 @@ function prog(label, val, target, fmt, sub) {
 function weekCard(m) {
   const st = S.settings, w = weekPlan(m), dn = ["M", "T", "W", "T", "F", "S", "S"];
   const paceSub = w.idx ? `${w.missing ? `${w.missing} unlogged day${w.missing > 1 ? "s" : ""} counted as on target. ` : ""}${w.left} day${w.left > 1 ? "s" : ""} left including today.` : "New week. Every day you log moves the rest of the week.";
-  const act = st.eatBack && w.actAdj ? `Activity ${w.actAdj > 0 ? "added" : "took off"} ${f0(Math.abs(w.actAdj))} cal this week (steps ${sgn(w.stepsAdj, 0)}, cardio ${sgn(w.cardioAdj, 0)}).` : "";
+  const act = st.eatBack && w.actAdj ? `Activity ${w.actAdj > 0 ? "added" : "took off"} ${f0(Math.abs(w.actAdj))} cal this week (steps ${sgn(w.stepsAdj, 0)}, cardio ${sgn(w.cardioAdj, 0)}${w.xcAdj ? `, other cardio +${f0(w.xcAdj)}` : ""}).` : "";
   return `<section class="card week"><h2 style="margin:0">This week</h2>
     <div class="todaybar"><div><div class="label">Eat today</div><div class="num">${f0(w.todayTarget)}</div></div>
       <div class="muted" style="font-size:13px;max-width:34ch">${w.eatenToday ? `${f0(w.eatenToday)} logged so far, ${f0(Math.max(0, w.todayTarget - w.eatenToday))} left. ` : ""}${w.clamped ? `Capped at ±${st.dayFlex} from your ${f0(st.target)} so no day swings too far.` : `Your ${f0(st.target)} target, rebalanced for the week.`}</div></div>
@@ -2595,7 +2600,7 @@ function coachContext() {
   tryit("this_week", () => { const w = weekPlan(compute()); return { eat_today: w.todayTarget, eaten_so_far: w.weekEaten, week_budget: w.weekBudget, steps: w.stepsSum, cardio: w.cardioSum }; });
   tryit("recovery_today", () => { const rc = recovery(T, S.entries[T] || {}); return { score: rc.score, label: rc.label, headline: rc.headline, training_days_in_a_row: rc.run, upper_days_since: rc.upper.days, lower_days_since: rc.lower.days, drinks_yesterday: rc.yAlc }; });
   tryit("last_21_days", () => Object.keys(S.entries).sort().slice(-21).map(d => { const e = S.entries[d], dv = derive(e); const sets = Array.isArray(e.sets) ? e.sets.filter(x => num(x.w) != null && num(x.r) != null) : [];
-    return { d, w: e.w ?? null, cal: dv.cal ?? null, p: dv.p ?? null, c: dv.c ?? null, f: dv.f ?? null, drinks: dv.alcN || 0, sleep: e.sleep ?? null, feel_1to5: e.rec ?? null, bloated: e.bloat === "Y" || null, steps: e.steps ?? null, cardio: e[cKey()] ?? null, workout: e.lift ?? null, sets: sets.length || null, top_sets: sets.slice(0, 6).map(x => `${x.ex || ""} ${x.w}x${x.r}`.trim()), notes: e.notes || null }; }));
+    return { d, w: e.w ?? null, cal: dv.cal ?? null, p: dv.p ?? null, c: dv.c ?? null, f: dv.f ?? null, drinks: dv.alcN || 0, sleep: e.sleep ?? null, feel_1to5: e.rec ?? null, bloated: e.bloat === "Y" || null, steps: e.steps ?? null, cardio: e[cKey()] ?? null, other_cardio: Array.isArray(e.xc) && e.xc.length ? e.xc.map(x => `${ACT[x.a]?.[0] || x.a} ${x.min} min (${x.cal} cal)`) : null, workout: e.lift ?? null, sets: sets.length || null, top_sets: sets.slice(0, 6).map(x => `${x.ex || ""} ${x.w}x${x.r}`.trim()), notes: e.notes || null }; }));
   tryit("planned_big_nights", () => { const p = (S.settings.plans || []).filter(x => x.d >= T); return p.length ? p.map(x => ({ date: x.d, label: x.label, extra_cal: x.extra })) : null; });
   tryit("scale_today", () => { const x = decode(T, S.entries[T] || {}); return x && !x.none ? { change_lb: x.delta, since: x.pd, reasons: x.F.map(f => `${f.key} ${f.lb > 0 ? "+" : ""}${f.lb} lb`), answers_about_yesterday: (S.entries[T] || {}).dq || null } : null; });
   tryit("split", () => templates().map(t => ({ day: t.name, exercises: t.ex.map(x => parseEx(x).name) })));
@@ -2855,6 +2860,26 @@ document.addEventListener("click", ev => {
   if (ds.ate != null) { const D = draft(), mm = D.e.meals?.[+ds.ate]; if (!mm) return; scaleMeal(mm, +ds.v); autosave(); render(); }
 });
 document.addEventListener("change", ev => { if (ev.target.id !== "lo-photo") return; const f = [...(ev.target.files || [])]; ev.target.value = ""; runLeftovers(f); });
+// ----- other cardio: anything beyond the main cardio, with calories from the activity's MET -----
+const xcCal = e => sum((Array.isArray(e?.xc) ? e.xc : []).map(x => num(x.cal)));
+function xcBurn(a, min) { let bw = S.settings.fallbackBw; try { bw = compute().trend ?? bw; } catch {} const met = ACT[a]?.[1] || 6; return Math.round((met - 1) * (bw / 2.2046) * (min / 60) / 5) * 5; }
+function xcHtml(e) {
+  const L = Array.isArray(e.xc) ? e.xc : [], groups = Object.entries(ACTS).filter(([g]) => g !== "Strength");
+  return `<div class="xc"><div class="xchead"><span class="label">Other cardio</span>${L.length ? `<b class="mono">${f0(xcCal(e))} cal</b>` : ""}</div>
+    ${L.map((x, i) => `<div class="xcrow"><span>${esc(ACT[x.a]?.[0] || x.a)}</span><span class="mono">${f0(x.min)} min · ${f0(x.cal)} cal</span><button type="button" class="x" data-xcdel="${i}" aria-label="Remove">×</button></div>`).join("")}
+    <div class="xcadd"><select id="xc-act" aria-label="Activity">${groups.map(([g, o]) => `<optgroup label="${g}">${Object.entries(o).map(([k, [n]]) => `<option value="${k}" ${k === (S.xcLast || "basketball") ? "selected" : ""}>${esc(n)}</option>`).join("")}</optgroup>`).join("")}</select>
+      <input id="xc-min" type="number" inputmode="numeric" step="5" placeholder="min" aria-label="Minutes"><button type="button" class="btn" data-xcadd>Add</button></div>
+    <p class="muted" style="margin:0;font-size:12.5px">Basketball, a bike ride, a class, anything extra. Calories are what it burns above resting${S.settings.eatBack ? ", and they're added to your week" : ""}.</p></div>`;
+}
+document.addEventListener("click", ev => {
+  const add = ev.target.closest("[data-xcadd]"), del = ev.target.closest("[data-xcdel]"); if (!add && !del) return;
+  const D = draft();
+  if (del) { const L = [...(D.e.xc || [])]; L.splice(+del.dataset.xcdel, 1); if (L.length) D.e.xc = L; else delete D.e.xc; autosave(); render(); return; }
+  const a = document.getElementById("xc-act")?.value, min = num(document.getElementById("xc-min")?.value);
+  if (!a || !min || min <= 0) { toast("Enter how many minutes."); return; }
+  const m = Math.min(600, Math.round(min)), cal = xcBurn(a, m); S.xcLast = a;
+  D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a, min: m, cal }]; autosave(); render(); toast(`Added ${ACT[a][0]}: ${f0(cal)} cal`);
+});
 // ----- scale decoder: why the scale moved, from yesterday's log plus a few questions -----
 const WDN = d => parse(d).toLocaleDateString(undefined, { weekday: "long" });
 const hm12 = t => { const [h, m] = String(t).split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
