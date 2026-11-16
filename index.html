@@ -390,6 +390,15 @@ details.rmore { margin-top: 12px } details.rmore > summary { font-size: 14px; co
 .estthumbs { align-items: stretch } .estthumbs > span { position: relative } .estthumbs .x { position: absolute; top: 2px; right: 2px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgba(0,0,0,.65); color: #fff; font-size: 16px; line-height: 1; cursor: pointer }
 .addang { display: grid; place-items: center; align-content: center; gap: 2px; width: 72px; height: 96px; border-radius: 8px; border: 1.5px dashed var(--a); color: var(--a); font-size: 12px; font-weight: 600; cursor: pointer; text-align: center } .addang b { font-size: 24px; line-height: 1 }
 .estres { display: grid; gap: 6px } .estres p { margin: 0; font-size: 14px } .estitems { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px } .estitems li { display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; padding: 6px 0; border-bottom: 1px solid var(--line) } .estitems li b { font-size: 12px; white-space: nowrap; font-weight: 500 } .estitems li.tot { border: 0; font-weight: 700 } .estitems li.tot b { font-weight: 700 }
+.ritem { border-bottom: 1px dashed rgba(127,127,127,.28) } .ritem:last-child { border-bottom: 0 }
+.rline { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; width: 100%; padding: 8px 2px; background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer }
+.rline .rname { font-size: 14px; line-height: 1.3; overflow-wrap: anywhere } .rline b { font: 600 14px var(--mono); align-self: start } .rline small { grid-column: 1 / -1; font: 500 11.5px var(--mono); opacity: .65; margin-top: 2px }
+.rline .ate { font: 600 10px var(--mono); font-style: normal; letter-spacing: .06em; text-transform: uppercase; margin-left: 6px; padding: 1px 5px; border-radius: 4px; background: rgba(127,127,127,.18) }
+.ritem.open .rline { opacity: .55 } .redit { padding: 4px 0 10px !important; border: 0 !important } .rdone { font-size: 13px; justify-self: end }
+.atechips { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font: 500 11px var(--mono); text-transform: uppercase; letter-spacing: .06em } .atechips .chip { padding: 4px 10px; font-size: 12.5px }
+.lobox { display: grid; gap: 8px; margin: 4px 0 8px; padding: 10px 12px; border: 1px dashed currentColor; border-radius: 8px; font-size: 13.5px } .lobox p { margin: 0 } .lobox ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px }
+.lobox li { display: flex; justify-content: space-between; gap: 10px } .lobox li small { display: block; opacity: .65; font-size: 12px } .lobox li b { font: 600 12.5px var(--mono); white-space: nowrap } .lobox li em { font-style: normal; color: var(--p-green, var(--good)) }
+:root .receipt .lobox .btn.ghost { color: inherit; border-color: currentColor } :root .receipt .atechips .chip { background: transparent; color: inherit; border-color: rgba(127,127,127,.45) } :root .receipt .atechips .chip[aria-pressed="true"] { color: inherit; background: rgba(127,127,127,.25); border-color: currentColor }
 .cweek { display: grid; gap: 10px } .cdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px } .cdays span { display: grid; justify-items: center; gap: 2px; padding: 6px 2px; border-radius: 8px; background: var(--surface-2); font-size: 11px; color: var(--muted) } .cdays span b { font: 600 13px var(--mono); color: var(--muted) } .cdays span.on b { color: var(--p-green) } .cdays span.sel { outline: 1.5px solid var(--line) }
 .recline { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit }
 .recline > b { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--rc); font: 700 20px var(--mono); color: var(--rc) }
@@ -2800,6 +2809,52 @@ function recPlate(sc, size = 84) {
   return `<svg class="rplate" width="${size}" height="${size}" viewBox="0 0 84 84" role="img" aria-label="Readiness ${sc} out of 100"><circle cx="42" cy="42" r="41" style="fill:${c}"/><circle cx="42" cy="42" r="34" fill="none" stroke="rgba(0,0,0,.2)" stroke-width="1.5"/><circle cx="42" cy="42" r="12" fill="#d9dadc" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/><circle cx="42" cy="42" r="5" fill="#131313"/>
     <text x="42" y="22" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="15" fill="${ink}">${sc}</text><text x="42" y="69" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="7" letter-spacing="1.6" fill="${ink}" opacity=".85">READY</text></svg>`;
 }
+// ----- leftovers: photo what's left, and the meal's numbers shrink to what you actually ate -----
+const MKEYS = ["cal", "p", "c", "f", "sug", "fib", "sat", "na"];
+function scaleMeal(mm, v) {
+  if (!mm.orig) { mm.orig = { name: mm.name }; MKEYS.forEach(k => { if (num(mm[k]) != null) mm.orig[k] = num(mm[k]); }); }
+  MKEYS.forEach(k => { if (mm.orig[k] != null) mm[k] = Math.round(mm.orig[k] * v * (k === "na" ? 1 : 10)) / (k === "na" ? 1 : 10); });
+  ["cal", "na", "p", "c", "f"].forEach(k => { if (mm[k] != null) mm[k] = Math.round(mm[k]); });
+  if (v >= 0.999) { delete mm.ate; mm.name = mm.orig.name; delete mm.orig; } else { mm.ate = v; mm.name = mm.orig.name; }
+}
+function loHtml(L, list) {
+  if (L.busy) return `<div class="lobox"><b>Checking what's left…</b><span class="muted">Comparing your photo to what you logged.</span></div>`;
+  if (L.err) return `<div class="lobox"><span>${esc(L.err)}</span><button type="button" class="btn ghost" data-locancel>Close</button></div>`;
+  if (!L.res) return "";
+  const meals = draft().e.meals || [], rows = L.res.map(r => { const mm = meals[r.i]; if (!mm) return ""; const base = mm.orig?.cal ?? num(mm.cal) ?? 0, off = Math.round(base * (1 - r.eaten));
+    return `<li><span>${esc(mm.orig?.name || mm.name)}<small>${esc(r.left || "")}</small></span><b>${r.eaten >= 0.97 ? "ate it all" : `ate ~${Math.round(r.eaten * 100)}%`}${off > 0 ? ` <em>−${f0(off)}</em>` : ""}</b></li>`; }).join("");
+  const tot = L.res.reduce((a, r) => { const mm = meals[r.i]; return a + (mm ? Math.round((mm.orig?.cal ?? num(mm.cal) ?? 0) * (1 - r.eaten)) : 0); }, 0);
+  return `<div class="lobox"><span class="label">What's left</span>${L.note ? `<p>${esc(L.note)}</p>` : ""}<ul>${rows}</ul>
+    <div class="chips"><button type="button" class="btn primary" data-loapply>${tot > 0 ? `Take off ${f0(tot)} cal` : "Looks right"}</button><button type="button" class="btn ghost" data-locancel>Cancel</button></div></div>`;
+}
+async function runLeftovers(files) {
+  const D = draft(), k = S.loSlot, meals = Array.isArray(D.e.meals) ? D.e.meals : [];
+  const items = meals.map((m, i) => [m, i]).filter(([m]) => (SLOTS.some(([sk]) => sk === m.slot) ? m.slot : "none") === k);
+  if (!files.length || !items.length || !S.sample) return;
+  S.lo = { d: D.d, slot: k, busy: true }; render();
+  try {
+    let images = files.slice(0, S.imgMax || 1); if (files.length > (S.imgMax || 1)) { const c = await collage(files.slice(0, 4)); if (c) images = [c]; }
+    const list = items.map(([m, i]) => `${i}: ${m.orig?.name || m.name} (${m.orig?.cal ?? m.cal} cal as served)`).join("\n");
+    const out = await S.sample.json(`The photo${files.length > 1 ? "s show" : " shows"} what is LEFT on the plate after someone finished eating. This is what they logged for the meal, as it was served:
+${list}
+For each item, estimate the fraction they actually ATE (0 to 1). Compare what's left to a normal serving of that item. An item that's not visible at all was most likely eaten completely (1). Bones, shells, peels, cobs and wrappers are not food left over. Be realistic about how much food is hidden under or spread across the plate.
+Reply with only JSON: {"items":[{"i": number from the list, "eaten": number 0 to 1, "left": "under 8 words on what's left, or empty"}], "note": "one short sentence"}`, { images, modelTier: "default" });
+    const res = (Array.isArray(out?.items) ? out.items : []).map(r => ({ i: +r.i, eaten: clamp(+r.eaten, 0, 1), left: String(r.left || "").slice(0, 60) })).filter(r => items.some(([, i]) => i === r.i) && isFinite(r.eaten));
+    S.lo = res.length ? { d: D.d, slot: k, res, note: String(out.note || "").slice(0, 160) } : { d: D.d, slot: k, err: "I couldn't match the photo to this meal. Try a closer shot of the plate." };
+  } catch (err) { S.lo = { d: D.d, slot: k, err: errCopy(err?.code) }; }
+  render();
+}
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-loslot],[data-loapply],[data-locancel],[data-mopen],[data-ate],[data-delmeal]"); if (!t) return;
+  const ds = t.dataset;
+  if (ds.delmeal != null) { S.openMeal = null; render(); return; }
+  if (ds.loslot) { S.loSlot = ds.loslot; return; }
+  if ("locancel" in ds) { S.lo = null; render(); return; }
+  if ("loapply" in ds) { const D = draft(), meals = D.e.meals || []; let off = 0; (S.lo?.res || []).forEach(r => { const mm = meals[r.i]; if (!mm) return; const before = num(mm.cal) || 0; scaleMeal(mm, r.eaten); off += before - (num(mm.cal) || 0); }); S.lo = null; autosave(); render(); toast(off > 0 ? `Took off ${f0(off)} cal for what you didn't finish` : "Logged as eaten"); return; }
+  if (ds.mopen != null) { const i = +ds.mopen, d = draft().d; S.openMeal = S.openMeal && S.openMeal.d === d && S.openMeal.i === i ? null : { d, i }; render(); return; }
+  if (ds.ate != null) { const D = draft(), mm = D.e.meals?.[+ds.ate]; if (!mm) return; scaleMeal(mm, +ds.v); autosave(); render(); }
+});
+document.addEventListener("change", ev => { if (ev.target.id !== "lo-photo") return; const f = [...(ev.target.files || [])]; ev.target.value = ""; runLeftovers(f); });
 // ----- scale decoder: why the scale moved, from yesterday's log plus a few questions -----
 const WDN = d => parse(d).toLocaleDateString(undefined, { weekday: "long" });
 const hm12 = t => { const [h, m] = String(t).split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
@@ -3394,10 +3449,14 @@ function vFood() {
     ${timingHtml(D)}
     ${`<div class="receipt"><div class="rhead"><span>${esc(fmtD(d, { weekday: "short", month: "numeric", day: "numeric" })).toUpperCase()}</span><span>#${String(Object.keys(S.entries).length + (S.entries[d] ? 0 : 1)).padStart(4, "0")}</span></div>${(() => { timing = timingMap(e); return ""; })()}${slotGroups(meals).map(([k, lab, list]) => { const t = { cal: 0, p: 0, c: 0, f: 0 }; list.forEach(([mm]) => { for (const x in t) t[x] += num(mm[x]) || 0; });
       const sug = list.reduce((a, [mm]) => a + (num(mm.sug) || 0), 0), tm = timing[k];
-      return `<div class="slot ${list.length ? "" : "empty"}"><div class="slothead"><b>${lab}${tm ? `<em class="tbadge ${tm}">${tm === "carb" ? "Carbs here" : "Fats here"}</em>` : ""}</b><span>${list.length ? `${f0(t.cal)} cal · ${f0(t.p)}p ${f0(t.c)}c ${f0(t.f)}f${sug ? ` · ${f0(sug)}g sugar` : ""}` : ""}</span><span class="slotbtns"><label class="slotadd" for="quickscan" data-scanslot="${k}" aria-label="Scan into ${lab}">Scan</label><button type="button" class="slotadd" data-slotadd="${k}" aria-label="Search for ${lab}">+ Add</button></span></div>
-      ${list.map(([mm, i]) => `<div class="meal"><input data-meal="${i}" data-mk="name" value="${esc(mm.name)}" aria-label="Food name" placeholder="Food"><button type="button" class="x" data-delmeal="${i}" aria-label="Remove">×</button>
-      <div class="nums n5">${["cal", "p", "c", "f", "sug"].map(x => `<label>${{ cal: "Cal", p: "Protein", c: "Carbs", f: "Fat", sug: "Sugar" }[x]}<input type="number" step="any" inputmode="decimal" data-meal="${i}" data-mk="${x}" value="${esc(mm[x] ?? "")}"></label>`).join("")}</div>
-      <label class="moveto">Meal <select data-moveslot="${i}" aria-label="Move to meal">${SLOTS.map(([sk, sl]) => `<option value="${sk}" ${(SLOTS.some(([q]) => q === mm.slot) ? mm.slot : "none") === sk ? "selected" : ""}>${sl}</option>`).join("")}</select></label></div>`).join("")}</div>`; }).join("")}
+      return `<div class="slot ${list.length ? "" : "empty"}"><div class="slothead"><b>${lab}${tm ? `<em class="tbadge ${tm}">${tm === "carb" ? "Carbs here" : "Fats here"}</em>` : ""}</b><span>${list.length ? `${f0(t.cal)} cal · ${f0(t.p)}p ${f0(t.c)}c ${f0(t.f)}f${sug ? ` · ${f0(sug)}g sugar` : ""}` : ""}</span><span class="slotbtns"><label class="slotadd" for="quickscan" data-scanslot="${k}" aria-label="Scan into ${lab}">Scan</label><button type="button" class="slotadd" data-slotadd="${k}" aria-label="Search for ${lab}">+ Add</button>${list.length && S.sample && S.imgOK ? `<label class="slotadd" for="lo-photo" data-loslot="${k}" aria-label="Photo of what's left from ${lab}">Leftovers</label>` : ""}</span></div>
+      ${S.lo && S.lo.d === d && S.lo.slot === k ? loHtml(S.lo, list) : ""}
+      ${list.map(([mm, i]) => { const open = S.openMeal && S.openMeal.d === d && S.openMeal.i === i;
+        return `<div class="ritem ${open ? "open" : ""}"><button type="button" class="rline" data-mopen="${i}" aria-expanded="${open}"><span class="rname">${esc(mm.name || "Food")}${mm.ate != null ? `<em class="ate">ate ${Math.round(mm.ate * 100)}%</em>` : ""}</span><b>${f0(num(mm.cal) ?? 0)}</b><small>${f0(num(mm.p) ?? 0)}p · ${f0(num(mm.c) ?? 0)}c · ${f0(num(mm.f) ?? 0)}f${num(mm.sug) ? ` · ${f0(mm.sug)}g sugar` : ""}</small></button>
+        ${open ? `<div class="meal redit"><input data-meal="${i}" data-mk="name" value="${esc(mm.name)}" aria-label="Food name" placeholder="Food"><button type="button" class="x" data-delmeal="${i}" aria-label="Remove">×</button>
+        <div class="nums n5">${["cal", "p", "c", "f", "sug"].map(x => `<label>${{ cal: "Cal", p: "Protein", c: "Carbs", f: "Fat", sug: "Sugar" }[x]}<input type="number" step="any" inputmode="decimal" data-meal="${i}" data-mk="${x}" value="${esc(mm[x] ?? "")}"></label>`).join("")}</div>
+        <div class="atechips"><span>Ate</span>${[[1, "All"], [0.75, "¾"], [0.5, "½"], [0.25, "¼"]].map(([v, l]) => `<button type="button" class="chip" data-ate="${i}" data-v="${v}" aria-pressed="${(mm.ate ?? 1) === v}">${l}</button>`).join("")}</div>
+        <label class="moveto">Meal <select data-moveslot="${i}" aria-label="Move to meal">${SLOTS.map(([sk, sl]) => `<option value="${sk}" ${(SLOTS.some(([q]) => q === mm.slot) ? mm.slot : "none") === sk ? "selected" : ""}>${sl}</option>`).join("")}</select></label><button type="button" class="linkbtn rdone" data-mopen="${i}">Done</button></div>` : ""}</div>`; }).join("")}</div>`; }).join("")}<input id="lo-photo" type="file" accept="image/*" multiple hidden>
       <div class="sum"><span>Food total</span><b>${f0(dv.food)} cal · ${f0(dv.p)}p ${f0(dv.c)}c ${f0(dv.f)}f${dv.micro?.sug != null ? ` · ${f0(dv.micro.sug)}g sugar` : ""}</b></div><div class="rbar"></div></div>`}${meals.length ? "" : `<p class="muted" style="margin:0;font-size:14px">Nothing logged yet. Search, scan or tap a usual above.</p>
       <div class="field"><label for="f-food">Or just type the day's food total (cal)</label><input id="f-food" data-k="food" type="number" inputmode="numeric" step="any" value="${esc(v("food"))}" placeholder="${S.settings.target}"></div>
       ${F.macros ? `<div class="grid3">${nf("f-p", "p", "Protein (g)", 1, "140")}${nf("f-c", "c", "Carbs (g)", 1, "")}${nf("f-f", "f", "Fat (g)", 1, "")}</div>` : ""}`}
