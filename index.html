@@ -993,6 +993,9 @@ body.noscroll { overflow: hidden }
 @media (max-height: 700px) { .op-top { padding-top: calc(env(safe-area-inset-top, 0px) + 4vh) } .op-title { font-size: 46px } .op-smile { width: 100px } .opart { max-height: 30vh } }
 .xcest { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: #DDF0E1; border-radius: 16px; padding: 10px 12px; margin: 4px 0 8px }
 .xcest > div:first-child { display: flex; flex-direction: column; min-width: 0 } .xcest span, .xcest small { font-size: 13px } .xcest small { font-size: 12px }
+.hrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line) }
+.hrow span { display: flex; flex-direction: column; min-width: 0 } .hrow small { color: var(--muted); font-size: 12.5px }
+.hkey { background: var(--surface-2); border-radius: 14px; padding: 10px 12px; margin-bottom: 6px } .hkey ol { margin: 8px 0; padding-left: 18px; font-size: 13px; line-height: 1.45 } .hkey input { font-size: 12px }
 
 </style>
 
@@ -3914,7 +3917,7 @@ function todayPic(B) {
     F.macros && ["Protein", dv.p ? Math.min(1, dv.p / pg) : null, dv.p ? `${f0(dv.p)} of ${f0(pg)} g` : "not yet", "#F3D36B", "A protein-heavy next meal rounds out the day."],
     ["Move", didMove(e) || num(e.steps) != null ? Math.min(1, Math.max(didMove(e) ? 1 : 0, (num(e.steps) || 0) / stepT)) : null, didMove(e) ? (e.lift && e.lift !== "Rest" ? esc(e.lift) : "active") : num(e.steps) != null ? `${f0(e.steps)} steps` : "not yet", "#7CC08F", "A short walk counts. Ten minutes is plenty."],
     F.sleep && ["Sleep", num(e.sleep) != null ? Math.min(1, e.sleep / 8) : null, num(e.sleep) != null ? `${f1(e.sleep)} h` : "not logged", "#BFE3C8", "Log last night's sleep in Check-in."],
-    F.recovery && rc && ["Recovery", rc.score / 100, `${rc.score} · ${rc.label}`, "#FDE3CD", ""],
+    F.recovery && (e.whoop?.rec != null ? ["Recovery", e.whoop.rec / 100, `Whoop ${e.whoop.rec}%`, "#FDE3CD", ""] : rc && ["Recovery", rc.score / 100, `${rc.score} · ${rc.label}`, "#FDE3CD", ""]),
     ["Mood", moodV ?? null, e.mood || "how are you?", "#FCF1C7", "Tap how you're feeling in Check-in."]].filter(Boolean);
   const N = P.length, cx = 130, cy = 120, r0 = 18, LMAX = 78;
   const petals = P.map(([l, f, , col], i) => { const a = i * 360 / N, L = f == null ? 0 : 16 + (LMAX - 16) * f;
@@ -4035,7 +4038,7 @@ const intakeCta = () => S.settings.intake || S.settings.intakeLater === today() 
 function tilesHtml(d, e, dv, F) {
   const st = S.settings, rc = recovery(d, e), meals = Array.isArray(e.meals) ? e.meals : [];
   const T = [["checkin", "t-y", "Check-in", st.weighOff ? (e.mood || "How are you?") : e.w != null ? `${f1(e.w)}` : "–", st.weighOff ? "mood & sleep" : e.w != null ? "lb this morning" : "tap to weigh in"],
-    ["recovery", "t-g", "Recovery", `${rc.score}`, rc.label],
+    e.whoop?.rec != null ? ["recovery", "t-g", "Recovery", `${e.whoop.rec}%`, "Whoop recovery"] : ["recovery", "t-g", "Recovery", `${rc.score}`, rc.label],
     ["food", "t-o", "Food", `${f0(dv.food ?? 0)}`, meals.length ? `cal · ${meals.length} item${meals.length === 1 ? "" : "s"}` : "cal so far"],
     F.drinks && ["drinks", "t-y", "Drinks", `${f1n(dv.alcN || 0)}`, dv.alcN ? `${f0(dv.alcCal)} cal` : "none yet"],
     (F.steps || F.cardio || F.waist || F.meal || F.bloat) && ["more", "t-g", "Activity", e.steps != null ? f0(e.steps) : "–", e.steps != null ? "steps" : "steps & cardio"],
@@ -4348,6 +4351,72 @@ document.addEventListener("click", ev => {
   if (t.closest("[data-xcok]")) { const x = S.xcEst, D = draft(); if (!x || x.busy || x.fail) return; D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a: x.a, min: x.min, cal: x.cal, ...(ACT[x.a] ? {} : { note: x.txt.slice(0, 80) }) }]; S.xcEst = null; autosave(); render(); toast(`Added ${x.name}: ${f0(x.cal)} cal`); }
 });
 document.addEventListener("keydown", ev => { if (ev.key === "Enter" && ev.target.id === "xc-desc") { ev.preventDefault(); xcEstimate(); } });
+
+// ----- Connected apps: Whoop and Apple Health (web app with an account; server code in netlify/functions/health.mjs) -----
+const HL = { busy: false, info: null, key: null, last: 0 };
+const healthOk = () => !window.claude && typeof cloud !== "undefined" && !!cloud.auth;
+async function healthApi(q, method = "GET") {
+  const r = await fetch("/api/health?" + q + "&tz=" + new Date().getTimezoneOffset(), { method, headers: { authorization: "Bearer " + cloud.auth.token } });
+  let j = {}; try { j = await r.json(); } catch {} return [r.status, j];
+}
+function healthPatch(e, h) {
+  if (h.steps != null && (e.steps == null || e.stepsSrc)) { e.steps = h.steps; e.stepsSrc = "health"; }
+  if (h.sleep != null && (e.sleep == null || e.sleepSrc)) { e.sleep = h.sleep; e.sleepSrc = h.src === "whoop" ? "whoop" : "health"; }
+  if (h.recovery != null) e.whoop = { rec: h.recovery, hrv: h.hrv ?? null, rhr: h.rhr ?? null, strain: h.strain ?? null };
+  else if (h.strain != null) e.whoop = { ...(e.whoop || {}), strain: h.strain };
+  const ext = [...(h.whoopWorkouts || []).map(w => ({ a: w.name, min: w.min, cal: w.cal ?? xcBurn("other", w.min), src: "whoop", id: w.id })),
+    ...(h.hkWorkout ? [{ a: h.hkWorkout.name, min: h.hkWorkout.min, cal: h.hkWorkout.cal ?? xcBurn("other", h.hkWorkout.min), src: "health", id: "hk" }] : [])];
+  if (ext.length) e.xc = [...(Array.isArray(e.xc) ? e.xc : []).filter(x => !x.src), ...ext];
+  return e;
+}
+function applyHealth(days) {
+  let n = 0;
+  for (const [d, h] of Object.entries(days || {})) {
+    const cur = S.entries[d] || {}, e = healthPatch(JSON.parse(JSON.stringify(cur)), h);
+    if (JSON.stringify(e) !== JSON.stringify(cur)) { S.entries[d] = e; n++; if (S.draft && S.draft.d === d) healthPatch(S.draft.e, h); }
+  }
+  if (!n) return 0;
+  persistLocal(); try { cloudDirty(); } catch {}
+  const typing = document.activeElement && main.contains(document.activeElement) && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+  if (!typing) render(); return n;
+}
+async function healthPull(loud) {
+  if (!healthOk() || HL.busy) return; HL.busy = true; refreshHealth();
+  try {
+    const [st, j] = await healthApi("action=pull&since=" + addD(today(), -14));
+    if (st === 200) { HL.info = j; HL.last = Date.now(); const n = applyHealth(j.days); if (loud) toast(n ? `Updated ${n} day${n === 1 ? "" : "s"} from your apps.` : "Everything's up to date."); }
+    else if (loud) toast(j.message || "Couldn't reach health sync.");
+  } catch { if (loud) toast("Offline. Try again when you're back online."); }
+  HL.busy = false; refreshHealth();
+}
+function healthInner() {
+  if (!cloud.auth) return `<h2>Connected apps</h2><p class="muted" style="margin:0;font-size:14px">Sign in above to connect Whoop and Apple Health. Your steps, sleep, recovery and workouts then fill in by themselves.</p>`;
+  const w = HL.info?.whoop, sc = HL.info?.shortcut;
+  const wRow = w?.connected ? `<div class="hrow"><span><b>Whoop</b><small>${w.err ? "Sign-in expired. Reconnect to keep syncing." : w.last ? `Connected · synced ${ago(w.last)}` : "Connected"}</small></span>${w.err ? `<button type="button" class="btn" data-hwhoop>Reconnect</button>` : `<button type="button" class="linkbtn" data-hwhoopoff>Disconnect</button>`}</div>`
+    : `<div class="hrow"><span><b>Whoop</b><small>${w && w.available === false ? "Almost ready: waiting on the Whoop developer setup." : "Recovery, sleep, strain and workouts."}</small></span><button type="button" class="btn" data-hwhoop ${w && w.available === false ? "disabled" : ""}>Connect</button></div>`;
+  const hRow = `<div class="hrow"><span><b>Apple Health</b><small>${sc?.last ? `Shortcut last sent ${ago(sc.last)}` : "Steps, sleep and workouts, through an iPhone Shortcut."}</small></span><button type="button" class="btn" data-hkey>${sc?.key ? "New link" : "Set up"}</button></div>
+    ${HL.key ? `<div class="hkey"><span class="label">Your private Shortcut link</span><div class="dkrow"><input readonly value="${esc(HL.key)}" id="hk-url" aria-label="Shortcut link"><button type="button" class="btn" data-hcopy>Copy</button></div>
+      <ol><li>Open <b>Shortcuts</b>, tap <b>+</b>, name it "Bad Day Okay".</li><li>Add <b>Find Health Samples</b>: Type is <b>Steps</b>, Start Date is <b>Today</b>. Then add <b>Calculate Statistics</b>: <b>Sum</b>.</li>
+      <li>Add <b>Get Contents of URL</b>: paste the link above, Method <b>POST</b>, Request Body <b>JSON</b>, add a Number field <b>steps</b> set to the Statistics result. You can add <b>sleep</b> (hours) and <b>workout_min</b> the same way.</li>
+      <li>In <b>Automation</b>, make a daily one at 9 PM that runs it, set to run without asking.</li></ol><p class="muted" style="font-size:12px;margin:0">Keep this link private. Getting a new one turns the old one off.</p></div>` : ""}`;
+  return `<h2>Connected apps</h2>${wRow}${hRow}<div class="chips" style="margin-top:10px"><button type="button" class="btn ghost" data-hsync ${HL.busy ? "disabled" : ""}>${HL.busy ? "Syncing…" : "Sync now"}</button></div>`;
+}
+const healthHtml = () => window.claude ? "" : `<section class="card" id="healthcard">${healthInner()}</section>`;
+function refreshHealth() { const el = document.getElementById("healthcard"); if (el) el.innerHTML = healthInner(); }
+document.addEventListener("click", async ev => {
+  const t = ev.target; if (!t.closest("#healthcard")) return;
+  if (t.closest("[data-hsync]")) { healthPull(true); return; }
+  if (t.closest("[data-hwhoop]")) { const [st, j] = await healthApi("action=whoop_start"); if (st === 200 && j.url) location.href = j.url; else toast(j.message || "Couldn't start the Whoop sign-in."); return; }
+  if (t.closest("[data-hwhoopoff]")) { await healthApi("action=whoop_off", "POST"); toast("Whoop disconnected."); healthPull(); return; }
+  if (t.closest("[data-hkey]")) { const [st, j] = await healthApi("action=key"); if (st === 200) { HL.key = j.url; refreshHealth(); healthPull(); } else toast(j.message || "Couldn't make a link."); return; }
+  if (t.closest("[data-hcopy]")) { try { await navigator.clipboard.writeText(HL.key); toast("Copied."); } catch { document.getElementById("hk-url")?.select(); } return; }
+});
+(() => {
+  if (window.claude) return;
+  try { const q = new URLSearchParams(location.search), w = q.get("whoop"); if (w) { history.replaceState(null, "", location.pathname); setTimeout(() => toast(w === "connected" ? "Whoop connected. Pulling your last two weeks…" : "Whoop didn't connect. Try again from You."), 900); } } catch {}
+  setTimeout(() => healthPull(), 2500);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && Date.now() - HL.last > 10 * 6e4) healthPull(); });
+})();
 
 // ----- eating out: the best orders at each chain for what's left today -----
 const NOT_MEAL = /sauce|dressing|dip\b|lemonade|soda|tea\b|coffee|latte|frost|shake|milkshake|cookie|brownie|pie\b|fries|tots|hash brown$|chips|drink|syrup|creamer|ketchup|mayo|kid|cup of|cookie|dessert|toast$|tortilla|rice$|beans$|salsa|cheese$|guac|queso|sour cream|lettuce|fajita veg|bread$|bun$|patty$|donut|muffin|frappuccino|refresher|macchiato|cappuccino|mocha|chai|matcha|cold brew|coolatta|fritter|churro|turnover|onion rings|potato cakes|loaf|croissant$|bagel$/i;
@@ -4705,6 +4774,7 @@ function vPrefs() {
   const sw = (k, lab) => `<div class="toggle"><span>${lab}</span><button type="button" class="switch" role="switch" aria-checked="${!!st[k]}" data-flag="${k}" aria-label="${lab}"></button></div>`;
   return `<div class="view">
   ${acctHtml()}
+  ${healthHtml()}
   <section class="card"><h2>Your goals</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">${st.intake ? `Set ${esc(fmtD(st.intake.done))}. Answer again any time and the app reshapes around you.` : "Six quick questions, and the app shows what fits how you live."}</p><button type="button" class="btn primary" data-intake>${st.intake ? "Change my goals" : "Answer the questions"}</button>
     ${sw("restAuto", "Start the rest timer after each set")}${sw("opening", "Show the opening screen when the app opens")}</section>
   <section class="card"><h2>Goal</h2><div class="seg">${Object.entries(GOALS).map(([g, o]) => `<button type="button" data-goal="${g}" aria-pressed="${st.goal === g}">${g}<small>${o.d}</small></button>`).join("")}</div></section>
