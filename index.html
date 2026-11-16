@@ -819,6 +819,72 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 :root[data-look="sunrise"] .wb { background: #FCF3D3 }
 :root[data-look="sunrise"] .decoder.up .dch b { color: var(--bp-pt) }
 
+/* ---- v59: soft compartments, goals intake, rest games ---- */
+:root[data-look="sunrise"] .card { border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 8px 22px -16px rgba(70, 55, 20, .35) }
+:root[data-look="sunrise"] .btn { border: 1px solid var(--line); border-radius: 999px; font-weight: 700 }
+:root[data-look="sunrise"] .btn.primary { background: var(--bp-g); border-color: var(--bp-g); box-shadow: none }
+:root[data-look="sunrise"] .chip { border-radius: 999px }
+:root[data-look="sunrise"] .bpseg { display: inline-flex; gap: 2px; background: var(--surface-2); padding: 4px; border-radius: 999px }
+:root[data-look="sunrise"] .bpseg button { font-size: 14px; padding: 6px 14px; border: 0; border-radius: 999px; opacity: 1 }
+:root[data-look="sunrise"] .bpseg button[aria-selected=true] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 4px rgba(0,0,0,.08) }
+:root[data-detail="protein"] .mrow.c, :root[data-detail="protein"] .mrow.f, :root[data-detail="cal"] .mrow.p, :root[data-detail="cal"] .mrow.c, :root[data-detail="cal"] .mrow.f { display: none }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px }
+.tile { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; text-align: left; border: 1.5px solid transparent; border-radius: 18px; padding: 10px 12px 11px; color: var(--fg); font: inherit; cursor: pointer; min-width: 0 }
+.tile span { font-size: 12px; font-weight: 700; opacity: .75 }
+.tile b { font-size: 22px; line-height: 1.15; font-weight: 800; font-family: "Bricolage Grotesque", inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100% }
+.tile small { font-size: 11px; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100% }
+.t-g { background: #DDF0E1 } .t-y { background: #FCF1C7 } .t-o { background: #FDE3CD }
+.tile[aria-selected=true] { border-color: var(--fg); transform: translateY(-1px); box-shadow: 0 6px 14px -10px rgba(0,0,0,.4) }
+.tilebody { animation: tileIn .18s ease-out }
+@keyframes tileIn { from { opacity: 0; transform: translateY(-4px) } }
+.icta { display: flex; gap: 12px; align-items: center; background: #FCF1C7 !important; border-color: transparent !important }
+.icta div { flex: 1; min-width: 0 } .icta b { display: block; font-size: 16px } .icta span { display: block; font-size: 13px; color: var(--muted); margin-top: 2px }
+body.noscroll { overflow: hidden }
+#intake { position: fixed; inset: 0; z-index: 60; background: rgba(38, 35, 29, .35); display: flex; align-items: flex-end; justify-content: center }
+.isheet { background: var(--bg, #FBF8F0); width: 100%; max-width: 560px; max-height: 92vh; overflow: auto; border-radius: 26px 26px 0 0; padding: 18px 18px calc(22px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -10px 30px rgba(0,0,0,.15); animation: tileIn .2s ease-out }
+.isheet h2 { font-family: "Bricolage Grotesque", inherit; font-size: 24px; margin: 14px 0 4px; line-height: 1.2 }
+.isheet p { margin: 0 0 12px }
+.ihead { display: flex; align-items: center; justify-content: space-between }
+.idots { display: flex; gap: 6px } .idots i { width: 8px; height: 8px; border-radius: 99px; background: var(--line) } .idots i.on { background: var(--bp-g) } .idots i.cur { background: var(--bp-p); width: 22px }
+.iopts { display: grid; gap: 8px; margin-top: 12px }
+.iopt { text-align: left; font: inherit; font-weight: 700; font-size: 16px; padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer }
+.iopt[aria-pressed=true] { background: #DDF0E1; border-color: var(--bp-gt) }
+.ichg { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 8px } .ichg li { background: var(--surface); border-radius: 14px; padding: 10px 12px 10px 34px; position: relative; font-size: 14px } .ichg li::before { content: "✓"; position: absolute; left: 12px; color: var(--bp-gt); font-weight: 800 }
+.ibtns { display: flex; justify-content: space-between; margin-top: 18px } .ibtns .btn[disabled] { opacity: .45 }
+/* rest timer */
+#rest { position: fixed; left: 10px; right: 10px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 55; max-width: 520px; margin: 0 auto; background: var(--surface, #fff); color: var(--fg); border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 14px 40px -12px rgba(40, 30, 10, .45); padding: 10px 12px 12px; max-height: calc(100vh - 150px); overflow: auto; animation: tileIn .2s ease-out }
+#rest.up { border-color: var(--bp-p); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bp-p) 35%, transparent), 0 14px 40px -12px rgba(40, 30, 10, .45) }
+.rhead { display: flex; align-items: center; gap: 8px }
+.rring { position: relative; width: 58px; height: 58px; border: 0; background: none; padding: 0; cursor: pointer; flex: none; color: var(--fg) }
+.rring i { --p: 0; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--bp-g) calc(var(--p) * 1%), var(--surface-2) 0); -webkit-mask: radial-gradient(farthest-side, transparent 70%, #000 72%); mask: radial-gradient(farthest-side, transparent 70%, #000 72%) }
+#rest.up .rring i { background: var(--bp-p) }
+.rtime { position: relative; font-family: "Bricolage Grotesque", inherit; font-size: 15px; font-weight: 800 }
+.rmid { flex: 1; min-width: 0; display: flex; flex-direction: column } .rmid .label { font-size: 11px } .rmsg { font-size: 13px; line-height: 1.25 }
+.rbtn { border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); border-radius: 999px; font: inherit; font-size: 13px; font-weight: 700; padding: 7px 9px; cursor: pointer }
+.rbtn.x { padding: 7px 10px }
+.rlen { display: flex; gap: 6px; align-items: center; margin: 10px 0 6px; flex-wrap: wrap } .rlen .muted { font-size: 12px; margin-right: 2px } .rlen .chip { padding: 4px 10px; font-size: 13px }
+.rgames { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--surface-2); border-radius: 999px; padding: 4px; margin: 4px 0 10px }
+.rgames button { border: 0; background: none; font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); padding: 6px 2px; border-radius: 999px; cursor: pointer }
+.rgames button[aria-pressed=true] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 4px rgba(0,0,0,.08) }
+.rgame { min-height: 120px }
+.gtop { display: flex; gap: 14px; font-size: 13px; margin-bottom: 6px } .gtop b { font-family: "Bricolage Grotesque", inherit; font-size: 16px }
+.gmsg { text-align: center; font-size: 13px; margin: 6px 0 }
+.hoopc { width: 100%; aspect-ratio: 320 / 220; display: block; background: linear-gradient(#FCF6E4, #FBF8F0); border-radius: 16px; touch-action: manipulation; cursor: pointer }
+.wgrid { display: grid; gap: 4px; justify-content: center } .wrow { display: grid; grid-template-columns: repeat(5, 38px); gap: 4px }
+.wrow span { height: 38px; border: 1.5px solid var(--line); border-radius: 9px; display: grid; place-items: center; font-weight: 800; font-size: 18px; font-family: "Bricolage Grotesque", inherit }
+.wrow .wt { border-color: var(--fg) } .wrow .wg, .kb .kg { background: #A9D9B5; border-color: #A9D9B5 } .wrow .wy, .kb .ky { background: #F3D36B; border-color: #F3D36B } .wrow .wn, .kb .kn { background: var(--surface-2); color: var(--muted) }
+.kb { display: grid; gap: 5px; margin-top: 4px } .kb div { display: flex; gap: 4px; justify-content: center }
+.kb button { flex: 1; max-width: 32px; height: 40px; border: 0; border-radius: 8px; background: var(--surface-2); color: var(--fg); font: inherit; font-weight: 800; font-size: 13px; padding: 0; cursor: pointer } .kb button.wide { max-width: 56px; flex: 1.6; font-size: 12px }
+.mgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-width: 300px; margin: 0 auto }
+.mgrid button { aspect-ratio: 1; border: 0; border-radius: 14px; background: #FDE3CD; font-size: 26px; cursor: pointer; transition: transform .15s }
+.mgrid button.up { background: var(--surface-2); transform: rotateY(180deg) scaleX(-1) } .mgrid button.got { background: #DDF0E1 }
+.sgrid { display: grid; grid-template-columns: repeat(3, 64px); gap: 6px; justify-content: center }
+.sgrid button, .sgrid span { height: 64px; border-radius: 14px } .sgrid button { border: 0; background: #FCF1C7; font: inherit; font-family: "Bricolage Grotesque", inherit; font-size: 24px; font-weight: 800; color: var(--fg); cursor: pointer } .sgrid button.home { background: #DDF0E1 } .sgrid span { background: transparent; border: 1.5px dashed var(--line) }
+.restline { display: flex; align-items: center; gap: 10px; justify-content: space-between; background: #FCF1C7; border-radius: 16px; padding: 8px 8px 8px 14px; font-size: 13px }
+.restline b { display: block; font-size: 14px }
+:root[data-look="sunrise"] .card.board { border: 1px solid var(--line) !important; border-radius: 22px !important; box-shadow: 0 8px 22px -16px rgba(70, 55, 20, .35) !important }
+:root[data-look="sunrise"] .board .streakbox { border: 0 !important; border-radius: 16px !important; box-shadow: none !important }
+
 </style>
 
 <div class="wrap">
@@ -883,7 +949,7 @@ const cMinOf = e => (num(e?.cardio) || 0) + (num(e?.cardioMi) || 0) * 19;
 const LIFTS = ["Upper", "Lower", "Full body A", "Full body B", "Full body C", "Other", "Rest"];
 const BF_METHODS = ["Photo estimate (AI)", "DEXA", "BodPod", "InBody / BIA", "Calipers", "Smart scale", "Hydrostatic", "Own guess"];
 const DEF = { goal: "Maintain", target: 2200, maint0: 2700, protein: 0.9, fat: 0.3, alpha: 0.1, maxChg: 250, revStep: 125,
-  learn: 0.4, fallbackBw: 155, drinkThr: 3, skipFlagged: true, accent: "cobalt", theme: "system", name: "", look: "sunrise", lookV: 5, trainFor: "bodybuilding", coachNotes: "", eventName: "", eventDate: "",
+  learn: 0.4, fallbackBw: 155, drinkThr: 3, skipFlagged: true, accent: "cobalt", theme: "system", name: "", look: "sunrise", lookV: 5, restAuto: true, restSec: 90, trainFor: "bodybuilding", coachNotes: "", eventName: "", eventDate: "",
   stepsWk: 70000, cardioWk: 80, liftsWk: 4, cardioCalMin: 7, cardioUnit: "min", cardioMiWk: 2.5, cardioCalMi: 0, cardioType: "incline", cardioMph: 3.15, cardioGrade: 9, eatBack: true, dayFlex: 500, about: "",
   fields: Object.fromEntries(Object.keys(FIELDS).map(k => [k, true])) };
 
@@ -1397,7 +1463,7 @@ function workoutHtml(D, noChips) {
 }
 function bindWorkout(form, D) {
   form.querySelectorAll("[data-set-i]").forEach(inp => inp.oninput = () => { const s = D.e.sets[+inp.dataset.setI]; s[inp.dataset.sk] = num(inp.value); });
-  form.querySelectorAll("[data-set-i]").forEach(inp => inp.onchange = () => render());
+  form.querySelectorAll("[data-set-i]").forEach(inp => inp.onchange = () => { const st = D.e.sets[+inp.dataset.setI]; if (inp.dataset.sk === "r" && st && num(st.w) != null && num(st.r) != null && inp.defaultValue === "" && S.settings.restAuto !== false && D.d === today()) startRest(); render(); });
   form.querySelectorAll("[data-delset]").forEach(b => b.onclick = () => { D.e.sets.splice(+b.dataset.delset, 1); if (!D.e.sets.length) delete D.e.sets; render(); });
   form.querySelectorAll("[data-addset]").forEach(b => b.onclick = () => {
     const ex = b.dataset.addset, sets = D.e.sets = Array.isArray(D.e.sets) ? D.e.sets : [];
@@ -1724,13 +1790,13 @@ function vGains() {
   const nSets = Array.isArray(e.sets) ? e.sets.filter(x => num(x.w) != null && num(x.r) != null).length : 0;
   return `<div class="view">
   <form class="view" id="dayform" autocomplete="off">
-  <div class="dayrow"><button type="button" class="btn ghost" id="prevd" aria-label="Previous day">‹</button><div class="dayname"><b>Training</b><span>${isT ? "Today · " : ""}${esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }))}</span></div><input id="f-date" type="date" value="${d}" max="${addD(today(), 1)}" aria-label="Pick a day"><button type="button" class="btn ghost" id="nextd" aria-label="Next day">›</button></div>
+  <div class="dayrow"><button type="button" class="btn ghost" id="prevd" aria-label="Previous day">‹</button><div class="dayname"><b>${F.lift ? "Training" : "Moving"}</b><span>${isT ? "Today · " : ""}${esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }))}</span></div><input id="f-date" type="date" value="${d}" max="${addD(today(), 1)}" aria-label="Pick a day"><button type="button" class="btn ghost" id="nextd" aria-label="Next day">›</button></div>
   <button type="button" class="recline" data-go="today" style="--rc:${REC_COL(rcT.score)}"><b>${rcT.score}</b><span><em>Recovery · ${esc(rcT.label)}</em><small>${esc(rcT.headline)}</small></span><i aria-hidden="true">›</i></button>
   ${lightOffer(e, rcT)}
   ${cardioWeekCard(d, e)}
-  <section class="card view" style="gap:12px">${zh(1, "Workout", e.lift ? `${nSets} set${nSets === 1 ? "" : "s"} logged` : "pick a session")}
-    ${e.lift && !S.pickLift ? `<div class="liftpick"><b>${esc(e.lift)}</b><button type="button" class="linkbtn" id="changelift">Change</button></div>` : `<div class="chips" data-chips="lift">${liftChoices().map(o => `<button type="button" class="chip" data-val="${esc(o)}" aria-pressed="${e.lift === o}">${esc(o)}</button>`).join("")}</div>`}
-    ${workoutHtml(D, true)}
+  <section class="card view" style="gap:12px">${zh(1, F.lift ? "Workout" : "Cardio & steps", !F.lift ? "today" : e.lift ? `${nSets} set${nSets === 1 ? "" : "s"} logged` : "pick a session")}
+    ${!F.lift ? "" : e.lift && !S.pickLift ? `<div class="liftpick"><b>${esc(e.lift)}</b><button type="button" class="linkbtn" id="changelift">Change</button></div>` : `<div class="chips" data-chips="lift">${liftChoices().map(o => `<button type="button" class="chip" data-val="${esc(o)}" aria-pressed="${e.lift === o}">${esc(o)}</button>`).join("")}</div>`}
+    ${F.lift ? workoutHtml(D, true) + restLine() : ""}
     ${F.steps || F.cardio ? `<div class="grid2">${F.steps ? `<div class="field"><label for="f-steps">Steps</label><input id="f-steps" data-k="steps" type="number" inputmode="numeric" step="any" value="${esc(e.steps ?? "")}" placeholder="10000"></div>` : ""}${F.cardio ? `<div class="field"><label for="f-cardio">${CTYPES[S.settings.cardioType || "incline"][0]} (${cUnit()})</label><input id="f-cardio" data-k="${cKey()}" type="number" inputmode="decimal" step="any" value="${esc(e[cKey()] ?? "")}" placeholder="${CU() ? "0.75" : "20"}"></div>` : ""}</div>` : ""}
     ${xcHtml(e)}
     <div class="savebar"><span class="msg" id="savemsg">${S.entries[d] ? "Saved. Changes save as you go." : "Changes save as you go."}</span></div></section>
@@ -2550,6 +2616,8 @@ function applyLook() {
   if (look === "classic") { r.removeAttribute("data-look"); r.style.setProperty("--a", ACCENTS[st.accent] || ACCENTS.cobalt); if (st.theme === "system") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", st.theme); }
   else { r.setAttribute("data-look", look === "neon" ? "club" : look); r.style.removeProperty("--a"); r.setAttribute("data-theme", look === "iron" || look === "club" || look === "neon" ? "dark" : "light"); }
   if (look === "neon") r.setAttribute("data-swap", ""); else r.removeAttribute("data-swap");
+  r.setAttribute("data-detail", st.fields.macros === false ? "cal" : st.detail || "full");
+  const nb = document.querySelector('#tabs [data-v="gains"]'); if (nb && nb.lastChild) nb.lastChild.textContent = st.fields.lift === false ? "Move" : "Train";
   document.getElementById("goalchip").textContent = st.goal;
   document.getElementById("brandsub").textContent = st.name ? `${st.name}'s log` : "Progress over perfect.";
 }
@@ -3462,6 +3530,7 @@ function vToday() {
   const alc = e.alc || {};
   let z = 0; const Z = () => ++z;
   const FEEL = [[1, "Wrecked"], [2, "Sore"], [3, "OK"], [4, "Good"], [5, "Fresh"]];
+  tileDefault(d, e);
   const food = F.food ? `${meals.length ? `<div class="receipt"><div class="rhead"><span>${esc(fmtD(d, { weekday: "short", month: "numeric", day: "numeric" })).toUpperCase()}</span><span>#${String(Object.keys(S.entries).length + (S.entries[d] ? 0 : 1)).padStart(4, "0")}</span></div>${meals.map((mm, i) => `<div class="meal"><input data-meal="${i}" data-mk="name" value="${esc(mm.name)}" aria-label="Food name" placeholder="Food"><button type="button" class="x" data-delmeal="${i}" aria-label="Remove">×</button>
         <div class="nums">${["cal", "p", "c", "f"].map(k => `<label>${{ cal: "Cal", p: "Protein", c: "Carbs", f: "Fat" }[k]}<input type="number" step="any" inputmode="decimal" data-meal="${i}" data-mk="${k}" value="${esc(mm[k] ?? "")}"></label>`).join("")}</div></div>`).join("")}
         <div class="sum"><span>Food total</span><b>${f0(dv.food)} cal · ${f0(dv.p)}p ${f0(dv.c)}c ${f0(dv.f)}f</b></div><div class="rbar"></div></div>` : ""}
@@ -3490,26 +3559,27 @@ function vToday() {
   const moreSum = [e.steps != null && `${f0(e.steps)} steps`, e.cardio != null && `${e.cardio} min cardio`, e.cardioMi != null && `${e.cardioMi} mi cardio`].filter(Boolean).join(" · ");
   return `<form class="view" id="dayform" autocomplete="off">
   <div class="dayrow"><button type="button" class="btn ghost" id="prevd" aria-label="Previous day">‹</button><div class="dayname"><b>${isT ? "Today" : esc(parse(d).toLocaleDateString(undefined, { weekday: "long" }))}</b><span>${esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }))}${S.entries[d] ? " · saved" : ""}</span></div><input id="f-date" type="date" value="${d}" max="${addD(today(), 1)}" aria-label="Pick a day"><button type="button" class="btn ghost" id="nextd" aria-label="Next day">›</button></div>
-  ${isT ? welcomeHtml() + bigPicHtml() : ""}
+  ${isT ? intakeCta() + welcomeHtml() + bigPicHtml() : ""}
   <section class="card board" aria-label="Day totals"><div id="todaybox">${todayBox()}</div></section>
-  ${S.sample ? `<section class="card coach">${zh(Z(), "Talk it through", "log it or ask anything")}${asksHtml()}<div id="coachbody">${chatHtml(d)}</div></section>` : ""}
-  <section class="card">${zh(Z(), "Check-in", isT ? "this morning" : "")}
+  ${tilesHtml(d, e, dv, F)}
+  ${S.tile === "checkin" ? `<section class="card tilebody">${zh(Z(), "Check-in", isT ? "this morning" : "")}
     <div class="view" style="gap:12px">
-    <div class="field"><label for="f-w">Morning weight (lb)</label><div class="bignum"><button type="button" data-bump="w" data-by="-0.2" aria-label="Down 0.2">−</button><input id="f-w" data-k="w" type="number" inputmode="decimal" step="any" value="${esc(v("w"))}" placeholder="${f1(compute().trend ?? 155)}"><button type="button" data-bump="w" data-by="0.2" aria-label="Up 0.2">+</button></div></div>
+    ${S.settings.weighOff ? "" : `<div class="field"><label for="f-w">Morning weight (lb)</label><div class="bignum"><button type="button" data-bump="w" data-by="-0.2" aria-label="Down 0.2">−</button><input id="f-w" data-k="w" type="number" inputmode="decimal" step="any" value="${esc(v("w"))}" placeholder="${f1(compute().trend ?? 155)}"><button type="button" data-bump="w" data-by="0.2" aria-label="Up 0.2">+</button></div></div>`}
     ${F.sleep ? `<div class="grid2">${nf("f-sleep", "sleep", "Sleep last night (hrs)", 0.25, "7.5")}<div></div></div>` : ""}
     ${F.recovery ? `<div class="field"><span class="label">How your body feels</span><div class="chips feel" data-chips="rec">${FEEL.map(([n, t]) => `<button type="button" class="chip" data-val="${n}" aria-pressed="${e.rec === n}"><b>${n}</b><small>${t}</small></button>`).join("")}</div></div>` : ""}
     <div class="field"><span class="label">How you're feeling</span>${chips("mood", ["Stressed", "Okay", "Good", "Great"], v("mood"))}</div>
-    <div id="decoder">${decoderHtml(d, e)}</div>
-    </div></section>
-  <section class="card rec" aria-label="Recovery">${zh(Z(), "Recovery", "readiness")}<div id="recbox">${recBody(recovery(d, e))}</div>
-    ${F.lift ? `<div class="chips" style="margin-top:14px;align-items:center"><span class="muted" style="font-size:14px">${e.lift ? `Training: <b style="color:var(--fg)">${esc(e.lift)}</b>` : "No session logged yet"}</span><button type="button" class="btn" data-go="gains">${e.lift ? "Open workout" : "Log workout"}</button></div>` : ""}</section>
-  <section class="card view" style="gap:12px">${zh(Z(), "Fuel", `${f0(dv.food ?? 0)} cal`)}
+    ${S.settings.weighOff ? "" : `<div id="decoder">${decoderHtml(d, e)}</div>`}
+    </div></section>` : ""}
+  ${S.tile === "recovery" ? `<section class="card rec tilebody" aria-label="Recovery">${zh(Z(), "Recovery", "readiness")}<div id="recbox">${recBody(recovery(d, e))}</div>
+    ${F.lift ? `<div class="chips" style="margin-top:14px;align-items:center"><span class="muted" style="font-size:14px">${e.lift ? `Training: <b style="color:var(--fg)">${esc(e.lift)}</b>` : "No session logged yet"}</span><button type="button" class="btn" data-go="gains">${e.lift ? "Open workout" : "Log workout"}</button></div>` : ""}</section>` : ""}
+  ${S.tile === "food" ? `<section class="card view tilebody" style="gap:12px">${zh(Z(), "Fuel", `${f0(dv.food ?? 0)} cal`)}
     ${meals.length ? `<ul class="fuelsum">${slotGroups(meals).filter(([, , l]) => l.length).map(([, lab, l]) => { const t = { cal: 0, p: 0, c: 0, f: 0 }; l.forEach(([mm]) => { for (const x in t) t[x] += num(mm[x]) || 0; }); return `<li><span>${lab} <small class="muted">${l.length} item${l.length === 1 ? "" : "s"}</small></span><span>${f0(t.cal)} cal · ${f0(t.p)}p ${f0(t.c)}c ${f0(t.f)}f</span></li>`; }).join("")}</ul>` : `<p class="muted" style="margin:0;font-size:14px">Nothing logged yet${isT ? " today" : ""}.</p>`}
     <div class="chips"><button type="button" class="btn primary" data-go="food">Log food</button><label class="btn" for="quickscan" data-quickscan>Scan barcode</label></div>
-    ${usualsHtml()}${roughHtml()}</section>
-  ${F.drinks ? fold("drinks", Z(), "Drinks", dv.alcN ? `${f1n(dv.alcN)} · ${f0(dv.alcCal)} cal` : "none", drinks) : ""}
-  ${(F.steps || F.cardio || F.waist || F.meal || F.bloat) ? fold("more", Z(), "Steps & more", moreSum, more) : ""}
-  ${F.notes ? fold("notes", Z(), "Notes", e.notes ? "1 note" : "", `<div class="field"><label for="f-notes">Notes</label><textarea id="f-notes" data-k="notes" placeholder="Salty dinner, felt flat, new PR on incline">${esc(v("notes"))}</textarea></div>`) : ""}
+    ${usualsHtml()}${roughHtml()}</section>` : ""}
+  ${S.tile === "drinks" && F.drinks ? `<section class="card tilebody">${zh(Z(), "Drinks", dv.alcN ? `${f1n(dv.alcN)} · ${f0(dv.alcCal)} cal` : "none")}<div class="view" style="gap:10px">${drinks}</div></section>` : ""}
+  ${S.tile === "more" ? `<section class="card tilebody">${zh(Z(), "Activity", moreSum)}<div class="view" style="gap:12px">${more}</div></section>` : ""}
+  ${S.tile === "notes" && F.notes ? `<section class="card tilebody">${zh(Z(), "Notes", "")}<div class="field"><label for="f-notes">Anything worth remembering?</label><textarea id="f-notes" data-k="notes" placeholder="Salty dinner, felt flat, new PR on incline">${esc(v("notes"))}</textarea></div></section>` : ""}
+  ${S.sample ? `<section class="card coach">${zh(Z(), "Talk it through", "log it or ask anything")}${asksHtml()}<div id="coachbody">${chatHtml(d)}</div></section>` : ""}
   <div class="savebar"><span class="msg" id="savemsg">${S.entries[d] ? "Saved. Changes save as you go." : "Changes save as you go."}</span><button class="btn primary" type="submit" id="savebtn">Close out day</button></div>
   </form>`;
 }
@@ -3560,7 +3630,7 @@ function bpBrief() {
   const b = bpData(), ce = closeEnough(), r = x => x == null ? null : Math.round(x);
   return { goal_cal: b.tgt, week_avg_cal: r(b.wAvg), month_avg_cal: r(b.mAvg), month_days_logged: b.mlog.length, month_days_so_far: b.mdays.length, year_avg_cal: r(b.yAvg),
     trend_change_this_month_lb: b.mChg == null ? null : Math.round(b.mChg * 10) / 10, trend_change_since_start_lb: b.yChg == null ? null : Math.round(b.yChg * 10) / 10, tracking_since: b.since,
-    close_enough_score: ce.score, travel_mode: travelOn() || null };
+    close_enough_score: ce.score, travel_mode: travelOn() || null, knocks_off_track: (S.settings.trips || []).map(t => TRIPS[t]).filter(Boolean), scale_off: S.settings.weighOff || null, training_for_performance: S.settings.perf || null };
 }
 function bigDay() {
   const tgt = S.settings.target, T = today(); let best = null;
@@ -3687,6 +3757,228 @@ document.addEventListener("click", ev => {
   if (t.closest("[data-roll]")) { rollDice(); return; }
   if (t.closest("[data-dicelog]")) { const x = S.dice?.pick; if (!x) return; const D = draft(); S.fs = { d: D.d, q: "", pick: x.it, ...defAmt(x.it), amt: x.n || 1 }; S.dice = null; addFood(D); return; }
 });
+
+// ----- Goals intake: a few questions, and the app reshapes itself around the answers -----
+const INTAKE = [
+  { k: "goal", q: "What's the main goal right now?", opts: [["Cut", "Lose some fat"], ["Maintain", "Stay where I am, feel better"], ["Lean bulk", "Build muscle"], ["perf", "Get fitter or train for something"]] },
+  { k: "moves", multi: 1, q: "How do you like to move?", sub: "Pick all that fit.", opts: [["lift", "Lifting weights"], ["run", "Running"], ["walk", "Walking"], ["bike", "Biking or spin"], ["sports", "Sports"], ["yoga", "Yoga or classes"], ["none", "Not much yet"]] },
+  { k: "detail", q: "How much food detail do you want?", sub: "You can change this any time.", opts: [["cal", "Just calories"], ["protein", "Calories and protein"], ["full", "Full macros"]] },
+  { k: "drinks", q: "Do you drink alcohol?", opts: [["often", "Most weekends"], ["some", "Now and then"], ["no", "Not really"]] },
+  { k: "weigh", q: "How do you feel about the scale?", opts: [["daily", "I weigh in most mornings"], ["some", "Once in a while"], ["off", "Leave the scale out of it"]] },
+  { k: "trips", multi: 1, q: "What usually knocks you off track?", sub: "Pick any. I'll plan around them, no judgment.", opts: [["weekends", "Weekends"], ["eatingout", "Eating out"], ["drinks", "Nights out"], ["travel", "Travel"], ["stress", "Stress"], ["late", "Late-night snacks"], ["busy", "Busy days"]] },
+];
+const TRIPS = Object.fromEntries(INTAKE[5].opts);
+function intakeOpen() { const a = S.settings.intake || {}; S.intake = { i: 0, ans: { goal: a.goal || (S.settings.perf ? "perf" : S.settings.goal), moves: a.moves || [], detail: a.detail || "", drinks: a.drinks || "", weigh: a.weigh || "", trips: a.trips || [] } }; drawIntake(); }
+function intakeChanges(a) {
+  const mv = a.moves || [], lift = mv.includes("lift"), c = [];
+  c.push(a.goal === "perf" ? "Goal: maintain and get fitter. Calories stay steady so training feels good." : `Goal: ${a.goal.toLowerCase()}.`);
+  c.push(lift ? "Train tab keeps your lifts, sets and rest timer." : `Train becomes Move: ${mv.includes("run") ? "runs" : mv.includes("bike") ? "rides" : "cardio"} and steps, no weights.`);
+  c.push({ cal: "Food shows calories only.", protein: "Food shows calories and protein.", full: "Food shows calories, protein, carbs and fat." }[a.detail]);
+  c.push(a.drinks === "no" ? "Alcohol tracking is hidden." : "Alcohol tracking stays, so nights out fit the week.");
+  if (a.weigh === "off") c.push("The scale is out of the way. Progress shows as averages and how you feel.");
+  if ((a.trips || []).length) c.push(`I'll keep ${a.trips.map(t => TRIPS[t].toLowerCase()).join(", ")} in mind when we talk.`);
+  return c.filter(Boolean);
+}
+function drawIntake() {
+  let el = document.getElementById("intake");
+  if (!S.intake) { if (el) el.remove(); document.body.classList.remove("noscroll"); return; }
+  if (!el) { el = document.createElement("div"); el.id = "intake"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Your goals"); document.body.appendChild(el); }
+  document.body.classList.add("noscroll");
+  const { i, ans } = S.intake, N = INTAKE.length, last = i >= N;
+  const dots = `<div class="idots">${[...Array(N + 1)].map((_, k) => `<i class="${k < i ? "on" : k === i ? "cur" : ""}"></i>`).join("")}</div>`;
+  let body;
+  if (last) body = `<h2>Here's your Bad Day Okay</h2><p class="muted">Based on your answers, this is what changes:</p><ul class="ichg">${intakeChanges(ans).map(c => `<li>${esc(c)}</li>`).join("")}</ul>`;
+  else {
+    const Q = INTAKE[i], cur = ans[Q.k];
+    body = `<h2>${esc(Q.q)}</h2>${Q.sub ? `<p class="muted">${esc(Q.sub)}</p>` : ""}<div class="iopts">${Q.opts.map(([v, l]) => `<button type="button" class="iopt" data-iopt="${v}" aria-pressed="${Q.multi ? cur.includes(v) : cur === v}">${esc(l)}</button>`).join("")}</div>`;
+  }
+  const ok = last || (INTAKE[i].multi ? ans[INTAKE[i].k].length : ans[INTAKE[i].k]);
+  el.innerHTML = `<div class="isheet"><div class="ihead">${dots}<button type="button" class="linkbtn" data-ix>Not now</button></div>${body}
+    <div class="ibtns">${i ? `<button type="button" class="btn" data-iback>Back</button>` : "<span></span>"}<button type="button" class="btn primary" data-inext ${ok ? "" : "disabled"}>${last ? "Set it up" : "Next"}</button></div></div>`;
+}
+function applyIntake(a) {
+  const st = S.settings, F = st.fields, mv = a.moves || [];
+  st.goal = a.goal === "perf" ? "Maintain" : a.goal; st.perf = a.goal === "perf";
+  F.lift = mv.includes("lift");
+  F.cardio = mv.some(x => ["run", "bike", "sports", "yoga"].includes(x)) || !F.lift;
+  F.steps = true;
+  if (mv.includes("run")) st.cardioType = "run"; else if (mv.includes("bike")) st.cardioType = "bike"; else if (!F.lift && mv.includes("walk")) st.cardioType = "walk";
+  F.macros = a.detail !== "cal"; st.detail = a.detail;
+  F.drinks = a.drinks !== "no";
+  st.weighOff = a.weigh === "off"; if (st.weighOff) F.bloat = false;
+  st.trips = a.trips || [];
+  st.intake = { done: today(), ...a };
+  saveSettings(); S.intake = null; drawIntake(); applyLook(); S.tile = null; render(); toast("All set. The app now fits how you live.");
+}
+document.addEventListener("click", ev => {
+  const t = ev.target;
+  if (t.closest("[data-intake]")) { intakeOpen(); return; }
+  if (!S.intake) return;
+  const o = t.closest("[data-iopt]"); if (o) {
+    const Q = INTAKE[S.intake.i], v = o.dataset.iopt;
+    if (Q.multi) { let l = S.intake.ans[Q.k]; l = l.includes(v) ? l.filter(x => x !== v) : (v === "none" ? ["none"] : l.filter(x => x !== "none").concat(v)); S.intake.ans[Q.k] = l; drawIntake(); }
+    else { S.intake.ans[Q.k] = v; S.intake.i++; drawIntake(); }
+    return;
+  }
+  if (t.closest("[data-iback]")) { S.intake.i = Math.max(0, S.intake.i - 1); drawIntake(); return; }
+  if (t.closest("[data-inext]")) { if (S.intake.i >= INTAKE.length) applyIntake(S.intake.ans); else { S.intake.i++; drawIntake(); } return; }
+  if (t.closest("[data-ix]")) { S.intake = null; drawIntake(); if (!S.settings.intake) { S.settings.intakeLater = today(); saveSettings(); render(); } return; }
+});
+const intakeCta = () => S.settings.intake || S.settings.intakeLater === today() ? "" : `<section class="card icta"><div><b>Make the app yours</b><span>Six quick questions about your goals. Runners get runs, lifters get lifts, and the rest gets out of the way.</span></div><button type="button" class="btn primary" data-intake>Start</button></section>`;
+
+// ----- Today in compartments: tiles up top, one section open at a time -----
+function tilesHtml(d, e, dv, F) {
+  const st = S.settings, rc = recovery(d, e), meals = Array.isArray(e.meals) ? e.meals : [];
+  const T = [["checkin", "t-y", "Check-in", st.weighOff ? (e.mood || "How are you?") : e.w != null ? `${f1(e.w)}` : "–", st.weighOff ? "mood & sleep" : e.w != null ? "lb this morning" : "tap to weigh in"],
+    ["recovery", "t-g", "Recovery", `${rc.score}`, rc.label],
+    ["food", "t-o", "Food", `${f0(dv.food ?? 0)}`, meals.length ? `cal · ${meals.length} item${meals.length === 1 ? "" : "s"}` : "cal so far"],
+    F.drinks && ["drinks", "t-y", "Drinks", `${f1n(dv.alcN || 0)}`, dv.alcN ? `${f0(dv.alcCal)} cal` : "none yet"],
+    (F.steps || F.cardio || F.waist || F.meal || F.bloat) && ["more", "t-g", "Activity", e.steps != null ? f0(e.steps) : "–", e.steps != null ? "steps" : "steps & cardio"],
+    F.notes && ["notes", "t-o", "Notes", e.notes ? "1" : "+", e.notes ? "note" : "add one"]].filter(Boolean);
+  return `<div class="tiles" role="tablist" aria-label="Today's sections">${T.map(([k, c, l, v, sub]) => `<button type="button" class="tile ${c}" data-tile="${k}" role="tab" aria-selected="${S.tile === k}"><span>${l}</span><b>${esc(v)}</b><small>${esc(sub)}</small></button>`).join("")}</div>`;
+}
+function tileDefault(d, e) { if (S.tile !== undefined) return; S.tile = d === today() && e.w == null && !S.settings.weighOff && new Date().getHours() < 11 ? "checkin" : "food"; }
+document.addEventListener("click", ev => { const t = ev.target.closest("[data-tile]"); if (!t) return; const k = t.dataset.tile; S.tile = S.tile === k ? null : k; render(); });
+
+// ----- Rest timer between sets, with a minigame to fill the time -----
+const REST = { on: false, end: 0, len: 90, min: false, g: {}, raf: 0, iv: 0, beeped: false };
+const restLen = () => S.settings.restSec || 90;
+const mmss = s => `${Math.floor(s / 60)}:${String(Math.max(0, s % 60)).padStart(2, "0")}`;
+const GAMES = { hoops: "Hoops", word: "Five letters", match: "Match", slide: "Slide" };
+function startRest(sec) {
+  REST.len = sec || restLen(); REST.end = Date.now() + REST.len * 1000; REST.on = true; REST.beeped = false; REST.min = false;
+  REST.game = REST.game || S.settings.restGame || "hoops";
+  drawRest(true); clearInterval(REST.iv); REST.iv = setInterval(tickRest, 250);
+}
+function stopRest() { REST.on = false; clearInterval(REST.iv); cancelAnimationFrame(REST.raf); const el = document.getElementById("rest"); if (el) el.remove(); }
+function restLeft() { return Math.ceil((REST.end - Date.now()) / 1000); }
+function beep() { try { const C = REST.ac || (REST.ac = new (window.AudioContext || window.webkitAudioContext)()); [0, 0.22].forEach(t0 => { const o = C.createOscillator(), g = C.createGain(); o.frequency.value = 880; g.gain.setValueAtTime(0.0001, C.currentTime + t0); g.gain.exponentialRampToValueAtTime(0.25, C.currentTime + t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, C.currentTime + t0 + 0.18); o.connect(g).connect(C.destination); o.start(C.currentTime + t0); o.stop(C.currentTime + t0 + 0.2); }); } catch { } try { navigator.vibrate?.([200, 100, 200]); } catch { } }
+function tickRest() {
+  const el = document.getElementById("rest"); if (!el || !REST.on) return;
+  const left = restLeft(), up = left <= 0;
+  if (up && !REST.beeped) { REST.beeped = true; beep(); el.classList.add("up"); }
+  const tx = el.querySelector(".rtime"); if (tx) tx.textContent = up ? "Go!" : mmss(left);
+  const ring = el.querySelector(".rring i"); if (ring) ring.style.setProperty("--p", up ? 100 : Math.round((1 - left / REST.len) * 100));
+  const msg = el.querySelector(".rmsg"); if (msg) msg.textContent = up ? "Rest's up. Next set, you've got this." : left <= 10 ? "Almost time. Finish this round." : "Breathe. Play a round while you rest.";
+}
+function drawRest(newGame) {
+  if (!REST.on) return;
+  let el = document.getElementById("rest");
+  if (!el) { el = document.createElement("div"); el.id = "rest"; el.setAttribute("aria-label", "Rest timer"); document.body.appendChild(el); }
+  el.className = (REST.min ? "min" : "") + (restLeft() <= 0 ? " up" : "");
+  el.innerHTML = `<div class="rhead"><button type="button" class="rring" data-rmin aria-label="${REST.min ? "Show" : "Hide"} the game"><i></i><b class="rtime"></b></button>
+    <div class="rmid"><span class="label">Rest</span><span class="rmsg"></span></div>
+    <button type="button" class="rbtn" data-radd="-15" aria-label="15 seconds less">−15</button><button type="button" class="rbtn" data-radd="15" aria-label="15 seconds more">+15</button><button type="button" class="rbtn x" data-rstop aria-label="End rest">✕</button></div>
+    ${REST.min ? "" : `<div class="rlen"><span class="muted">Rest length</span>${[60, 90, 120, 180].map(s => `<button type="button" class="chip" data-rlen="${s}" aria-pressed="${restLen() === s}">${mmss(s)}</button>`).join("")}</div>
+    <div class="rgames">${Object.entries(GAMES).map(([k, n]) => `<button type="button" data-rgame="${k}" aria-pressed="${REST.game === k}">${n}</button>`).join("")}</div>
+    <div class="rgame" id="rgame"></div>`}`;
+  tickRest();
+  if (!REST.min) { cancelAnimationFrame(REST.raf); if (newGame || !REST.g[REST.game]) REST.g[REST.game] = null; GAME[REST.game](document.getElementById("rgame")); }
+}
+document.addEventListener("click", ev => {
+  const t = ev.target;
+  if (t.closest("[data-rest]")) { startRest(); return; }
+  if (!REST.on || !t.closest("#rest")) return;
+  if (t.closest("[data-rstop]")) { stopRest(); return; }
+  if (t.closest("[data-rmin]")) { REST.min = !REST.min; drawRest(); return; }
+  const a = t.closest("[data-radd]"); if (a) { REST.end = Math.max(Date.now() + 5000, REST.end + +a.dataset.radd * 1000); REST.len = Math.max(REST.len, restLeft()); if (restLeft() > 0) { REST.beeped = false; document.getElementById("rest").classList.remove("up"); } tickRest(); return; }
+  const l = t.closest("[data-rlen]"); if (l) { const s = +l.dataset.rlen; S.settings.restSec = s; saveSettings(); REST.end = REST.end - REST.len * 1000 + s * 1000; REST.len = s; REST.beeped = restLeft() <= 0; el_pressed("[data-rlen]", l); tickRest(); return; }
+  const g = t.closest("[data-rgame]"); if (g) { REST.game = g.dataset.rgame; S.settings.restGame = REST.game; saveSettings(); drawRest(true); return; }
+});
+function el_pressed(sel, on) { document.querySelectorAll(`#rest ${sel}`).forEach(b => b.setAttribute("aria-pressed", b === on)); }
+function restBest(k, v, lowWins) { const b = S.settings.restBest || (S.settings.restBest = {}); if (v != null && (b[k] == null || (lowWins ? v < b[k] : v > b[k]))) { b[k] = v; saveSettings(); return true; } return false; }
+
+const GAME = {
+  // Hoops: the rim slides back and forth. Tap where you want the ball to come down.
+  hoops(box) {
+    const g = REST.g.hoops || (REST.g.hoops = { score: 0, shots: 0, streak: 0, ball: null, t: 0, msg: "Tap above the rim to shoot." });
+    box.innerHTML = `<div class="gtop"><span>Score <b data-hs>${g.score}</b></span><span>Streak <b data-hk>${g.streak}</b></span><span class="muted">Best ${S.settings.restBest?.hoops ?? 0}</span></div><canvas width="640" height="440" class="hoopc" aria-label="Basketball game. Tap to shoot."></canvas><div class="gmsg muted" data-hm>${g.msg}</div>`;
+    const cv = box.querySelector("canvas"), x = cv.getContext("2d"), W = 320, H = 220, G = 0.32, BX = 160, BY = 198, HY = 74, RW = 46;
+    x.scale(2, 2);
+    const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || "#7CC08F";
+    const col = { o: css("--bp-p"), g: css("--bp-gt"), r: css("--bp-r"), ink: css("--fg"), line: css("--line") };
+    const hoopX = () => 160 + Math.sin(g.t / 70) * (90 + Math.min(g.score, 10) * 3);
+    const say = m => { g.msg = m; const e = box.querySelector("[data-hm]"); if (e) e.textContent = m; };
+    cv.onpointerdown = ev => {
+      if (g.ball) return; const r = cv.getBoundingClientRect(), tx = (ev.clientX - r.left) / r.width * W;
+      const vy = -Math.sqrt(2 * G * (BY - 34)), disc = vy * vy - 2 * G * (BY - HY), tt = (-vy + Math.sqrt(disc)) / G;
+      g.ball = { x: BX, y: BY, vx: (tx - BX) / tt, vy, scored: false }; g.shots++;
+    };
+    const frame = () => {
+      if (!document.body.contains(cv)) return;
+      g.t++; const hx = hoopX();
+      x.clearRect(0, 0, W, H);
+      x.strokeStyle = col.line; x.lineWidth = 1; x.setLineDash([3, 5]); x.beginPath(); x.moveTo(0, BY + 12); x.lineTo(W, BY + 12); x.stroke(); x.setLineDash([]);
+      x.fillStyle = col.ink; x.fillRect(hx - 30, HY - 44, 60, 36); x.fillStyle = "#fff"; x.fillRect(hx - 27, HY - 41, 54, 30); x.strokeStyle = col.o; x.lineWidth = 2; x.strokeRect(hx - 12, HY - 30, 24, 18);
+      const b = g.ball;
+      if (b) {
+        const py = b.y; b.vy += G; b.x += b.vx; b.y += b.vy;
+        if (!b.scored && py < HY && b.y >= HY && b.vy > 0) {
+          const off = Math.abs(b.x - hx);
+          if (off < RW / 2 - 6) { b.scored = true; g.score++; g.streak++; say(g.streak > 2 ? `${g.streak} in a row!` : ["Bucket!", "Nothing but net.", "Smooth."][g.score % 3]); if (restBest("hoops", g.score)) say("New best!"); }
+          else if (off < RW / 2 + 8) { b.vx = (b.x < hx ? -1 : 1) * Math.abs(b.vx) * 0.7 + (b.x < hx ? -1 : 1); b.vy *= -0.45; }
+        }
+        if (b.y > H + 20 || b.x < -20 || b.x > W + 20) { if (!b.scored) { g.streak = 0; say("Off the rim. Again."); } g.ball = null; }
+      }
+      // rim and net in front of the ball's path
+      x.fillStyle = col.o; x.fillRect(hx - RW / 2, HY - 2, RW, 4);
+      x.strokeStyle = col.line; x.lineWidth = 1.5; for (let k = 0; k <= 4; k++) { const sx = hx - RW / 2 + k * RW / 4; x.beginPath(); x.moveTo(sx, HY + 2); x.lineTo(hx - 12 + k * 6, HY + 22); x.stroke(); }
+      const bb = g.ball || { x: BX, y: BY };
+      x.fillStyle = col.o; x.beginPath(); x.arc(bb.x, bb.y, 10, 0, 7); x.fill(); x.strokeStyle = col.ink; x.lineWidth = 1.2; x.beginPath(); x.arc(bb.x, bb.y, 10, 0, 7); x.moveTo(bb.x - 10, bb.y); x.lineTo(bb.x + 10, bb.y); x.moveTo(bb.x, bb.y - 10); x.lineTo(bb.x, bb.y + 10); x.stroke();
+      const hs = box.querySelector("[data-hs]"), hk = box.querySelector("[data-hk]"); if (hs) hs.textContent = g.score; if (hk) hk.textContent = g.streak;
+      REST.raf = requestAnimationFrame(frame);
+    };
+    frame();
+  },
+  // Five letters: guess the word in six tries. Green is the right spot, yellow is in the word.
+  word(box) {
+    const WORDS = ["SQUAT", "PLANK", "LUNGE", "PRESS", "CURLS", "BENCH", "SWEAT", "STEAK", "HONEY", "BERRY", "TOAST", "BAGEL", "PASTA", "SALAD", "GRAPE", "LEMON", "MANGO", "PEACH", "OLIVE", "WATER", "SLEEP", "TEMPO", "RELAX", "SMILE", "LIGHT", "BRAVE", "CALMS", "FRESH", "SHAKE", "PROUD", "TRAIL", "STONE", "SUNNY", "HAPPY", "SPEED", "POWER", "CHEST", "QUADS", "GLUTE", "FLOAT"];
+    const g = REST.g.word || (REST.g.word = { ans: WORDS[Math.floor(Math.random() * WORDS.length)], rows: [], cur: "", over: false, msg: "Guess the 5-letter word." });
+    const mark = w => { const a = g.ans.split(""), r = Array(5).fill("n"), used = Array(5).fill(false); w.split("").forEach((c, i) => { if (c === a[i]) { r[i] = "g"; used[i] = true; } }); w.split("").forEach((c, i) => { if (r[i] === "g") return; const j = a.findIndex((d, k) => d === c && !used[k]); if (j >= 0) { r[i] = "y"; used[j] = true; } }); return r; };
+    const keyState = {}; g.rows.forEach(w => mark(w).forEach((m, i) => { const c = w[i], p = keyState[c]; if (m === "g" || (m === "y" && p !== "g") || !p) keyState[c] = m; }));
+    const rowsH = [...Array(6)].map((_, r) => { const w = g.rows[r], m = w ? mark(w) : null, s = w || (r === g.rows.length ? g.cur : ""); return `<div class="wrow">${[...Array(5)].map((_, i) => `<span class="${m ? "w" + m[i] : s[i] ? "wt" : ""}">${s[i] || ""}</span>`).join("")}</div>`; }).join("");
+    const KB = ["QWERTYUIOP", "ASDFGHJKL", "+ZXCVBNM-"];
+    box.innerHTML = `<div class="wgrid">${rowsH}</div><div class="gmsg muted">${esc(g.msg)}</div>${g.over ? `<div class="chips" style="justify-content:center"><button type="button" class="btn" data-wnew>New word</button></div>` : `<div class="kb">${KB.map(r => `<div>${r.split("").map(c => c === "+" ? `<button type="button" data-wk="enter" class="wide">Enter</button>` : c === "-" ? `<button type="button" data-wk="del" class="wide" aria-label="Delete">⌫</button>` : `<button type="button" data-wk="${c}" class="${keyState[c] ? "k" + keyState[c] : ""}">${c}</button>`).join("")}</div>`).join("")}</div>`}`;
+    box.onclick = ev => {
+      if (ev.target.closest("[data-wnew]")) { REST.g.word = null; GAME.word(box); return; }
+      const k = ev.target.closest("[data-wk]")?.dataset.wk; if (!k || g.over) return;
+      if (k === "del") g.cur = g.cur.slice(0, -1);
+      else if (k === "enter") { if (g.cur.length < 5) { g.msg = "Needs 5 letters."; } else { g.rows.push(g.cur); g.cur = ""; if (g.rows[g.rows.length - 1] === g.ans) { g.over = true; g.msg = `Got it in ${g.rows.length}!`; if (restBest("word", g.rows.length, true)) g.msg += " New best."; } else if (g.rows.length >= 6) { g.over = true; g.msg = `It was ${g.ans}. Next one's yours.`; } else g.msg = `${6 - g.rows.length} tries left.`; } }
+      else if (g.cur.length < 5) g.cur += k;
+      GAME.word(box);
+    };
+  },
+  // Match: flip two cards, find the pairs.
+  match(box) {
+    const SYM = ["🍎", "🥑", "🍗", "🥦", "🍌", "🥚"];
+    const g = REST.g.match || (REST.g.match = { cards: [...SYM, ...SYM].map(s => ({ s, up: false, got: false })).sort(() => Math.random() - 0.5), open: [], moves: 0, t0: Date.now(), busy: false });
+    const done = g.cards.every(c => c.got);
+    box.innerHTML = `<div class="gtop"><span>Moves <b>${g.moves}</b></span><span>Pairs <b>${g.cards.filter(c => c.got).length / 2}/6</b></span><span class="muted">Best ${S.settings.restBest?.match ?? "–"}</span></div>
+      <div class="mgrid">${g.cards.map((c, i) => `<button type="button" data-mc="${i}" class="${c.up || c.got ? "up" : ""} ${c.got ? "got" : ""}" aria-label="${c.up || c.got ? c.s : "Hidden card"}">${c.up || c.got ? c.s : ""}</button>`).join("")}</div>
+      ${done ? `<div class="gmsg">All pairs in ${g.moves} moves.</div><div class="chips" style="justify-content:center"><button type="button" class="btn" data-mnew>Play again</button></div>` : `<div class="gmsg muted">Find the pairs.</div>`}`;
+    box.onclick = ev => {
+      if (ev.target.closest("[data-mnew]")) { REST.g.match = null; GAME.match(box); return; }
+      const b = ev.target.closest("[data-mc]"); if (!b || g.busy) return; const c = g.cards[+b.dataset.mc]; if (c.up || c.got) return;
+      c.up = true; g.open.push(c);
+      if (g.open.length === 2) { g.moves++; const [a, d] = g.open; if (a.s === d.s) { a.got = d.got = true; g.open = []; if (g.cards.every(x => x.got)) restBest("match", g.moves, true); } else { g.busy = true; setTimeout(() => { a.up = d.up = false; g.open = []; g.busy = false; if (document.body.contains(box)) GAME.match(box); }, 700); } }
+      GAME.match(box);
+    };
+  },
+  // Slide: put 1 to 8 back in order by sliding tiles into the gap.
+  slide(box) {
+    const g = REST.g.slide || (REST.g.slide = (() => { let b = [1, 2, 3, 4, 5, 6, 7, 8, 0], z = 8, prev = -1; for (let k = 0; k < 60; k++) { const n = [z - 3, z + 3, z % 3 ? z - 1 : -1, z % 3 < 2 ? z + 1 : -1].filter(q => q >= 0 && q < 9 && q !== prev); const q = n[Math.floor(Math.random() * n.length)]; [b[z], b[q]] = [b[q], b[z]]; prev = z; z = q; } return { b, moves: 0 }; })());
+    const won = g.b.join("") === "123456780";
+    box.innerHTML = `<div class="gtop"><span>Moves <b>${g.moves}</b></span><span class="muted">Best ${S.settings.restBest?.slide ?? "–"}</span></div>
+      <div class="sgrid">${g.b.map((v, i) => v ? `<button type="button" data-sl="${i}" class="${v === i + 1 ? "home" : ""}">${v}</button>` : `<span></span>`).join("")}</div>
+      ${won ? `<div class="gmsg">Solved in ${g.moves} moves.</div><div class="chips" style="justify-content:center"><button type="button" class="btn" data-snew>New puzzle</button></div>` : `<div class="gmsg muted">Tap a tile next to the gap to slide it.</div>`}`;
+    box.onclick = ev => {
+      if (ev.target.closest("[data-snew]")) { REST.g.slide = null; GAME.slide(box); return; }
+      const b = ev.target.closest("[data-sl]"); if (!b || won) return; const i = +b.dataset.sl, z = g.b.indexOf(0);
+      if ((Math.abs(i - z) === 3) || (Math.abs(i - z) === 1 && Math.floor(i / 3) === Math.floor(z / 3))) { [g.b[i], g.b[z]] = [g.b[z], g.b[i]]; g.moves++; if (g.b.join("") === "123456780") restBest("slide", g.moves, true); GAME.slide(box); }
+    };
+  },
+};
+const restLine = () => `<div class="restline"><span><b>Rest timer · ${mmss(restLen())}</b>${S.settings.restAuto !== false ? "Starts by itself when you log a set's reps. " : ""}Play a quick game while you rest.</span><button type="button" class="btn" data-rest>Start</button></div>`;
 
 // ----- eating out: the best orders at each chain for what's left today -----
 const NOT_MEAL = /sauce|dressing|dip\b|lemonade|soda|tea\b|coffee|latte|frost|shake|milkshake|cookie|brownie|pie\b|fries|tots|hash brown$|chips|drink|syrup|creamer|ketchup|mayo|kid|cup of|cookie|dessert|toast$|tortilla|rice$|beans$|salsa|cheese$|guac|queso|sour cream|lettuce|fajita veg|bread$|bun$|patty$|donut|muffin|frappuccino|refresher|macchiato|cappuccino|mocha|chai|matcha|cold brew|coolatta|fritter|churro|turnover|onion rings|potato cakes|loaf|croissant$|bagel$/i;
@@ -4044,6 +4336,8 @@ function vPrefs() {
   const sw = (k, lab) => `<div class="toggle"><span>${lab}</span><button type="button" class="switch" role="switch" aria-checked="${!!st[k]}" data-flag="${k}" aria-label="${lab}"></button></div>`;
   return `<div class="view">
   ${acctHtml()}
+  <section class="card"><h2>Your goals</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">${st.intake ? `Set ${esc(fmtD(st.intake.done))}. Answer again any time and the app reshapes around you.` : "Six quick questions, and the app shows what fits how you live."}</p><button type="button" class="btn primary" data-intake>${st.intake ? "Change my goals" : "Answer the questions"}</button>
+    ${sw("restAuto", "Start the rest timer after each set")}</section>
   <section class="card"><h2>Goal</h2><div class="seg">${Object.entries(GOALS).map(([g, o]) => `<button type="button" data-goal="${g}" aria-pressed="${st.goal === g}">${g}<small>${o.d}</small></button>`).join("")}</div></section>
   <section class="card" id="calccard"><h2>Maintenance calculator</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">How many calories you burn on a normal day, so you know where to start.</p>${calcHtml("pf", S.calcDraft || (S.calcDraft = { ...calcDefaults(), ...Object.fromEntries(Object.entries(st.calc || {}).filter(([, v]) => v != null)) }))}</section>
   <section class="card"><h2>Calories &amp; macros</h2><div class="grid2">
