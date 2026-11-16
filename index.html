@@ -996,6 +996,7 @@ body.noscroll { overflow: hidden }
 .hrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line) }
 .hrow span { display: flex; flex-direction: column; min-width: 0 } .hrow small { color: var(--muted); font-size: 12.5px }
 .hkey { background: var(--surface-2); border-radius: 14px; padding: 10px 12px; margin-bottom: 6px } .hkey ol { margin: 8px 0; padding-left: 18px; font-size: 13px; line-height: 1.45 } .hkey input { font-size: 12px }
+.hkstep b { display: block; font-size: 17px; margin: 2px 0 4px } .hkstep p { margin: 0 0 10px; font-size: 14px; line-height: 1.45 } .hkstep .label { font-size: 11px }
 
 </style>
 
@@ -4384,7 +4385,7 @@ async function healthPull(loud) {
   if (!healthOk() || HL.busy) return; HL.busy = true; refreshHealth();
   try {
     const [st, j] = await healthApi("action=pull&since=" + addD(today(), -14));
-    if (st === 200) { HL.info = j; HL.last = Date.now(); const n = applyHealth(j.days); if (loud) toast(n ? `Updated ${n} day${n === 1 ? "" : "s"} from your apps.` : "Everything's up to date."); }
+    if (st === 200) { HL.info = j; HL.last = Date.now(); const n = applyHealth(j.days); if (loud) { const td = j.days?.[today()]; toast(td?.steps != null ? `It worked: ${f0(td.steps)} steps today.` : n ? `Updated ${n} day${n === 1 ? "" : "s"} from your apps.` : "Nothing new yet. Run the shortcut, then check again."); } }
     else if (loud) toast(j.message || "Couldn't reach health sync.");
   } catch { if (loud) toast("Offline. Try again when you're back online."); }
   HL.busy = false; refreshHealth();
@@ -4394,12 +4395,25 @@ function healthInner() {
   const w = HL.info?.whoop, sc = HL.info?.shortcut;
   const wRow = w?.connected ? `<div class="hrow"><span><b>Whoop</b><small>${w.err ? "Sign-in expired. Reconnect to keep syncing." : w.last ? `Connected · synced ${ago(w.last)}` : "Connected"}</small></span>${w.err ? `<button type="button" class="btn" data-hwhoop>Reconnect</button>` : `<button type="button" class="linkbtn" data-hwhoopoff>Disconnect</button>`}</div>`
     : `<div class="hrow"><span><b>Whoop</b><small>${w && w.available === false ? "Almost ready: waiting on the Whoop developer setup." : "Recovery, sleep, strain and workouts."}</small></span><button type="button" class="btn" data-hwhoop ${w && w.available === false ? "disabled" : ""}>Connect</button></div>`;
-  const hRow = `<div class="hrow"><span><b>Apple Health</b><small>${sc?.last ? `Shortcut last sent ${ago(sc.last)}` : "Steps, sleep and workouts, through an iPhone Shortcut."}</small></span><button type="button" class="btn" data-hkey>${sc?.key ? "New link" : "Set up"}</button></div>
-    ${HL.key ? `<div class="hkey"><span class="label">Your private Shortcut link</span><div class="dkrow"><input readonly value="${esc(HL.key)}" id="hk-url" aria-label="Shortcut link"><button type="button" class="btn" data-hcopy>Copy</button></div>
-      <ol><li>Open <b>Shortcuts</b>, tap <b>+</b>, name it "Bad Day Okay".</li><li>Add <b>Find Health Samples</b>: Type is <b>Steps</b>, Start Date is <b>Today</b>. Then add <b>Calculate Statistics</b>: <b>Sum</b>.</li>
-      <li>Add <b>Get Contents of URL</b>: paste the link above, Method <b>POST</b>, Request Body <b>JSON</b>, add a Number field <b>steps</b> set to the Statistics result. You can add <b>sleep</b> (hours) and <b>workout_min</b> the same way.</li>
-      <li>In <b>Automation</b>, make a daily one at 9 PM that runs it, set to run without asking.</li></ol><p class="muted" style="font-size:12px;margin:0">Keep this link private. Getting a new one turns the old one off.</p></div>` : ""}`;
-  return `<h2>Connected apps</h2>${wRow}${hRow}<div class="chips" style="margin-top:10px"><button type="button" class="btn ghost" data-hsync ${HL.busy ? "disabled" : ""}>${HL.busy ? "Syncing…" : "Sync now"}</button></div>`;
+  const hRow = `<div class="hrow"><span><b>Apple Health</b><small>${sc?.last ? `Shortcut last sent ${ago(sc.last)}` : "Your steps, sent by a quick iPhone Shortcut."}</small></span><button type="button" class="btn" data-hkey>${sc?.key ? "New link" : "Set up"}</button></div>
+    ${HL.key ? hkGuide() : ""}`;
+  return `<h2>Connected apps</h2>${w && w.available === false && !w.connected ? "" : wRow}${hRow}<div class="chips" style="margin-top:10px"><button type="button" class="btn ghost" data-hsync ${HL.busy ? "disabled" : ""}>${HL.busy ? "Syncing…" : "Sync now"}</button></div>`;
+}
+const HK_STEPS = [
+  ["Copy your link", "This private link is how your iPhone sends steps to the app.", "copy"],
+  ["Open Shortcuts", "Open the Shortcuts app on your iPhone and tap the + in the top right corner."],
+  ["Get your steps", "Tap Search Actions, type Health Samples, and tap Find Health Samples. Tap Type and choose Steps. If it shows a date, set it to Today."],
+  ["Add them up", "Search Calculate Statistics, tap it, and choose Sum."],
+  ["Send them here", "Search Get Contents of URL and tap it. Tap the URL box, paste your link, then type &steps= right after it and tap the Statistics bubble above the keyboard."],
+  ["Test it", "Tap the play button at the bottom. Then come back here and tap Check it worked.", "check"],
+  ["Make it automatic (optional)", "In Shortcuts, tap Automation, then New Automation, then Time of Day. Pick 9 PM, Daily, Run Immediately, and choose your shortcut."],
+];
+function hkGuide() {
+  const k = HL.step || 0, [t, d, act] = HK_STEPS[k];
+  return `<div class="hkey"><div class="hkstep"><span class="label">Step ${k + 1} of ${HK_STEPS.length}</span><b>${t}</b><p>${esc(d)}</p>
+    ${act === "copy" ? `<div class="dkrow"><input readonly value="${esc(HL.key)}" id="hk-url" aria-label="Shortcut link"><button type="button" class="btn primary" data-hcopy>Copy</button></div>` : ""}
+    ${act === "check" ? `<button type="button" class="btn primary" data-hsync>Check it worked</button>` : ""}</div>
+    <div class="ibtns" style="margin-top:10px">${k ? `<button type="button" class="btn" data-hstep="-1">Back</button>` : "<span></span>"}${k < HK_STEPS.length - 1 ? `<button type="button" class="btn" data-hstep="1">Next</button>` : `<button type="button" class="btn" data-hdone>Done</button>`}</div></div>`;
 }
 const healthHtml = () => window.claude ? "" : `<section class="card" id="healthcard">${healthInner()}</section>`;
 function refreshHealth() { const el = document.getElementById("healthcard"); if (el) el.innerHTML = healthInner(); }
@@ -4408,7 +4422,9 @@ document.addEventListener("click", async ev => {
   if (t.closest("[data-hsync]")) { healthPull(true); return; }
   if (t.closest("[data-hwhoop]")) { const [st, j] = await healthApi("action=whoop_start"); if (st === 200 && j.url) location.href = j.url; else toast(j.message || "Couldn't start the Whoop sign-in."); return; }
   if (t.closest("[data-hwhoopoff]")) { await healthApi("action=whoop_off", "POST"); toast("Whoop disconnected."); healthPull(); return; }
-  if (t.closest("[data-hkey]")) { const [st, j] = await healthApi("action=key"); if (st === 200) { HL.key = j.url; refreshHealth(); healthPull(); } else toast(j.message || "Couldn't make a link."); return; }
+  if (t.closest("[data-hkey]")) { const [st, j] = await healthApi("action=key"); if (st === 200) { HL.key = j.url; HL.step = 0; refreshHealth(); healthPull(); } else toast(j.message || "Couldn't make a link."); return; }
+  const hs = t.closest("[data-hstep]"); if (hs) { HL.step = Math.max(0, Math.min(HK_STEPS.length - 1, (HL.step || 0) + +hs.dataset.hstep)); refreshHealth(); return; }
+  if (t.closest("[data-hdone]")) { HL.key = null; HL.step = 0; refreshHealth(); return; }
   if (t.closest("[data-hcopy]")) { try { await navigator.clipboard.writeText(HL.key); toast("Copied."); } catch { document.getElementById("hk-url")?.select(); } return; }
 });
 (() => {

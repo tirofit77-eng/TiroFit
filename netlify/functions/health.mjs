@@ -60,11 +60,12 @@ export default async req => {
   try {
     // Apple Health Shortcut posts here with its personal key
     if (path.endsWith("/in")) {
-      if (req.method !== "POST") return A.json({ error: "method" }, 405);
+      if (req.method !== "POST" && req.method !== "GET") return A.json({ error: "method" }, 405);
       const key = url.searchParams.get("key") || req.headers.get("x-health-key") || "";
       const uid = key && /^[a-f0-9]{40}$/.test(key) ? await store.get("k:" + key) : null; if (!uid) return A.json({ error: "bad_key", message: "That Shortcut key isn't valid. Get a new one in the app under You." }, 401);
-      const raw = await req.text(); if (raw.length > 20000) return A.json({ error: "too_large" }, 413);
+      const raw = req.method === "POST" ? await req.text() : ""; if (raw.length > 20000) return A.json({ error: "too_large" }, 413);
       let b = {}; try { b = JSON.parse(raw || "{}"); } catch { return A.json({ error: "bad_json" }, 400); }
+      for (const k of ["date", "steps", "sleep", "workout_min", "workout_cal", "workout_name"]) { const v = url.searchParams.get(k); if (v != null && b[k] == null) b[k] = k === "date" || k === "workout_name" ? v : v.replace(/[^0-9.]/g, ""); }
       const rec = await getRec(uid), d = isDay(b.date) ? b.date : new Date(Date.now() - (num(rec.tz) || 0) * 6e4).toISOString().slice(0, 10), p = { hk: Date.now() };
       const steps = num(b.steps), sleep = num(b.sleep ?? b.sleep_hours), wm = num(b.workout_min), wc = num(b.workout_cal);
       if (steps != null && steps >= 0 && steps < 200000) p.steps = Math.round(steps);
