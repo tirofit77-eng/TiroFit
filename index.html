@@ -998,6 +998,9 @@ body.noscroll { overflow: hidden }
 .hkey { background: var(--surface-2); border-radius: 14px; padding: 10px 12px; margin-bottom: 6px } .hkey ol { margin: 8px 0; padding-left: 18px; font-size: 13px; line-height: 1.45 } .hkey input { font-size: 12px }
 .hkstep b { display: block; font-size: 17px; margin: 2px 0 4px } .hkstep p { margin: 0 0 10px; font-size: 14px; line-height: 1.45 } .hkstep .label { font-size: 11px }
 
+.cusw { display: inline-flex; gap: 2px; margin-left: 8px; background: var(--surface-2); border-radius: 999px; padding: 2px; vertical-align: middle }
+.cusw button { border: 0; background: none; font: inherit; font-size: 12px; font-weight: 700; color: var(--muted); padding: 2px 9px; border-radius: 999px; cursor: pointer }
+.cusw button[aria-pressed=true] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.1) }
 </style>
 
 <div class="wrap">
@@ -1035,6 +1038,23 @@ const FIELDS = { food: "Food log (search, scan, photo, describe)", macros: "Prot
 // cardio can be tracked by minutes or by miles (incline treadmill)
 const CU = () => S.settings.cardioUnit === "mi";
 const cKey = () => CU() ? "cardioMi" : "cardio";
+const XC_MPH = { walk: 3, incline: 0, run: 6, jog: 5, hike: 2.5 };
+function xcCardio(e) {
+  const L = Array.isArray(e?.xc) ? e.xc : []; let t = 0, any = false;
+  for (const x of L) {
+    const m = num(x.min); if (!(m > 0) || /lift|weight|strength|yoga|stretch/i.test(String(x.a))) continue;
+    if (CU()) { const mi = num(x.mi) ?? (x.a in XC_MPH ? m / 60 * (XC_MPH[x.a] || num(S.settings.cardioMph) || 3.1) : null); if (mi != null) { t += mi; any = true; } }
+    else { t += m; any = true; }
+  }
+  return any ? Math.round(t * 100) / 100 : null;
+}
+// the main field in either unit, so switching min/mi never hides old days
+function cMain(e) {
+  const mn = num(e?.cardio), mi = num(e?.cardioMi), mph = num(S.settings.cardioMph) || 3.1, dist = typeof cKind() !== "number";
+  if (mn == null && mi == null) return null;
+  return CU() ? (mi || 0) + (mn != null && dist ? mn / 60 * mph : 0) : (mn || 0) + (mi != null ? mi / mph * 60 : 0);
+}
+const cDay = e => { const a = cMain(e), b = xcCardio(e); return a == null && b == null ? null : Math.round(((a || 0) + (b || 0)) * 100) / 100; };
 const cGoal = () => CU() ? S.settings.cardioMiWk : S.settings.cardioWk;
 const cUnit = () => CU() ? "mi" : "min";
 // ACSM equations: net calories (above resting) for walking or running at a speed and incline
@@ -1225,7 +1245,7 @@ function compute() {
       bloat: ds.filter(x => x.e.bloat === "Y").length, bloatLinked: ds.filter(x => x.bloatCause.length).length, bloatCauses: ds.flatMap(x => x.bloatCause),
       flagged: ds.filter(x => x.flags.length).length,
       steps: avg(g("steps")), stepsTot: sum(g("steps")), stepDays: g("steps").filter(x => x != null).length,
-      cardio: sum(g(cKey())), lifts: ds.filter(x => x.e.lift && x.e.lift !== "Rest").length, waist: avg(g("waist")) };
+      cardio: sum(ds.map(x => cDay(x.e))), lifts: ds.filter(x => x.e.lift && x.e.lift !== "Rest").length, waist: avg(g("waist")) };
     wk.status = wk.end >= T ? "In progress" : wk.wi >= 3 ? (wk.cd >= 5 ? "Complete" : "Weight only") : "Low data";
     wk.ok = wk.status === "Complete" || wk.status === "Weight only";
     m.weeks.push(wk);
@@ -1248,7 +1268,7 @@ function compute() {
 // This week's budget: eat over one day and the rest of the week drops, eat under and it rises.
 function cardioWeekCard(d, e) {
   const ws = monday(d), days = [...Array(7)].map((_, k) => addD(ws, k)), dn = ["M", "T", "W", "T", "F", "S", "S"];
-  const val = x => num((x === d ? e : S.entries[x])?.[cKey()]);
+  const val = x => cDay(x === d ? e : S.entries[x]);
   const vals = days.map(val), done = sum(vals.filter(v => v != null)), goal = cGoal() || 0, left = Math.max(0, goal - done);
   const sess = vals.filter(v => v > 0).length, isNow = ws === monday(today());
   const sub = goal ? (left ? `${cFmt(left)} ${CU() ? (left === 1 ? "mile" : "miles") : "min"} to go${isNow ? " this week" : ""} · ${sess} session${sess === 1 ? "" : "s"}` : `Target hit · ${sess} session${sess === 1 ? "" : "s"}`) : `${sess} session${sess === 1 ? "" : "s"}`;
@@ -1265,7 +1285,7 @@ function weekPlan(m) {
   const tv = dvOf(T), eatenToday = tv?.cal ?? 0;
   const upto = days.slice(0, idx + 1);
   const steps = upto.map(d => num(S.entries[d]?.steps)).filter(v => v != null);
-  const stepsSum = sum(steps), cardioSum = sum(upto.map(d => num(S.entries[d]?.[cKey()])));
+  const stepsSum = sum(steps), cardioSum = sum(upto.map(d => cDay(S.entries[d])));
   const todayAct = num(S.entries[T]?.steps) != null || num(S.entries[T]?.[cKey()]) != null;
   const counted = idx + (todayAct ? 1 : 0);
   const calPerStep = 0.04 * bw / 150;
@@ -1405,7 +1425,7 @@ function grades(m) {
       Calories: w.cd >= 5 ? clamp(100 - Math.abs(w.avgc - st.target) / st.target * 600, 0, 100) : null,
       Protein: pLogged ? pDays / 7 * 100 : null,
       Steps: w.stepDays >= 3 ? clamp(w.stepsTot / w.stepDays * 7 / st.stepsWk * 100, 0, 100) : null,
-      Cardio: days.some(d => num(S.entries[d]?.[cKey()]) != null) ? clamp(w.cardio / cGoal() * 100, 0, 100) : null,
+      Cardio: days.some(d => cDay(S.entries[d]) != null) ? clamp(w.cardio / cGoal() * 100, 0, 100) : null,
       Sleep: w.sleep != null ? clamp(w.sleep / 7.5 * 100, 0, 100) : null,
       Lifts: days.some(d => S.entries[d]?.lift) ? clamp(w.lifts / st.liftsWk * 100, 0, 100) : null
     };
@@ -1910,7 +1930,7 @@ function vGains() {
   <section class="card view" style="gap:12px">${zh(1, F.lift ? "Workout" : "Cardio & steps", !F.lift ? "today" : e.lift ? `${nSets} set${nSets === 1 ? "" : "s"} logged` : "pick a session")}
     ${!F.lift ? "" : e.lift && !S.pickLift ? `<div class="liftpick"><b>${esc(e.lift)}</b><button type="button" class="linkbtn" id="changelift">Change</button></div>` : `<div class="chips" data-chips="lift">${liftChoices().map(o => `<button type="button" class="chip" data-val="${esc(o)}" aria-pressed="${e.lift === o}">${esc(o)}</button>`).join("")}</div>`}
     ${F.lift ? workoutHtml(D, true) + restLine() : ""}
-    ${F.steps || F.cardio ? `<div class="grid2">${F.steps ? `<div class="field"><label for="f-steps">Steps</label><input id="f-steps" data-k="steps" type="number" inputmode="numeric" step="any" value="${esc(e.steps ?? "")}" placeholder="10000"></div>` : ""}${F.cardio ? `<div class="field"><label for="f-cardio">${CTYPES[S.settings.cardioType || "incline"][0]} (${cUnit()})</label><input id="f-cardio" data-k="${cKey()}" type="number" inputmode="decimal" step="any" value="${esc(e[cKey()] ?? "")}" placeholder="${CU() ? "0.75" : "20"}"></div>` : ""}</div>` : ""}
+    ${true ? `<div class="grid2">${F.steps ? `<div class="field"><label for="f-steps">Steps</label><input id="f-steps" data-k="steps" type="number" inputmode="numeric" step="any" value="${esc(e.steps ?? "")}" placeholder="10000"></div>` : ""}${true ? `<div class="field"><label for="f-cardio">${CTYPES[S.settings.cardioType || "incline"][0]}${typeof cKind() === "number" ? " (min)" : `<span class="cusw">${["min", "mi"].map(u => `<button type="button" data-cunit2="${u}" aria-pressed="${cUnit() === u}">${u}</button>`).join("")}</span>`}</label><input id="f-cardio" data-k="${cKey()}" type="number" inputmode="decimal" step="any" value="${esc(e[cKey()] ?? "")}" placeholder="${CU() ? "0.75" : "20"}"></div>` : ""}</div>` : ""}
     ${xcHtml(e)}
     <div class="savebar"><span class="msg" id="savemsg">${S.entries[d] ? "Saved. Changes save as you go." : "Changes save as you go."}</span></div></section>
   </form>
@@ -3170,7 +3190,7 @@ function xcHtml(e) {
   return `<div class="xc"><div class="xchead"><span class="label">Other cardio</span>${L.length ? `<b class="mono">${f0(xcCal(e))} cal</b>` : ""}</div>
     <div class="field"><label for="xc-desc">Describe it and I'll estimate</label><div class="dkrow"><input id="xc-desc" type="text" placeholder="45 min pickup basketball, 5 mile bike ride, hot yoga" autocomplete="off" value="${esc(S.xcEst?.d === draft().d ? S.xcEst.txt || "" : "")}"><button type="button" class="btn" data-xcdesc>Estimate</button></div></div>
     ${xcEstHtml()}
-    ${L.map((x, i) => `<div class="xcrow"><span>${esc(ACT[x.a]?.[0] || x.a)}</span><span class="mono">${f0(x.min)} min · ${f0(x.cal)} cal</span><button type="button" class="x" data-xcdel="${i}" aria-label="Remove">×</button></div>`).join("")}
+    ${L.map((x, i) => `<div class="xcrow"><span>${esc(ACT[x.a]?.[0] || x.a)}</span><span class="mono">${x.mi ? `${x.mi} mi · ` : ""}${f0(x.min)} min · ${f0(x.cal)} cal</span><button type="button" class="x" data-xcdel="${i}" aria-label="Remove">×</button></div>`).join("")}
     <div class="xcadd"><select id="xc-act" aria-label="Activity">${groups.map(([g, o]) => `<optgroup label="${g}">${Object.entries(o).map(([k, [n]]) => `<option value="${k}" ${k === (S.xcLast || "basketball") ? "selected" : ""}>${esc(n)}</option>`).join("")}</optgroup>`).join("")}</select>
       <input id="xc-min" type="number" inputmode="numeric" step="5" placeholder="min" aria-label="Minutes"><button type="button" class="btn" data-xcadd>Add</button></div>
     <p class="muted" style="margin:0;font-size:12.5px">Basketball, a bike ride, a class, anything extra. Calories are what it burns above resting${S.settings.eatBack ? ", and they're added to your week" : ""}.</p></div>`;
@@ -4009,7 +4029,7 @@ function applyIntake(a) {
   const st = S.settings, F = st.fields, mv = a.moves || [];
   st.goal = a.goal === "perf" ? "Maintain" : a.goal; st.perf = a.goal === "perf";
   F.lift = mv.includes("lift");
-  F.cardio = mv.some(x => ["run", "bike", "sports", "yoga"].includes(x)) || !F.lift;
+  F.cardio = mv.some(x => ["run", "walk", "bike", "sports", "yoga"].includes(x)) || !F.lift;
   F.steps = true;
   if (mv.includes("run")) st.cardioType = "run"; else if (mv.includes("bike")) st.cardioType = "bike"; else if (!F.lift && mv.includes("walk")) st.cardioType = "walk";
   F.macros = a.detail !== "cal"; st.detail = a.detail;
@@ -4321,9 +4341,12 @@ setTimeout(() => showOpening(), 80);
 function xcGuess(txt) {
   const t = txt.toLowerCase(); let a = null, best = 0;
   for (const [k, [n]] of Object.entries(ACT)) { const words = n.toLowerCase().split(/[^a-z]+/).filter(w => w.length > 3); const hit = words.filter(w => t.includes(w)).length; if (hit > best) { best = hit; a = k; } }
-  const h = t.match(/(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours)\b/), m = t.match(/(\d+)\s*(?:m|min|mins|minute|minutes)\b/);
-  const min = Math.round((h ? +h[1] * 60 : 0) + (m ? +m[1] : 0)) || (/half (an )?hour/.test(t) ? 30 : /an hour/.test(t) ? 60 : null);
-  return a && min ? { a, name: ACT[a][0], min, cal: xcBurn(a, min), why: "Matched from your description." } : null;
+  if (/incline|treadmill/.test(t)) a = "incline"; else if (!a && /\bwalk/.test(t)) a = "walk"; else if (!a && /\b(ran|run|running)\b/.test(t)) a = "run";
+  const h = t.match(/(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours)\b/), m = t.match(/(\d+)\s*(?:m|min|mins|minute|minutes)\b/), dm = t.match(/(\d+(?:\.\d+)?)\s*(?:mi|mile|miles)\b/);
+  const mi = dm ? +dm[1] : /\b(a|one) mile\b/.test(t) ? 1 : /half (a )?mile/.test(t) ? 0.5 : null;
+  const pace = a in XC_MPH ? (XC_MPH[a] || num(S.settings.cardioMph) || 3.1) : null;
+  const min = Math.round((h ? +h[1] * 60 : 0) + (m ? +m[1] : 0)) || (/half (an )?hour/.test(t) ? 30 : /an hour/.test(t) ? 60 : null) || (mi && pace ? Math.round(mi / pace * 60) : null);
+  return a && min ? { a, name: ACT[a][0], min, ...(mi ? { mi } : {}), cal: xcBurn(a, min), why: mi && !m && !h ? `About ${min} min for ${mi} mi at your usual pace.` : "Matched from your description." } : null;
 }
 async function xcEstimate() {
   const txt = (document.getElementById("xc-desc")?.value || "").trim(); if (!txt) { toast("Describe what you did first."); return; }
@@ -4332,8 +4355,8 @@ async function xcEstimate() {
   if (S.sample) {
     let bw = S.settings.fallbackBw; try { bw = compute().trend ?? bw; } catch {}
     try {
-      const o = await S.sample.json(`Estimate this cardio session for a person who weighs about ${Math.round(bw)} lb. Count only calories burned above resting (net), using typical MET values and the effort they describe. If they don't say how long, assume a typical length and say so.\n\nWhat they did: ${JSON.stringify(txt)}\n\nIf it matches one of these activity keys, use it, otherwise use "other": ${Object.keys(ACT).join(", ")}\n\nReply with JSON only: {"a": "key or other", "name": "short activity name", "min": number, "cal": number, "why": "one short line on how you estimated it"}`, { modelTier: "quick" });
-      if (o && num(o.min) > 0 && num(o.cal) >= 0) r = { a: ACT[o.a] ? o.a : (o.name || "Cardio").slice(0, 40), name: ACT[o.a]?.[0] || o.name || "Cardio", min: Math.round(num(o.min)), cal: Math.round(num(o.cal) / 5) * 5, why: o.why || "" };
+      const o = await S.sample.json(`Estimate this cardio session for a person who weighs about ${Math.round(bw)} lb. Count only calories burned above resting (net), using typical MET values and the effort they describe. If they don't say how long, assume a typical length and say so.\n\nWhat they did: ${JSON.stringify(txt)}\n\nIf it matches one of these activity keys, use it, otherwise use "other": ${Object.keys(ACT).join(", ")}\n\nReply with JSON only: {"a": "key or other", "name": "short activity name", "min": number, "mi": number or null (only if they gave a distance), "cal": number, "why": "one short line on how you estimated it"}`, { modelTier: "quick" });
+      if (o && num(o.min) > 0 && num(o.cal) >= 0) r = { a: ACT[o.a] ? o.a : (o.name || "Cardio").slice(0, 40), name: ACT[o.a]?.[0] || o.name || "Cardio", min: Math.round(num(o.min)), ...(num(o.mi) > 0 ? { mi: num(o.mi) } : {}), cal: Math.round(num(o.cal) / 5) * 5, why: o.why || "" };
     } catch {}
   }
   r = r || xcGuess(txt);
@@ -4343,15 +4366,17 @@ function xcEstHtml() {
   const x = S.xcEst; if (!x || x.d !== draft().d) return "";
   if (x.busy) return `<div class="xcest muted">Estimating…</div>`;
   if (x.fail) return `<div class="xcest"><span class="muted" style="font-size:13px">${S.sample ? "Couldn't estimate that one." : "Add how long you went, like \"30 min\", or pick the activity below."}</span></div>`;
-  return `<div class="xcest"><div><b>${esc(x.name)}</b><span class="muted">${f0(x.min)} min · about ${f0(x.cal)} cal</span>${x.why ? `<small class="muted">${esc(x.why)}</small>` : ""}</div><div class="chips"><button type="button" class="btn primary" data-xcok>Add it</button><button type="button" class="btn ghost" data-xcno>Not right</button></div></div>`;
+  return `<div class="xcest"><div><b>${esc(x.name)}</b><span class="muted">${x.mi ? `${x.mi} mi · ` : ""}${f0(x.min)} min · about ${f0(x.cal)} cal</span>${x.why ? `<small class="muted">${esc(x.why)}</small>` : ""}</div><div class="chips"><button type="button" class="btn primary" data-xcok>Add it</button><button type="button" class="btn ghost" data-xcno>Not right</button></div></div>`;
 }
 document.addEventListener("click", ev => {
   const t = ev.target;
   if (t.closest("[data-xcdesc]")) { xcEstimate(); return; }
   if (t.closest("[data-xcno]")) { S.xcEst = null; render(); return; }
-  if (t.closest("[data-xcok]")) { const x = S.xcEst, D = draft(); if (!x || x.busy || x.fail) return; D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a: x.a, min: x.min, cal: x.cal, ...(ACT[x.a] ? {} : { note: x.txt.slice(0, 80) }) }]; S.xcEst = null; autosave(); render(); toast(`Added ${x.name}: ${f0(x.cal)} cal`); }
+  if (t.closest("[data-xcok]")) { const x = S.xcEst, D = draft(); if (!x || x.busy || x.fail) return; D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a: x.a, min: x.min, ...(x.mi ? { mi: x.mi } : {}), cal: x.cal, ...(ACT[x.a] ? {} : { note: x.txt.slice(0, 80) }) }]; S.xcEst = null; autosave(); render(); toast(`Added ${x.name}: ${f0(x.cal)} cal`); }
 });
 document.addEventListener("keydown", ev => { if (ev.key === "Enter" && ev.target.id === "xc-desc") { ev.preventDefault(); xcEstimate(); } });
+document.addEventListener("click", ev => { const b = ev.target.closest("[data-cunit2]"); if (!b) return; ev.preventDefault(); if (S.settings.cardioUnit === b.dataset.cunit2) return; S.settings.cardioUnit = b.dataset.cunit2; saveSettings(); render(); toast(b.dataset.cunit2 === "mi" ? "Cardio is in miles now." : "Cardio is in minutes now."); });
+document.addEventListener("input", ev => { if (ev.target.id !== "f-cardio") return; setTimeout(() => { const c = document.querySelector(".cweek"); if (!c) return; try { const D = draft(); c.outerHTML = cardioWeekCard(D.d, D.e); } catch {} }, 0); });
 
 // ----- Connected apps: Whoop and Apple Health (web app with an account; server code in netlify/functions/health.mjs) -----
 const HL = { busy: false, info: null, key: null, last: 0 };
