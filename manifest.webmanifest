@@ -1,10 +1,10 @@
 {
-  "name": "TiroFit",
-  "short_name": "TiroFit",
-  "description": "Calorie, training and recovery coach built around balancing the week.",
+  "name": "Bad Day Okay",
+  "short_name": "Bad Day Okay",
+  "description": "A forgiving calorie, training and recovery companion that shows the big picture, not the bad day.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#08070b",
+  "background_color": "#F8F4EE",
   "theme_color": "#0a0a0a",
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },

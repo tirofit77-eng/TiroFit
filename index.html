@@ -1,8 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="icon" href="/icons/icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="TiroFit"><meta name="theme-color" content="#0a0a0a"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>TiroFit</title>
+<!doctype html><html><head><meta charset=utf8><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="icon" href="/icons/icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Bad Day Okay"><meta name="theme-color" content="#0a0a0a"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Bad Day Okay</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Kalam:wght@400;700&display=swap">
 <style>
 /* Layout: phone-first app shell — sticky top bar, one view at a time, bottom tab bar; widens to a two-column dashboard on desktop. */
 :root {
@@ -705,11 +705,122 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 :root[data-look="club"][data-swap] body { background: radial-gradient(120% 55% at 50% -12%, rgba(163,92,255,.13), transparent 62%) fixed, radial-gradient(80% 40% at 100% 100%, rgba(226,182,92,.10), transparent 70%) fixed, linear-gradient(180deg, #151413, #0f0e0d) fixed; background-color: #121110 }
 :root[data-look="club"][data-swap] .pill.good { color: #a35cff; background: rgba(163,92,255,.14) }
 :root[data-look="club"][data-swap] { --gold-soft: rgba(163,92,255,.16); --purple-glow: rgba(226,182,92,.55); --a: #a35cff; --on-a: #ffffff; --a-soft: rgba(163,92,255,.16); --t-gold: #e2b65c; --t-elite: #a35cff }
+/* ----- Bad Day Okay: big picture, trail, tracking score, dice ----- */
+:root { --bp-g: #23736F; --bp-p: #E2703A; --hand: "Kalam", "Bradley Hand", cursive }
+.bphero { margin: 4px 2px 12px }
+.bphero h1 { font-family: var(--display); font-size: 27px; line-height: 1.1; margin: 0; letter-spacing: -.02em }
+.bphero p { margin: 6px 0 0; color: var(--muted); font-size: 14.5px }
+.bp { display: grid; gap: 12px }
+.bphead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px }
+.bphead h2 { margin: 0 }
+.bplead { margin: 0; font-size: 14.5px; line-height: 1.45 }
+.bpseg { display: flex; gap: 18px }
+.bpseg button { border: 0; background: none; color: var(--muted); opacity: .7; font: inherit; font-weight: 800; font-size: 17px; padding: 0 0 5px; cursor: pointer; border-bottom: 3px solid transparent }
+.bpseg button[aria-selected=true] { color: var(--fg); opacity: 1; border-bottom-color: var(--bp-g) }
+.bpnum { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap }
+.bpnum b { font-family: var(--numf, var(--display)); font-size: 44px; line-height: 1; letter-spacing: -.03em }
+.bpnum span { color: var(--muted); font-size: 13px; padding-bottom: 5px }
+.bpnum em { margin-left: auto; font-style: normal; font-size: 12px; font-weight: 700; background: color-mix(in srgb, var(--bp-g) 14%, transparent); color: var(--bp-g); padding: 5px 10px; border-radius: 999px; white-space: nowrap }
+.bpweek { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px }
+.bpweek span { display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--muted); padding: 8px 0; border-radius: 10px; background: var(--surface-2) }
+.bpweek b { font-size: 11.5px; color: var(--fg) }
+.bpweek .s-on { background: var(--bp-g); color: #fff } .bpweek .s-on b { color: #fff }
+.bpweek .s-off { background: color-mix(in srgb, var(--bp-g) 30%, var(--surface)) }
+.bpweek .s-far { background: color-mix(in srgb, var(--bp-g) 14%, var(--surface)) }
+.bpweek .s-big { background: var(--bp-p); color: #fff } .bpweek .s-big b { color: #fff }
+.bpweek .s-e { background: none; border: 1.5px dashed var(--line) }
+.bpweek .fut { background: none; border: 1.5px solid var(--line); opacity: .6 }
+.bpweek .now { outline: 2px solid var(--fg); outline-offset: 1px }
+.trail { display: block; overflow: visible }
+.tr-path { fill: none; stroke: var(--fg); stroke-width: 1.5; stroke-dasharray: 1 6; stroke-linecap: round; opacity: .8 }
+.tr-on { fill: var(--bp-g); stroke: var(--fg); stroke-width: 1.2 }
+.tr-off { fill: color-mix(in srgb, var(--bp-g) 45%, var(--surface)); stroke: var(--fg); stroke-width: 1.2 }
+.tr-big { fill: var(--bp-p); stroke: var(--fg); stroke-width: 1.3 }
+.tr-e { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 2.5 2.5 }
+.tr-now { fill: var(--surface); stroke: var(--bp-g); stroke-width: 2.5 }
+.tr-arrow { stroke: var(--bp-p); stroke-width: 1.6; stroke-linecap: round }
+.tr-note { font-family: var(--hand); font-size: 14px; fill: var(--bp-p) }
+.tr-lab { font-family: var(--hand); font-size: 13px; fill: var(--muted) }
+.tr-today { fill: var(--bp-g) }
+.bpleg { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted) }
+.bpleg em { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; background: var(--surface-2) }
+.bpleg .s-on { background: var(--bp-g) } .bpleg .s-off { background: color-mix(in srgb, var(--bp-g) 45%, var(--surface)) } .bpleg .s-big { background: var(--bp-p) } .bpleg .s-e { background: none; border: 1.5px dashed var(--muted) }
+.bpyear { display: flex; align-items: flex-end; gap: 4px; height: 90px; position: relative; border-bottom: 1.5px solid var(--line) }
+.bpyear > div:not(.bpgoal) { flex: 1; height: 100%; display: flex; align-items: flex-end }
+.bpyear i { display: block; width: 100%; background: color-mix(in srgb, var(--bp-g) 70%, var(--surface)); border-radius: 5px 5px 2px 2px }
+.bpyear i.hi { background: var(--bp-p) } .bpyear i.none { background: var(--line) }
+.bpgoal { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--bp-p); z-index: 1 }
+.bpgoal span { position: absolute; right: 0; top: -17px; font-size: 10px; font-weight: 700; color: var(--bp-p) }
+.bpylab { display: flex; gap: 4px; margin-top: 3px } .bpylab span { flex: 1; text-align: center; font-size: 10px; color: var(--muted) }
+.bpzoom { background: color-mix(in srgb, var(--bp-p) 11%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--bp-p) 55%, transparent); border-radius: 12px; padding: 12px }
+.bpzt { color: var(--bp-p); font-size: 13px }
+.bpzrow { display: flex; gap: 8px; align-items: flex-end; height: 70px; margin-top: 6px }
+.bpzrow div { flex: 1; display: grid; justify-items: center; align-content: end; gap: 3px; font-size: 10.5px; color: var(--muted) }
+.bpzrow i { display: block; width: 100%; background: var(--bp-p); border-radius: 6px; transform-origin: bottom; animation: bpgrow .6s ease-out both; animation-delay: calc(var(--i) * .2s) }
+@keyframes bpgrow { from { transform: scaleY(0) } }
+.bpzoom p { margin: 8px 0 0; font-family: var(--hand); font-size: 16px; line-height: 1.4 }
+.bpfoot { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 12px }
+.ce { display: flex; gap: 10px; align-items: center; flex: 1 1 220px }
+.ce small { display: block; color: var(--muted); font-size: 12px; line-height: 1.35 }
+.cering { width: 48px; height: 48px; border-radius: 50%; background: conic-gradient(var(--bp-g) calc(var(--v) * 1%), var(--surface-2) 0); display: grid; place-items: center; flex: none }
+.cering b { width: 38px; height: 38px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-size: 15px }
+.wb p { margin: 6px 0 12px }
+.asks { margin: 0 0 10px }
+.rough { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 13px }
+.closeok { font-size: 13px; color: var(--bp-g); margin: 8px 0 0 }
+.dicebox { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 12px }
+.dierow { display: flex; gap: 16px; align-items: center }
+.die { width: 66px; height: 66px; border-radius: 14px 18px 12px 16px; background: var(--bp-p); display: grid; grid-template-columns: repeat(3, 1fr); padding: 10px; gap: 3px; border: 2px solid var(--fg); cursor: pointer; flex: none; transform: rotate(-10deg); box-shadow: 3px 3px 0 var(--fg) }
+.die span { border-radius: 50% } .die .d { background: #fff; border: 1px solid var(--fg) }
+.die.rolling { animation: dieroll .95s cubic-bezier(.3, .7, .4, 1) }
+@keyframes dieroll { 0% { transform: rotate(-10deg) } 25% { transform: rotate(190deg) translateY(-28px) scale(1.12) } 50% { transform: rotate(400deg) } 72% { transform: rotate(560deg) translateY(-10px) } 100% { transform: rotate(710deg) } }
+.dicepick { animation: flipin .4s ease-out; min-width: 0 }
+@keyframes flipin { from { transform: rotateX(80deg); opacity: 0 } }
+@media (prefers-reduced-motion: reduce) { .die.rolling, .bpzrow i, .dicepick { animation: none } }
+
+/* ----- the Bad Day Okay look: warm sand, deep teal, burnt orange, inked edges ----- */
+:root[data-look="sunrise"] { --bg: #F8F4EE; --surface: #FFFFFF; --surface-2: #F1EAE1; --line: #E2D6C8; --fg: #26211D; --muted: #7D7166;
+  --good: #23736F; --warn: #C9822F; --bad: #D0602C; --a: #23736F; --on-a: #ffffff; --a-soft: #DCECEA;
+  --p-red: #E2703A; --p-blue: #23736F; --p-yellow: #D9A441; --p-green: #3E9A7A; --steel: #CDBFB0; --steel-2: #A8998A;
+  --display: "Bricolage Grotesque", system-ui, sans-serif; --body: "Bricolage Grotesque", system-ui, sans-serif; --numf: "Bricolage Grotesque", system-ui, sans-serif;
+  --r: 16px; color-scheme: light }
+:root[data-look="sunrise"] body { background: linear-gradient(180deg, #F2DCC8 0, #F8F4EE 300px) no-repeat, radial-gradient(#ebe0d3 1px, transparent 1px) 0 0 / 18px 18px, #F8F4EE }
+:root[data-look="sunrise"] header.top, :root[data-look="sunrise"] body::before { background: color-mix(in srgb, #F8F4EE 88%, transparent); backdrop-filter: blur(8px) }
+:root[data-look="sunrise"] .card { background: var(--surface); border: 1.5px solid var(--fg); border-radius: 6px 18px 8px 16px; box-shadow: none }
+:root[data-look="sunrise"] h2 { font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -.01em; text-transform: none; font-stretch: 100% }
+:root[data-look="sunrise"] .label, :root[data-look="sunrise"] .field > label, :root[data-look="sunrise"] .field > .label { font-family: var(--body); font-weight: 600; letter-spacing: .1em; color: var(--muted) }
+:root[data-look="sunrise"] .btn { border: 1.5px solid var(--fg); border-radius: 4px 14px 6px 12px; font-weight: 700; background: var(--surface); color: var(--fg) }
+:root[data-look="sunrise"] .btn.primary { background: var(--bp-g); color: #fff; box-shadow: 3px 3px 0 var(--fg) }
+:root[data-look="sunrise"] .btn.ghost { border-color: var(--line) }
+:root[data-look="sunrise"] .chip { border: 1.5px solid var(--fg); border-radius: 4px 12px 6px 10px; background: var(--surface); color: var(--fg) }
+:root[data-look="sunrise"] .chip[aria-pressed=true] { background: var(--bp-g); color: #fff; border-color: var(--fg) }
+:root[data-look="sunrise"] .brand { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -.02em; font-stretch: 100%; color: var(--fg) }
+:root[data-look="sunrise"] .brand i { font-style: normal; color: var(--bp-g) }
+:root[data-look="sunrise"] .brand small { font-family: var(--hand); font-size: 15px; letter-spacing: 0; color: var(--bp-p) }
+:root[data-look="sunrise"] input, :root[data-look="sunrise"] textarea, :root[data-look="sunrise"] select { border-radius: 8px }
+:root[data-look="sunrise"] #tabs { background: var(--surface); border-top: 1.5px solid var(--fg) }
+:root[data-look="sunrise"] #tabs button[aria-current=page] { color: var(--bp-g) }
+:root[data-look="sunrise"] .msg.assistant .bub { background: #FBEFE6; font-family: var(--hand); font-size: 16px; line-height: 1.4 }
+:root[data-look="sunrise"] .msg.user .bub { background: var(--bp-g); color: #fff }
+
+:root[data-look="sunrise"] .brand { text-transform: none }
+:root[data-look="sunrise"] .board { --bg: #F8F4EE; --surface: #FFFFFF; --surface-2: #F1EAE1; --line: #E2D6C8; --fg: #26211D; --muted: #7D7166; --steel: #CDBFB0; --steel-2: #A8998A; background: #FFFFFF; color: var(--fg); border-color: var(--fg) !important }
+:root[data-look="sunrise"] .board .streakbox { background: #F1EAE1; border: 1.5px solid var(--fg); border-radius: 6px 14px 8px 12px; color: var(--fg); box-shadow: none; text-shadow: none }
+:root[data-look="sunrise"] .board .streakbox b { color: var(--bp-g); text-shadow: none; font-family: var(--display) }
+:root[data-look="sunrise"] .board .nudge, :root[data-look="sunrise"] .plannote { background: #FBEFE6 }
+:root[data-look="sunrise"] .jersey { font-family: var(--display); letter-spacing: -.03em; text-shadow: none; color: var(--fg) }
+:root[data-look="sunrise"] .zh b, :root[data-look="sunrise"] .zh .bb > * { display: none }
+:root[data-look="sunrise"] .zh span { font: 800 17px/1.1 var(--display); letter-spacing: -.01em; text-transform: none; font-stretch: 100% }
+:root[data-look="sunrise"] .zh small { font-family: var(--hand); font-size: 14px; color: var(--bp-p) }
+:root[data-look="sunrise"] nav.tabs button { font-family: var(--body); text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 600 }
+:root[data-look="sunrise"] .segtabs button { font-family: var(--body); text-transform: none; letter-spacing: 0; font-weight: 700 }
+:root[data-look="sunrise"] .segtabs button[aria-selected=true] { background: var(--bp-g); color: #fff }
+
 </style>
 
 <div class="wrap">
   <header class="top">
-    <div class="brand" id="brand">Tiro<i><b>f</b><b>i</b><b>t</b></i><small id="brandsub">Balance the week, not the day</small></div>
+    <div class="brand" id="brand">Bad Day <i>Okay</i><small id="brandsub">Progress over perfect.</small></div>
     <button class="goalchip" id="goalchip" type="button">Reverse diet</button>
   </header>
   <div class="banner" id="banner" hidden></div>
@@ -736,7 +847,7 @@ const GOALS = {
   "Lean bulk": { r: [0.001, 0.0025, 0.004], d: "Gain slowly, mostly muscle" },
   "Reverse diet": { r: [-0.001, 0, 0.0025], d: "Add food until weight is flat" }
 };
-const LOOKS = { club: ["Club", "Matte black, wood panels, gold light", ["#121110", "#6b4a2d", "#e2b65c", "#f1ece3", "#d24a3c"]], neon: ["Club Purple", "Same club look, purple light with gold touches", ["#121110", "#6b4a2d", "#a35cff", "#e2b65c", "#f1ece3"]], studio: ["Daylight", "Light concrete, black boards, plate colors", ["#e9e9e6", "#131313", "#c8372d", "#24579e", "#e2a41c"]], iron: ["Iron", "Black and gray, plate-color pops", ["#111213", "#c9ccd1", "#e5483a", "#2f7fe0", "#f0c419"]], chalk: ["Chalk", "Light gray, barbells, old-school plates", ["#e3e4e6", "#1d1e21", "#c4412f", "#2d5b9a", "#d99a1e"]], classic: ["Original", "Pick light or dark and an accent", ["#f3f5f8", "#2457d6", "#141a22"]] };
+const LOOKS = { sunrise: ["Bad Day Okay", "Warm sand, deep teal, burnt orange", ["#F8F4EE", "#23736F", "#E2703A", "#26211D", "#F2DCC8"]], club: ["Club", "Matte black, wood panels, gold light", ["#121110", "#6b4a2d", "#e2b65c", "#f1ece3", "#d24a3c"]], neon: ["Club Purple", "Same club look, purple light with gold touches", ["#121110", "#6b4a2d", "#a35cff", "#e2b65c", "#f1ece3"]], studio: ["Daylight", "Light concrete, black boards, plate colors", ["#e9e9e6", "#131313", "#c8372d", "#24579e", "#e2a41c"]], iron: ["Iron", "Black and gray, plate-color pops", ["#111213", "#c9ccd1", "#e5483a", "#2f7fe0", "#f0c419"]], chalk: ["Chalk", "Light gray, barbells, old-school plates", ["#e3e4e6", "#1d1e21", "#c4412f", "#2d5b9a", "#d99a1e"]], classic: ["Original", "Pick light or dark and an accent", ["#f3f5f8", "#2457d6", "#141a22"]] };
 const DRINKS = { light: ["Light beer", 100], beer: ["Beer", 150], seltzer: ["Seltzer", 100], wine: ["Glass of wine", 125], shot: ["Shot", 100], mixed: ["Mixed drink", 200] };
 const FIELDS = { food: "Food log (search, scan, photo, describe)", macros: "Protein / carbs / fat totals", drinks: "Alcohol", sleep: "Sleep", recovery: "Recovery", bloat: "Bloated", meal: "Last meal time", steps: "Steps", cardio: "Cardio", lift: "Workout (sets and reps)", waist: "Waist", notes: "Notes" };
 // cardio can be tracked by minutes or by miles (incline treadmill)
@@ -769,7 +880,7 @@ const cMinOf = e => (num(e?.cardio) || 0) + (num(e?.cardioMi) || 0) * 19;
 const LIFTS = ["Upper", "Lower", "Full body A", "Full body B", "Full body C", "Other", "Rest"];
 const BF_METHODS = ["Photo estimate (AI)", "DEXA", "BodPod", "InBody / BIA", "Calipers", "Smart scale", "Hydrostatic", "Own guess"];
 const DEF = { goal: "Maintain", target: 2200, maint0: 2700, protein: 0.9, fat: 0.3, alpha: 0.1, maxChg: 250, revStep: 125,
-  learn: 0.4, fallbackBw: 155, drinkThr: 3, skipFlagged: true, accent: "cobalt", theme: "system", name: "", look: "club", lookV: 4, trainFor: "bodybuilding", coachNotes: "", eventName: "", eventDate: "",
+  learn: 0.4, fallbackBw: 155, drinkThr: 3, skipFlagged: true, accent: "cobalt", theme: "system", name: "", look: "sunrise", lookV: 5, trainFor: "bodybuilding", coachNotes: "", eventName: "", eventDate: "",
   stepsWk: 70000, cardioWk: 80, liftsWk: 4, cardioCalMin: 7, cardioUnit: "min", cardioMiWk: 2.5, cardioCalMi: 0, cardioType: "incline", cardioMph: 3.15, cardioGrade: 9, eatBack: true, dayFlex: 500, about: "",
   fields: Object.fromEntries(Object.keys(FIELDS).map(k => [k, true])) };
 
@@ -980,7 +1091,9 @@ function weekPlan(m) {
   const cardioAdj = (cardioSum - cGoal() / 7 * counted) * cRate(bw);
   const xcAdj = sum(upto.map(d => xcCal(S.entries[d])));
   const actAdj = st.eatBack ? Math.round(clamp(stepsAdj + cardioAdj + xcAdj, -1500, 1500) / 10) * 10 : 0;
-  const weekBudget = st.target * 7 + actAdj;
+  let carry = 0, carryOver = 0;
+  if (st.carryOver !== false) { const pc = [...Array(7)].map((_, k) => dvOf(addD(ws, k - 7))?.cal).filter(c => c != null && c > 0); if (pc.length >= 4) { carryOver = Math.round((sum(pc) - st.target * pc.length) / 10) * 10; if (carryOver > 700) carry = Math.min(150 * 7, Math.round(carryOver * 0.5 / 10) * 10); } }
+  const weekBudget = st.target * 7 + actAdj - carry;
   const left = 7 - idx;
   const plans = (Array.isArray(st.plans) ? st.plans : []).filter(p => p && days.includes(p.d) && p.d >= T && num(p.extra) > 0);
   const bank = sum(plans.map(p => num(p.extra)));
@@ -990,7 +1103,7 @@ function weekPlan(m) {
   const todayTarget = baseTarget + (todayPlan ? Math.round(num(todayPlan.extra) / 10) * 10 : 0);
   const perDay = days.map(d => ({ d, cal: dvOf(d)?.cal ?? null }));
   return { ws, idx, days, perDay, eatenPrev, missing, eatenToday, todayTarget, clamped: Math.abs(raw - baseTarget) > 10, raw, plans, bank, baseTarget, todayPlan, bankPerDay: bank ? Math.round(bank / left / 10) * 10 : 0,
-    weekBudget, actAdj, stepsAdj, cardioAdj, xcAdj, stepsSum, cardioSum, weekEaten: eatenPrev - missing * st.target + eatenToday, left };
+    weekBudget, carry, carryOver, actAdj, stepsAdj, cardioAdj, xcAdj, stepsSum, cardioSum, weekEaten: eatenPrev - missing * st.target + eatenToday, left };
 }
 
 function recommend(m) {
@@ -1490,7 +1603,7 @@ async function sendSplitTalk(text) {
   text = String(text || "").trim(); if (!text || !S.sample || S.chatBusy) return;
   const list = chatOf("split"); list.push({ role: "user", text }); S.splitDraft = ""; S.chatBusy = "split"; render();
   const c = splitCheck(), did = [];
-  const sys = `You are the strength coach inside the TiroFit app, talking with the lifter about their training split and the app's split recommendations. Be direct, practical and evidence-based, but respect the lifter's choices and what they know about their own gym's machines. If they explain that an exercise is different from what the app assumed (for example a machine's angle or grip) or that it also trains another muscle, call save_exercise_note so the app remembers it. If they convincingly push back on a tip, or say a tip doesn't fit how they train, call hide_tip with the tip's opening words. Keep replies under 120 words, plain text, no markdown headers.
+  const sys = `You are the strength coach inside the Bad Day Okay app, talking with the lifter about their training split and the app's split recommendations. Be direct, practical and evidence-based, but respect the lifter's choices and what they know about their own gym's machines. If they explain that an exercise is different from what the app assumed (for example a machine's angle or grip) or that it also trains another muscle, call save_exercise_note so the app remembers it. If they convincingly push back on a tip, or say a tip doesn't fit how they train, call hide_tip with the tip's opening words. Keep replies under 120 words, plain text, no markdown headers.
 Split: ${JSON.stringify(templates().map(t => ({ day: t.name, exercises: t.ex.map(x => { const p = parseEx(x); return { name: p.name, sets: setTarget(p.name, today(), t).sets }; }) })))}
 Weekly working sets per muscle (last 2 weeks): ${JSON.stringify(c.wk)}. Times per week: ${JSON.stringify(c.freq)}.
 Current app tips: ${JSON.stringify(c.recs.map(r => r[1]))}
@@ -1526,7 +1639,7 @@ async function runSplitAI() {
   if (!S.sample || S.splitAI?.busy) return;
   const c = splitCheck(), rc = recovery(today());
   S.splitAI = { busy: true }; render();
-  const prompt = `You are a sharp, evidence-based strength coach reviewing a lifter's training split inside the TiroFit app. The app's philosophy: life gets in the way, back-to-back days and drinks happen, so suggestions should be practical, not perfectionist.
+  const prompt = `You are a sharp, evidence-based strength coach reviewing a lifter's training split inside the Bad Day Okay app. The app's philosophy: life gets in the way, back-to-back days and drinks happen, so suggestions should be practical, not perfectionist.
 Split (each day and its exercises): ${JSON.stringify(templates().map(t => ({ day: t.name, exercises: t.ex })))}
 Estimated weekly working sets per muscle (last 2 weeks): ${JSON.stringify(c.wk)}. Times per week each muscle is trained: ${JSON.stringify(c.freq)}.
 Lifts trending up: ${liftTrends().filter(l => trendOf(l) === "up").map(l => l.name).join(", ") || "none"}. Trending down: ${liftTrends().filter(l => trendOf(l) === "down").map(l => l.name).join(", ") || "none"}.
@@ -2182,8 +2295,8 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("[data-restore]")) {
     const inp = document.createElement("input"); inp.type = "file"; inp.accept = "application/json,.json,text/plain";
     inp.onchange = async () => { const f = inp.files && inp.files[0]; if (!f) return;
-      let o; try { o = JSON.parse(await f.text()); } catch { return toast("That file isn't a TiroFit backup."); }
-      if (!o || typeof o !== "object" || !o.entries || typeof o.entries !== "object") return toast("That file isn't a TiroFit backup.");
+      let o; try { o = JSON.parse(await f.text()); } catch { return toast("That file isn't a Bad Day Okay backup."); }
+      if (!o || typeof o !== "object" || !o.entries || typeof o.entries !== "object") return toast("That file isn't a Bad Day Okay backup.");
       const days = Object.keys(o.entries).length;
       if (!confirm(`Restore ${days} days from this backup? It replaces what's on this device now.`)) return;
       const keep = {}; ["entries", "settings", "bf", "foods", "templates", "strength", "seen", "chat"].forEach(k => { if (o[k] != null) keep[k] = o[k]; });
@@ -2382,7 +2495,7 @@ async function boot() {
   const base = "data/users/" + uid + "/app";
   const raw = db, st = { doc: p => raw.doc(base + "/" + p), collection: p => raw.collection(base + "/" + p) };
   try { await db.doc(base).set({ v: 1, seen: Date.now() }); }
-  catch { return localOnly("Saving on this device only. Ask the owner to share TiroFit with you as an editor so your log syncs."); }
+  catch { return localOnly("Saving on this device only. Ask the owner to share Bad Day Okay with you as an editor so your log syncs."); }
   if (owner) { try { await migrateLegacy(db, st); await catchUpLegacy(db, st); } catch (err) { console.warn("migrate", err); } }
   S.store = st;
   S.comm = { db: raw, uid, mine: null, all: {} };
@@ -2396,7 +2509,7 @@ async function boot() {
     S.entries = ent; if (!snap.metadata.fromCache) { S.loaded = true; S.loadedLog = true; clearTimeout(timer); banner(null); }
     render(!fresh && !(S.loaded && !S.settings.setupDone && !Object.keys(ent).length)); checkNew();
   }, () => { clearTimeout(timer); banner("Your saved log couldn't load. Reopen the page to try again."); });
-  db.doc("cfg/settings").onSnapshot(s => { if (s.exists) { const raw = s.data(); S.settings = mergeSettings(raw); if ((raw.lookV || 0) < 4) { S.settings.look = "club"; S.settings.lookV = 4; saveSettings(); } applyLook(); render(true); } }, () => {});
+  db.doc("cfg/settings").onSnapshot(s => { if (s.exists) { const raw = s.data(); S.settings = mergeSettings(raw); if ((raw.lookV || 0) < 5) { S.settings.look = "sunrise"; S.settings.lookV = 5; saveSettings(); } applyLook(); render(true); } }, () => {});
   db.doc("cfg/strength").onSnapshot(s => { if (s.exists) S.strength = s.data(); if (!s.metadata.fromCache) S.loadedStrength = true; render(true); checkNew(); }, () => { S.loadedStrength = true; });
   db.doc("cfg/templates").onSnapshot(s => { if (s.exists && !document.querySelector("[data-tex]:focus, [data-tname]:focus")) { S.templates = s.data().list || []; render(true); } }, () => {});
   db.doc("cfg/seen").onSnapshot(s => { if (!s.metadata.fromCache || s.exists) { if (s.exists) { const dsn = s.data(); S.seen = S.seen ? mergeSeen(S.seen, dsn) : mergeSeen(dsn, {}); if (!s.metadata.fromCache && !seenSaved) seenSaved = JSON.stringify(mergeSeen(dsn, {})); } S.loadedSeen = true; checkNew(); } }, () => { S.loadedSeen = true; });
@@ -2429,12 +2542,13 @@ const mergeSettings = v => ({ ...DEF, ...v, fields: { ...DEF.fields, ...(v.field
 // ---------- look ----------
 function applyLook() {
   const st = S.settings, r = document.documentElement;
+  if ((st.lookV || 0) < 5) { st.look = "sunrise"; st.lookV = 5; }
   const look = LOOKS[st.look] ? st.look : "classic";
   if (look === "classic") { r.removeAttribute("data-look"); r.style.setProperty("--a", ACCENTS[st.accent] || ACCENTS.cobalt); if (st.theme === "system") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", st.theme); }
   else { r.setAttribute("data-look", look === "neon" ? "club" : look); r.style.removeProperty("--a"); r.setAttribute("data-theme", look === "iron" || look === "club" || look === "neon" ? "dark" : "light"); }
   if (look === "neon") r.setAttribute("data-swap", ""); else r.removeAttribute("data-swap");
   document.getElementById("goalchip").textContent = st.goal;
-  document.getElementById("brandsub").textContent = st.name ? `${st.name}'s log` : "Balance the week, not the day";
+  document.getElementById("brandsub").textContent = st.name ? `${st.name}'s log` : "Progress over perfect.";
 }
 function banner(t) { const b = document.getElementById("banner"); b.hidden = !t; b.textContent = t || ""; }
 let toastT; function toast(t) { const el = document.getElementById("toast"); el.textContent = t; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => el.hidden = true, 2400); }
@@ -2453,7 +2567,7 @@ function render(passive) {
   bind();
   if (DAYV[S.view]) autosave();
 }
-const PROG = { coach: "Coach", history: "History", body: "Body" };
+const PROG = { coach: "Journey", history: "History", body: "Body" };
 const segHtml = () => `<div class="segtabs" role="tablist" aria-label="Progress">${Object.entries(PROG).map(([k, n]) => `<button type="button" role="tab" data-go="${k}" aria-selected="${S.view === k}">${n}</button>`).join("")}</div>`;
 const DAYV = { today: 1, food: 1, gains: 1 };
 const boxFor = () => S.view === "food" ? foodBox() : todayBox();
@@ -2597,6 +2711,7 @@ function coachContext() {
   const tryit = (k, f) => { try { const v = f(); if (v != null) out[k] = v; } catch {} };
   tryit("profile", () => ({ goal: st.goal, daily_target_cal: st.target, protein_per_lb: st.protein, training_for: prof().name, about: st.about || null, weekly_targets: { steps: st.stepsWk, cardio: cGoal(), cardio_unit: cUnit(), workouts: st.liftsWk } }));
   tryit("coach", () => { const m = compute(), rc = recommend(m); return { trend_weight_lb: m.trend, weekly_rate_pct: rc.rate != null ? +(rc.rate * 100).toFixed(2) : null, goal_rate_pct: [+(rc.gmin * 100).toFixed(2), +(rc.gmax * 100).toFixed(2)], estimated_maintenance: rc.maint, recommendation: rc.text, recommended_target: rc.rec, notes: (rc.notes || []).map(x => x[1]) }; });
+  tryit("big_picture", () => bpBrief());
   tryit("this_week", () => { const w = weekPlan(compute()); return { eat_today: w.todayTarget, eaten_so_far: w.weekEaten, week_budget: w.weekBudget, steps: w.stepsSum, cardio: w.cardioSum }; });
   tryit("recovery_today", () => { const rc = recovery(T, S.entries[T] || {}); return { score: rc.score, label: rc.label, headline: rc.headline, training_days_in_a_row: rc.run, upper_days_since: rc.upper.days, lower_days_since: rc.lower.days, drinks_yesterday: rc.yAlc }; });
   tryit("last_21_days", () => Object.keys(S.entries).sort().slice(-21).map(d => { const e = S.entries[d], dv = derive(e); const sets = Array.isArray(e.sets) ? e.sets.filter(x => num(x.w) != null && num(x.r) != null) : [];
@@ -2613,8 +2728,8 @@ function coachContext() {
 function coachTalkHtml() {
   const list = chatOf("coach"), busy = S.chatBusy === "coach", ok = !!S.sample;
   const bub = m => `<div class="msg ${m.role}"><div class="bub">${esc(m.text).replace(/\n/g, "<br>")}</div></div>`;
-  return `<section class="card coachtalk"><div class="coachhead"><h2 style="margin:0">Ask your coach</h2>${list.length && !busy ? `<button type="button" class="linkbtn" data-cclear>New chat</button>` : ""}</div>
-    <p class="muted" style="margin:0 0 10px;font-size:14px">${ok ? "Pick a topic or ask anything. I'll look at your log, your trend and your split before I answer." : "The coach chat is coming to this version soon. Open TiroFit in claude.ai to use it today."}</p>
+  return `<section class="card coachtalk"><div class="coachhead"><h2 style="margin:0">Talk it through</h2>${list.length && !busy ? `<button type="button" class="linkbtn" data-cclear>New chat</button>` : ""}</div>
+    <p class="muted" style="margin:0 0 10px;font-size:14px">${ok ? "Pick a topic or ask anything. I'll look at your log, your trend and your split before I answer." : "The coach chat is coming to this version soon. Open Bad Day Okay in claude.ai to use it today."}</p>
     <div class="chips ctopics">${COACH_TOPICS.map(([t]) => `<button type="button" class="chip" data-ctopic="${esc(t)}" ${busy || !ok ? "disabled" : ""}>${esc(t)}</button>`).join("")}</div>
     ${list.length || busy ? `<div class="chatlog" id="coachlog" style="margin-top:12px">${list.slice(-14).map(bub).join("")}${busy ? `<div class="msg assistant"><div class="bub" id="coachlive"><span class="dots"><i></i><i></i><i></i></span></div></div>` : ""}</div>` : ""}
     ${ok ? `<div class="chatin" style="margin-top:12px"><textarea id="coach-q" rows="1" placeholder="Ask about sleep, food, training, anything" aria-label="Ask your coach" ${busy ? "disabled" : ""}>${esc(S.coachDraft || "")}</textarea><button type="button" class="btn primary" id="coachsend" ${busy ? "disabled" : ""}>Ask</button></div>` : ""}</section>`;
@@ -2624,9 +2739,10 @@ async function sendCoachTalk(text) {
   const list = chatOf("coach"); list.push({ role: "user", text }); S.coachDraft = ""; S.chatBusy = "coach"; render();
   const lg0 = document.getElementById("coachlog"); if (lg0) lg0.scrollTop = lg0.scrollHeight;
   const st = S.settings;
-  const sys = `You are the head coach inside TiroFit, a nutrition, training and recovery app built around a balanced lifestyle: weekly averages over perfect days, room for drinks and meals out, and back-to-back training days are fine when life gets busy. Coach like a sharp, experienced, evidence-based coach who knows this person: warm, direct and specific.
+  const sys = `You are the health companion inside Bad Day Okay, a supportive friend who knows nutrition and training, in a nutrition, training and recovery app built around a balanced lifestyle: weekly averages over perfect days, room for drinks and meals out, and back-to-back training days are fine when life gets busy. Coach like a sharp, experienced, evidence-based coach who knows this person: warm, direct and specific.
 Today is ${today()}. Use THEIR numbers below (sleep, weights, calories, protein, workouts, recovery, split) and refer to real days and values. Give real coaching: what you see, why it matters, and what to do. Prefer practical, research-backed guidance (sleep 7 to 9 h, protein about 0.7 to 1 g per lb, progressive overload, weekly volume per muscle, trend weight over single weigh-ins). Never guilt them; plan around real life.
 Format: plain text, no markdown headings or bold. 2 to 4 short paragraphs or a few lines starting with "• ". Keep it under about 170 words. End with one clear action for today or this week. If data is missing for the question, say what to log and still give your best advice. Ask at most one follow-up question.
+${voice()}
 ${st.coachNotes ? `What you know about them from earlier conversations: ${st.coachNotes}\n` : ""}Their data: ${JSON.stringify(coachContext())}`;
   const msgs = [{ role: "user", content: sys + "\n\nThe conversation follows." }, { role: "assistant", content: "Got it. I've looked through everything." }, ...list.slice(-12).map(m => ({ role: m.role === "user" ? "user" : "assistant", content: m.text }))];
   try {
@@ -2654,8 +2770,8 @@ function chatHtml(d) {
   const list = chatOf(d), busy = S.chatBusy === d;
   const starters = ["Chipotle double chicken bowl for lunch", "Legs yesterday, full body today, slept 6 hours", "2 vodka sodas and a slice of pizza last night", "How much protein do I have left?"];
   const bubbles = list.map((m, i) => `<div class="msg ${m.role}"><div class="bub">${esc(m.text).replace(/\n/g, "<br>")}</div>${m.did?.length ? `<div class="did">${m.did.map(x => `<span>${esc(x)}</span>`).join("")}${m.undo && i === list.length - 1 ? `<button type="button" class="linkbtn" id="chatundo">Undo</button>` : ""}</div>` : ""}</div>`).join("");
-  return `<div class="chatlog" id="chatlog">${bubbles || `<p class="muted" style="margin:0;font-size:14px">Tell me what you ate, drank, slept or lifted, the way you'd text a friend. I'll log it and keep you on track.</p><div class="chips" style="margin-top:10px">${starters.map(s => `<button type="button" class="chip" data-starter="${esc(s)}">${esc(s)}</button>`).join("")}</div>`}${busy ? `<div class="msg assistant"><div class="bub" id="chatlive"><span class="dots"><i></i><i></i><i></i></span></div></div>` : ""}</div>
-    <div class="chatin"><textarea id="chat-q" rows="1" placeholder="Ate, drank, slept, lifted… just say it" aria-label="Message your coach" ${busy ? "disabled" : ""}>${esc(S.chatDraft || "")}</textarea><button type="button" class="btn primary" id="chatsend" ${busy ? "disabled" : ""}>Send</button></div>`;
+  return `<div class="chatlog" id="chatlog">${bubbles || `<p class="muted" style="margin:0;font-size:14px">Tell me what you ate, drank, slept or lifted, the way you'd text a friend. I'll log it and keep up with you. Ask me anything too.</p><div class="chips" style="margin-top:10px">${starters.map(s => `<button type="button" class="chip" data-starter="${esc(s)}">${esc(s)}</button>`).join("")}</div>`}${busy ? `<div class="msg assistant"><div class="bub" id="chatlive"><span class="dots"><i></i><i></i><i></i></span></div></div>` : ""}</div>
+    <div class="chatin"><textarea id="chat-q" rows="1" placeholder="Ate, drank, slept, lifted… just say it" aria-label="Message Bad Day Okay" ${busy ? "disabled" : ""}>${esc(S.chatDraft || "")}</textarea><button type="button" class="btn primary" id="chatsend" ${busy ? "disabled" : ""}>Send</button></div>`;
 }
 function daySnapshot(D) {
   const dv = derive(D.e), e = D.e;
@@ -2665,7 +2781,7 @@ function daySnapshot(D) {
     logged_cal: dv.cal ?? 0, protein_g: dv.p ?? 0, carbs_g: dv.c ?? 0, fat_g: dv.f ?? 0, protein_goal_g: (() => { try { return Math.round(S.settings.protein * (compute().trend ?? S.settings.fallbackBw)); } catch { return null; } })(),
     meals: (e.meals || []).map((m, i) => ({ i, name: m.name, cal: m.cal, p: m.p, c: m.c, f: m.f })),
     drinks: { standard_drinks: dv.alcN, cal: dv.alcCal, described: (e.alc?.custom || []).map(x => x.name), counters: Object.fromEntries(Object.keys(DRINKS).filter(k => e.alc?.[k]).map(k => [DRINKS[k][0], e.alc[k]])) },
-    weight_lb: e.w ?? null, workout: e.lift ?? null, sleep_h: e.sleep ?? null, recovery_1to5: e.rec ?? null, bloated: e.bloat ?? null, steps: e.steps ?? null, cardio_min: e.cardio ?? null, cardio_mi: e.cardioMi ?? null, waist_in: e.waist ?? null, last_meal: e.meal ?? null, notes: e.notes ?? null,
+    weight_lb: e.w ?? null, mood: e.mood ?? null, workout: e.lift ?? null, sleep_h: e.sleep ?? null, recovery_1to5: e.rec ?? null, bloated: e.bloat ?? null, steps: e.steps ?? null, cardio_min: e.cardio ?? null, cardio_mi: e.cardioMi ?? null, waist_in: e.waist ?? null, last_meal: e.meal ?? null, notes: e.notes ?? null,
   };
 }
 function chatTools(D, did) {
@@ -2714,14 +2830,16 @@ async function sendChat(D, text) {
   text = String(text || "").trim(); if (!text || !S.sample || S.chatBusy) return;
   const d = D.d, list = chatOf(d), before = structuredClone(D.e), did = [];
   list.push({ role: "user", text }); S.chatDraft = ""; S.chatBusy = d; render(); scrollChat();
-  const sys = `You are the coach inside TiroFit, a calorie, weight and training app built around a balanced lifestyle (weekly averages, room for drinks and meals out). The user is chatting about their day. Today is ${today()} and you're on the log for ${d}${d === today() ? " (today)" : ""}.
+  const sys = `You are Bad Day Okay, a friendly health companion inside a calorie, weight and training app built around the big picture (weekly, monthly and yearly averages, room for drinks and meals out). The user is chatting about their day. Today is ${today()} and you're on the log for ${d}${d === today() ? " (today)" : ""}.
 Your job: when they mention eating, drinking, weighing in, sleep, steps, cardio, workouts or how they feel, LOG IT with your tools right away, without asking permission. Use search_foods first for restaurant or branded items and use those official numbers (scale by servings, e.g. double chicken = 2 servings of chicken). Otherwise estimate realistic US portions. Only ask a question if the amount is truly unclear and it changes the estimate a lot, and still log your best guess.
-Then reply like a friendly, sharp coach texting back: 1 to 3 short sentences, plain text, no markdown, no lists. Say what you logged in a few words and one useful, specific nudge using the numbers (calories or protein left today, or a balance tip). Don't lecture about drinking; plan around it.
+Then reply like a friend who knows nutrition, texting back: 1 to 3 short sentences, plain text, no markdown, no lists. Say what you logged in a few words and one useful, specific nudge using the numbers (calories or protein left today, or a balance tip). Don't lecture about drinking; plan around it.
 Current day: ${JSON.stringify(daySnapshot(D))}
+Big picture: ${(() => { try { return JSON.stringify(bpBrief()); } catch { return "{}"; } })()}
+${voice()}
 Training for: ${prof().name}. ${S.settings.coachNotes ? `What you know about them from past conversations: ${S.settings.coachNotes}` : ""}
 ${(() => { const ev = eventInfo(); return ev ? `They're training for "${ev.name}" in ${ev.days} days; mention it now and then when it helps motivate.` : ""; })()}
 ${(() => { const u = usuals(); return u.length ? `Their usual orders (saved foods; when they say "my usual" or name one, use search_foods to get it and log it): ${u.map(x => x.name).join("; ")}.` : ""; })()}
-${(() => { try { const rc = recovery(d, D.e); return `Recovery for this day: readiness ${rc.score}/100 (${rc.label}). ${rc.run} training days in a row before it. Upper last trained ${rc.upper.days ?? "10+"} days before, lower ${rc.lower.days ?? "10+"} days before. ${rc.yAlc} drinks the day before. TiroFit's view: back-to-back training days, drinks and short sleep are normal life, not failures. When training or recovery comes up, tell them how to adjust (lighter sets on the tired muscles, fuel, sleep), never to skip or feel guilty. If they tell you what they trained, log it with set_day workout.`; } catch { return ""; } })()}
+${(() => { try { const rc = recovery(d, D.e); return `Recovery for this day: readiness ${rc.score}/100 (${rc.label}). ${rc.run} training days in a row before it. Upper last trained ${rc.upper.days ?? "10+"} days before, lower ${rc.lower.days ?? "10+"} days before. ${rc.yAlc} drinks the day before. Bad Day Okay's view: back-to-back training days, drinks and short sleep are normal life, not failures. When training or recovery comes up, tell them how to adjust (lighter sets on the tired muscles, fuel, sleep), never to skip or feel guilty. If they tell you what they trained, log it with set_day workout.`; } catch { return ""; } })()}
 ${(() => { const p = patterns(); return p ? `Pattern from their history: ${WD[p.w]}s average ${p.ex} cal over their normal day${p.alc >= 150 ? ` (about ${p.alc} cal from drinks)` : ""}.` : ""; })()}`;
   const hist = list.slice(-12).map(m => ({ role: m.role, content: m.text }));
   hist[hist.length - 1] = { role: "user", content: `${sys}\n\nUser: ${text}` };
@@ -2756,7 +2874,7 @@ function bindChat(D) {
   scrollChat();
 }
 
-// ----- Recovery: the TiroFit difference. Hard stretches are normal; the app helps you adjust, not quit. -----
+// ----- Recovery: the Bad Day Okay difference. Hard stretches are normal; the app helps you adjust, not quit. -----
 function regionOf(e) {
   if (!e) return null;
   const n = String(e.lift || "").toLowerCase();
@@ -2932,6 +3050,7 @@ function decode(d, e) {
   return { w, pw, pd, yd, delta, up, flat, F, fat, qs: qs.slice(0, 4), ans };
 }
 function decoderHtml(d, e) {
+  if (travelOn() && d === today()) return `<div class="decoder flat"><div class="dch"><span class="label">Scale decoder</span></div><p class="muted" style="font-size:13px">Travel mode is on, so the scale can wait. Swings on the road are mostly water and salt.</p></div>`;
   const x = decode(d, e); if (!x) return "";
   if (x.none) return `<div class="decoder flat"><div class="dch"><span class="label">Scale decoder</span></div><p class="muted" style="font-size:13px">Weigh in again tomorrow and I'll explain what moved the scale.</p></div>`;
   const since = x.pd === x.yd ? "since yesterday" : `since ${WDN(x.pd)}`;
@@ -2939,7 +3058,7 @@ function decoderHtml(d, e) {
   const expl = sum(same.map(f => f.lb));
   let head;
   if (x.flat) head = `Steady. Moves under half a pound are normal day-to-day noise.`;
-  else if (x.up) head = !same.length ? `Up ${f1(x.delta)} lb and nothing in yesterday's log explains it. That's a normal water swing. Answer a couple of questions below and I'll look again.` : `Up ${f1(x.delta)} lb, and it's mostly water and food, not fat.${Math.abs(expl) >= x.delta * 0.8 ? " Yesterday's log covers about all of it." : ""}`;
+  else if (x.up) head = !same.length ? `Up ${f1(x.delta)} lb and nothing in yesterday's log explains it. That's a normal water swing. Answer a couple of questions below and I'll look again.` : `Up ${f1(x.delta)} lb, and it's mostly water and food, not fat. It should settle in 2 to 4 days.${Math.abs(expl) >= x.delta * 0.8 ? " Yesterday's log covers about all of it." : ""}`;
   else head = !same.length ? `Down ${f1(-x.delta)} lb. Fast drops are mostly water, so let the trend confirm it.` : `Down ${f1(-x.delta)} lb. Some of that is water leaving, so let the trend confirm it.`;
   const fatTxt = x.fat == null ? "" : x.up ? (x.fat > 0.02 ? `Real fat from yesterday's food: about ${f1(x.fat)} lb at most. A pound of fat takes a 3,500 calorie surplus.` : `Yesterday was at or under maintenance, so this isn't fat gain.`) : (x.fat < -0.02 ? `Real fat lost yesterday: about ${f1(-x.fat)} lb.` : "");
   const li = (f, cls) => `<li class="${cls}"><span class="dlb">${f.lb > 0 ? "+" : "−"}${Math.abs(f.lb).toFixed(1)}</span><span>${esc(f.why)}</span></li>`;
@@ -3092,7 +3211,7 @@ document.addEventListener("click", ev => {
   if (ds.planGp != null) { S.planGP = S.planGP === +ds.planGp ? null : +ds.planGp; render(); return; }
   if (ds.planAi != null) {
     const p = (S.settings.plans || [])[+ds.planAi]; if (!p) return; let per = 0; try { per = weekPlan(compute()).bankPerDay; } catch {}
-    sendCoachTalk(`I've got a ${String(p.label || "big night").toLowerCase()} on ${WDN(p.d)} (${p.d}). I banked ${p.extra} extra calories for it in TiroFit${per ? `, so my other days are about ${per} lower` : ""}. Give me a game plan: how to eat the days before, the day of (what to eat early, what to order, how to handle drinks), and the next morning, including what the scale will probably do and why that's fine.`);
+    sendCoachTalk(`I've got a ${String(p.label || "big night").toLowerCase()} on ${WDN(p.d)} (${p.d}). I banked ${p.extra} extra calories for it in Bad Day Okay${per ? `, so my other days are about ${per} lower` : ""}. Give me a game plan: how to eat the days before, the day of (what to eat early, what to order, how to handle drinks), and the next morning, including what the scale will probably do and why that's fine.`);
     setTimeout(() => document.querySelector(".coachtalk")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60); return;
   }
 });
@@ -3104,7 +3223,7 @@ function recBody(rc) {
     <details class="rmore"><summary>Why this score${rc.tips.length > 1 ? ` · ${rc.tips.length - 1} more tip${rc.tips.length > 2 ? "s" : ""}` : ""}</summary>
     ${rc.tips.length > 1 ? `<ul class="rtips">${rc.tips.slice(1).map(([pc, t]) => `<li style="--pc:${pc}">${esc(t)}</li>`).join("")}</ul>` : ""}
     <div class="rfac">${rc.facs.map(([k, v]) => `<span>${k} <b>${esc(v)}</b></span>`).join("")}</div>
-    <p class="rbal">TiroFit counts the week, not the day. A rough stretch is fine as long as the rest of the week evens it out.</p></details>`;
+    <p class="rbal">Bad Day Okay counts the week, not the day. A rough stretch is fine as long as the rest of the week evens it out.</p></details>`;
 }
 const ZC = ["var(--p-red)", "var(--p-green)", "var(--p-blue)", "var(--p-yellow)"];
 const zh = (n, t, right = "") => `<div class="zh" style="--zc:${ZC[(n - 1) % 4]}"><b>${pad(n)}</b><span>${t}</span><i class="bb" aria-hidden="true"><em></em><s></s><em></em></i>${right ? `<small>${right}</small>` : ""}</div>`;
@@ -3232,7 +3351,7 @@ function recapData(m) {
 function recapHtml(m) {
   const r = recapData(m); if (!r) return "";
   const plate = x => { if (x.cal == null) return `<i class="e"></i>`; const off = Math.abs(x.cal - r.target) / r.target; return `<i class="${off <= 0.1 ? "w" : off <= 0.2 ? "c" : "l"}"></i>`; };
-  return `<section class="card recap" aria-label="Last week's recap"><div class="rchead"><span class="label">Week of ${fmtD(r.start, { month: "short", day: "numeric" })}</span><span class="rcbrand">Tiro<i><b>f</b><b>i</b><b>t</b></i></span></div>
+  return `<section class="card recap" aria-label="Last week's recap"><div class="rchead"><span class="label">Week of ${fmtD(r.start, { month: "short", day: "numeric" })}</span><span class="rcbrand">Bad Day <i>Okay</i></span></div>
     <div class="rcbig"><span class="jersey">${f0(r.avgc)}</span><small>avg cal / day<br>target ${f0(r.target)}</small></div>
     <div class="rcplates">${r.days.map(plate).join("")}</div>
     <div class="rcgrid"><div><b>${r.wins}/7</b><span>On-target days</span></div><div><b>${r.dw == null ? "–" : (r.dw > 0 ? "+" : "") + r.dw}</b><span>Weight change (lb)</span></div><div><b>${r.pdays}/7</b><span>Protein days</span></div><div><b>${r.lifts}</b><span>Workouts</span></div><div><b>${r.drinks}</b><span>Alcohol</span></div><div><b>${r.steps ? f0(r.steps) : "–"}</b><span>Avg steps</span></div></div>
@@ -3253,11 +3372,11 @@ async function saveRecap(m) {
     g.beginPath(); g.arc(cx, cy, 16, 0, Math.PI * 2); g.fillStyle = v("--bg"); g.fill(); });
   const stats = [[`${r.wins}/7`, "On-target days"], [r.dw == null ? "–" : (r.dw > 0 ? "+" : "") + r.dw + " lb", "Weight change"], [`${r.pdays}/7`, "Protein days"], [String(r.lifts), "Workouts"], [String(r.drinks), "Alcohol"], [r.steps ? f0(r.steps) : "–", "Avg steps"]];
   stats.forEach(([a, b], k) => { const x = 80 + (k % 2) * 470, y = 790 + Math.floor(k / 2) * 170; g.fillStyle = v("--fg"); g.font = "800 84px Archivo, sans-serif"; g.fillText(a, x, y); g.fillStyle = v("--muted"); g.font = "500 30px 'IBM Plex Mono', monospace"; g.fillText(b.toUpperCase(), x, y + 46); });
-  g.fillStyle = v("--muted"); g.font = "500 26px 'IBM Plex Mono', monospace"; g.fillText("Balance the week, not the day", 80, H - 70);
+  g.fillStyle = v("--muted"); g.font = "500 26px 'IBM Plex Mono', monospace"; g.fillText("Progress over perfect.", 80, H - 70);
   try {
     const blob = await new Promise(res => c.toBlob(res, "image/png"));
     const dl = await window.claude?.use?.("downloads"); if (!dl) throw 0;
-    await dl.save({ filename: `tirofit-week-${r.start}.png`, data: blob });
+    await dl.save({ filename: `bad-day-okay-week-${r.start}.png`, data: blob });
   } catch { toast("Couldn't save the image here. A screenshot of the card works too."); }
 }
 
@@ -3287,10 +3406,12 @@ function todayBox() {
   if (D.d !== today()) return `<div class="dayhero"><div><div class="label">Logged for this day</div><div class="jersey">${f0(dv.cal ?? 0)}</div></div></div>
     <div class="daysub"><span>Food <b>${f0(dv.food)}</b></span><span>Alcohol <b>${f0(dv.alcCal)}</b></span><span>After drinking <b>${f0(dv.after)}</b></span><span>${f0(dv.p ?? 0)}p ${f0(dv.c ?? 0)}c ${f0(dv.f ?? 0)}f</span></div>`;
   const w = weekPlan(compute()), left = w.todayTarget - (dv.cal ?? 0);
-  return `${eventHtml()}<div class="dayhero"><div><div class="label">${left >= 0 ? "Left today" : "Over today"}</div><div class="jersey">${f0(Math.abs(left))}</div></div>
-      <div class="streakbox" title="Days in a row you've logged"><b>${sk}</b><span>Streak</span></div></div>
-    <div class="daysub"><span>Target <b>${f0(w.todayTarget)}</b></span><span>Logged <b>${f0(dv.cal ?? 0)}</b></span>${dv.alcCal ? `<span>Alcohol <b>${f0(dv.alcCal)}</b></span>` : ""}</div>
+  return `${eventHtml()}<div class="dayhero"><div><div class="label">${left >= 0 ? "Left today" : "Above target"}</div><div class="jersey">${f0(Math.abs(left))}</div></div>
+      <div class="streakbox" title="Days you've logged this month. Missing a day never resets it."><b>${monthLogged()}</b><span>This month</span></div></div>
+    <div class="daysub"><span>Good day <b>${f0(goodRange(w.todayTarget)[0])}–${f0(goodRange(w.todayTarget)[1])}</b></span><span>Logged <b>${f0(dv.cal ?? 0)}</b></span>${dv.alcCal ? `<span>Alcohol <b>${f0(dv.alcCal)}</b></span>` : ""}</div>
     ${w.todayPlan ? `<p class="plannote"><b>${esc(w.todayPlan.label || "Big night")} today.</b> ${f0(w.todayPlan.extra)} extra calories are banked for it, so enjoy it.</p>` : w.bank ? `<p class="plannote">Banking about <b>${f0(w.bankPerDay)}</b> today for ${esc(w.plans[0].label || "your big night")} ${esc(WDN(w.plans[0].d))}.</p>` : ""}
+    ${travelOn() ? `<p class="plannote"><b>Travel mode.</b> Rough logs are plenty, and the scale can wait until you're home.</p>` : ""}
+    ${w.carry ? `<p class="plannote">Last week ran about ${f0(w.carryOver)} over, so this week is about ${f0(w.carry / 7)} a day lighter. Spread out, so it's easy.</p>` : ""}
     ${macroLeft(dv, w.todayTarget)}
     ${nudgeHtml()}`;
 }
@@ -3299,9 +3420,9 @@ function setupHtml() {
   if (S.settings.setupDone || !S.loaded || Object.keys(S.entries).length) return "";
   const u = S.setup || (S.setup = { goal: "Maintain", trainFor: "bodybuilding" });
   const w = num(u.w), sugg = w ? Math.round(w * 15 * (1 + (GOALS[u.goal]?.r[1] || 0) * 20) / 50) * 50 : null;
-  return `<section class="card setup"><div class="label">Welcome to TiroFit</div><h2 style="margin:4px 0 6px">Let's set you up</h2>
-    <p class="muted" style="margin:0 0 12px;font-size:14px">Four quick answers. You can change any of it later under You.</p>${!window.claude ? `<p style="margin:-4px 0 12px;font-size:14px">Already have a TiroFit account? <button type="button" class="linkbtn" data-go="prefs">Sign in</button> and your log comes back.</p>` : ""}
-    <p style="margin:0 0 14px;font-size:14px">Already have a TiroFit backup file? <button type="button" class="linkbtn" data-restore>Restore from backup</button></p>
+  return `<section class="card setup"><div class="label">Welcome to Bad Day Okay</div><h2 style="margin:4px 0 6px">Let's set you up</h2>
+    <p class="muted" style="margin:0 0 12px;font-size:14px">Four quick answers. You can change any of it later under You.</p>${!window.claude ? `<p style="margin:-4px 0 12px;font-size:14px">Already have a Bad Day Okay account? <button type="button" class="linkbtn" data-go="prefs">Sign in</button> and your log comes back.</p>` : ""}
+    <p style="margin:0 0 14px;font-size:14px">Already have a Bad Day Okay backup file? <button type="button" class="linkbtn" data-restore>Restore from backup</button></p>
     <div class="grid2"><div class="field"><label for="su-name">First name</label><input id="su-name" value="${esc(u.name || "")}" autocomplete="given-name"></div>
     <div class="field"><label for="su-w">Weight today (lb)</label><input id="su-w" type="number" inputmode="decimal" step="any" value="${esc(u.w || "")}"></div></div>
     <div class="field"><span class="label">Goal</span><div class="chips">${Object.entries(GOALS).map(([k, v]) => `<button type="button" class="chip" data-sugoal="${k}" aria-pressed="${u.goal === k}" title="${esc(v.d)}">${k}</button>`).join("")}</div></div>
@@ -3366,13 +3487,15 @@ function vToday() {
   const moreSum = [e.steps != null && `${f0(e.steps)} steps`, e.cardio != null && `${e.cardio} min cardio`, e.cardioMi != null && `${e.cardioMi} mi cardio`].filter(Boolean).join(" · ");
   return `<form class="view" id="dayform" autocomplete="off">
   <div class="dayrow"><button type="button" class="btn ghost" id="prevd" aria-label="Previous day">‹</button><div class="dayname"><b>${isT ? "Today" : esc(parse(d).toLocaleDateString(undefined, { weekday: "long" }))}</b><span>${esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }))}${S.entries[d] ? " · saved" : ""}</span></div><input id="f-date" type="date" value="${d}" max="${addD(today(), 1)}" aria-label="Pick a day"><button type="button" class="btn ghost" id="nextd" aria-label="Next day">›</button></div>
+  ${isT ? welcomeHtml() + bigPicHtml() : ""}
   <section class="card board" aria-label="Day totals"><div id="todaybox">${todayBox()}</div></section>
-  ${S.sample ? `<section class="card coach">${zh(Z(), "Log anything", "food, drinks, sleep, lifts")}<div id="coachbody">${chatHtml(d)}</div></section>` : ""}
+  ${S.sample ? `<section class="card coach">${zh(Z(), "Talk it through", "log it or ask anything")}${asksHtml()}<div id="coachbody">${chatHtml(d)}</div></section>` : ""}
   <section class="card">${zh(Z(), "Check-in", isT ? "this morning" : "")}
     <div class="view" style="gap:12px">
     <div class="field"><label for="f-w">Morning weight (lb)</label><div class="bignum"><button type="button" data-bump="w" data-by="-0.2" aria-label="Down 0.2">−</button><input id="f-w" data-k="w" type="number" inputmode="decimal" step="any" value="${esc(v("w"))}" placeholder="${f1(compute().trend ?? 155)}"><button type="button" data-bump="w" data-by="0.2" aria-label="Up 0.2">+</button></div></div>
     ${F.sleep ? `<div class="grid2">${nf("f-sleep", "sleep", "Sleep last night (hrs)", 0.25, "7.5")}<div></div></div>` : ""}
     ${F.recovery ? `<div class="field"><span class="label">How your body feels</span><div class="chips feel" data-chips="rec">${FEEL.map(([n, t]) => `<button type="button" class="chip" data-val="${n}" aria-pressed="${e.rec === n}"><b>${n}</b><small>${t}</small></button>`).join("")}</div></div>` : ""}
+    <div class="field"><span class="label">How you're feeling</span>${chips("mood", ["Stressed", "Okay", "Good", "Great"], v("mood"))}</div>
     <div id="decoder">${decoderHtml(d, e)}</div>
     </div></section>
   <section class="card rec" aria-label="Recovery">${zh(Z(), "Recovery", "readiness")}<div id="recbox">${recBody(recovery(d, e))}</div>
@@ -3380,13 +3503,188 @@ function vToday() {
   <section class="card view" style="gap:12px">${zh(Z(), "Fuel", `${f0(dv.food ?? 0)} cal`)}
     ${meals.length ? `<ul class="fuelsum">${slotGroups(meals).filter(([, , l]) => l.length).map(([, lab, l]) => { const t = { cal: 0, p: 0, c: 0, f: 0 }; l.forEach(([mm]) => { for (const x in t) t[x] += num(mm[x]) || 0; }); return `<li><span>${lab} <small class="muted">${l.length} item${l.length === 1 ? "" : "s"}</small></span><span>${f0(t.cal)} cal · ${f0(t.p)}p ${f0(t.c)}c ${f0(t.f)}f</span></li>`; }).join("")}</ul>` : `<p class="muted" style="margin:0;font-size:14px">Nothing logged yet${isT ? " today" : ""}.</p>`}
     <div class="chips"><button type="button" class="btn primary" data-go="food">Log food</button><label class="btn" for="quickscan" data-quickscan>Scan barcode</label></div>
-    ${usualsHtml()}</section>
+    ${usualsHtml()}${roughHtml()}</section>
   ${F.drinks ? fold("drinks", Z(), "Drinks", dv.alcN ? `${f1n(dv.alcN)} · ${f0(dv.alcCal)} cal` : "none", drinks) : ""}
   ${(F.steps || F.cardio || F.waist || F.meal || F.bloat) ? fold("more", Z(), "Steps & more", moreSum, more) : ""}
   ${F.notes ? fold("notes", Z(), "Notes", e.notes ? "1 note" : "", `<div class="field"><label for="f-notes">Notes</label><textarea id="f-notes" data-k="notes" placeholder="Salty dinner, felt flat, new PR on incline">${esc(v("notes"))}</textarea></div>`) : ""}
   <div class="savebar"><span class="msg" id="savemsg">${S.entries[d] ? "Saved. Changes save as you go." : "Changes save as you go."}</span><button class="btn primary" type="submit" id="savebtn">Close out day</button></div>
   </form>`;
 }
+// ----- Forgiving Bad Day Okay: the big picture, close enough, help for real life -----
+// Bad Day Okay keeps up with you instead of keeping you in line. One day is small; the week, month and year are what count.
+function voice() {
+  const h = new Date().getHours();
+  return `How you talk (Bad Day Okay's voice): you're a supportive friend who knows nutrition and training, a health companion that keeps up with this person, not a coach keeping them in line. Start with what went well. Zoom out to the week, month and year before judging any single day: one big day is small in the big picture (about 3,500 extra calories make 1 lb of fat, and a scale jump after a big day is mostly water, salt and food weight that settles in 2 to 4 days). Never say failed, cheat, bad day, "should have", "get back on track" or "make up for it"; say big day, off-plan, next meal. Never suggest eating very low the day after a big day, because that sets up the next binge; tell them to eat normally. Food estimates within about 10% are accurate enough, because the trend weight and weekly averages correct the rest, so tell them so when they stress about precision. Be realistic, not just comforting: explain the why in plain words and how you got to a number. Stay honest and keep them pointed at their goal: forgiving about single days, steady about the weekly and monthly average. Offer one small next step, not a list. Respect their choices: a night out is part of life, so help them plan it and enjoy it. If they sound stressed, acknowledge that first. If they mention not eating, purging or feeling hopeless, respond gently and point them to real help (a doctor, or call or text 988 in the US); you're supportive, not a licensed therapist.${h < 5 ? " It's the middle of the night for them right now: lead with reassurance, keep it short, and don't hand them more numbers to chew on." : ""}`;
+}
+const BIG = 500;
+const travelOn = () => { const u = S.settings.travelUntil; return !!u && u >= today(); };
+function goodRange(t) { const r = Math.round(Math.max(150, t * 0.08) / 50) * 50; return [t - r, t + r]; }
+function calOf(d) { const e = S.entries[d]; if (!e) return null; const c = derive(e).cal; return c == null || c <= 0 ? null : c; }
+function monthLogged() { const k = today().slice(0, 7); return Object.keys(S.entries).filter(d => d.startsWith(k) && d <= today()).length; }
+function bpData() {
+  const st = S.settings, T = today(), m = compute();
+  const trendAt = d => { let v = null; for (const x of m.days) { if (x.d > d) break; if (x.trend != null) v = x.trend; } return v; };
+  const ms = T.slice(0, 8) + "01", mdays = []; for (let d = ms; d <= T; d = addD(d, 1)) mdays.push(d);
+  const mc = mdays.map(calOf), mlog = mc.filter(c => c != null);
+  const w = weekPlan(m), wlog = w.days.slice(0, w.idx + 1).map(calOf).filter(c => c != null);
+  let wDone = w.days.slice(0, w.idx).map(calOf).filter(c => c != null), wLast7 = false;
+  if (!wDone.length) { wDone = [...Array(7)].map((_, i) => calOf(addD(T, -1 - i))).filter(c => c != null); wLast7 = true; }
+  const mDone = mdays.filter(d => d < T).map(calOf).filter(c => c != null);
+  const months = []; let y = +T.slice(0, 4), mo = +T.slice(5, 7);
+  for (let i = 0; i < 12; i++) { months.unshift(`${y}-${String(mo).padStart(2, "0")}`); if (--mo < 1) { mo = 12; y--; } }
+  const byM = months.map(k => { const v = Object.keys(S.entries).filter(d => d.startsWith(k)).map(calOf).filter(c => c != null); return { k, avg: v.length >= 3 ? avg(v) : null, n: v.length, all: v }; });
+  const yall = byM.flatMap(x => x.all), first = m.days.find(x => x.trend != null), before = trendAt(addD(ms, -1));
+  return { tgt: st.target, T, m, w, wlog, mdays, mc, mlog, byM,
+    wLast7, wAvg: wDone.length ? avg(wDone) : null, mAvg: mDone.length ? avg(mDone) : mlog.length ? avg(mlog) : null, yAvg: yall.length ? avg(yall) : null,
+    mChg: m.trend != null && before != null ? m.trend - before : null,
+    yChg: m.trend != null && first && first.d < T ? m.trend - first.trend : null, since: first?.d || null };
+}
+function closeEnough() {
+  const T = today(), end = S.entries[T] ? T : addD(T, -1), ds = [...Array(7)].map((_, i) => addD(end, -i));
+  let logged = 0, q = 0, weighs = 0, act = 0;
+  ds.forEach(d => {
+    const e = S.entries[d]; if (!e) return;
+    const items = (e.meals || []).filter(mm => num(mm.cal) != null);
+    if (items.length || calOf(d) != null) { logged++; q += items.length ? (items.every(mm => mm.src === "rough") ? 0.6 : 1) : 0.7; }
+    if (num(e.w) != null) weighs++;
+    if (num(e.steps) != null || num(e[cKey()]) != null || (e.lift && e.lift !== "Rest") || (Array.isArray(e.xc) && e.xc.length)) act++;
+  });
+  const score = Math.round(logged / 7 * 40 + Math.min(1, weighs / 3) * 25 + (logged ? q / logged : 0) * 20 * Math.min(1, logged / 4) + Math.min(1, act / 4) * 15);
+  const msg = score >= 80 ? "Solid tracking. Your trend is clear." : score >= 60 ? "Enough to see your trend." : "A few more logs and your trend gets clearer. A quick photo counts.";
+  return { score, logged, weighs, act, msg };
+}
+function bpBrief() {
+  const b = bpData(), ce = closeEnough(), r = x => x == null ? null : Math.round(x);
+  return { goal_cal: b.tgt, week_avg_cal: r(b.wAvg), month_avg_cal: r(b.mAvg), month_days_logged: b.mlog.length, month_days_so_far: b.mdays.length, year_avg_cal: r(b.yAvg),
+    trend_change_this_month_lb: b.mChg == null ? null : Math.round(b.mChg * 10) / 10, trend_change_since_start_lb: b.yChg == null ? null : Math.round(b.yChg * 10) / 10, tracking_since: b.since,
+    close_enough_score: ce.score, travel_mode: travelOn() || null };
+}
+function bigDay() {
+  const tgt = S.settings.target, T = today(); let best = null;
+  for (let i = 0; i <= 6; i++) { const d = addD(T, -i), c = calOf(d); if (c != null && c - tgt >= BIG && (!best || c > best.c)) best = { d, c, over: c - tgt, ago: i }; }
+  return best;
+}
+function zoomHtml(b) {
+  const o = b.over, fat = o / 3500, day = b.ago === 0 ? "Today" : b.ago === 1 ? "Yesterday" : WDN(b.d), H = 50;
+  const bars = [["Day", o], ["Week", o / 7], ["Month", o / 30], ["Year", o / 365]];
+  return `<div class="bpzoom"><b class="bpzt">${esc(day)}, zoomed out</b>
+    <div class="bpzrow">${bars.map(([l, v], i) => `<div style="--i:${i}"><i style="height:${Math.max(2, Math.round(v / o * H))}px"></i><span>${l}</span></div>`).join("")}</div>
+    <p>${f0(b.c)} felt big up close. Spread over the month it's about ${f0(o / 30)} cal a day, roughly ${fat < 0.15 ? "a tenth of a pound" : `${f1(fat)} lb`} of real fat. Any scale jump after it is mostly water and food, and it fades in 2 to 4 days.${b.ago <= 1 ? " Eat normally today. Going very low usually sets up the next big day." : ""}</p></div>`;
+}
+function trailSvg(days, cals, tgt, T) {
+  const per = 10, rows = Math.ceil(days.length / per), H = 30 + rows * 62;
+  const pts = days.map((d, i) => { const row = Math.floor(i / per), k = i % per; return [Math.round(row % 2 ? 330 - k * 33.3 : 30 + k * 33.3), Math.round(30 + row * 62 + Math.sin(k * 0.9 + row) * 6)]; });
+  let path = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; if (i % per === 0) { const s = x0 > 180 ? 1 : -1; path += ` C${x0 + 38 * s},${y0} ${x1 + 38 * s},${y1} ${x1},${y1}`; } else path += ` S${(x0 + x1) / 2},${(y0 + y1) / 2 + (i % 2 ? 5 : -5)} ${x1},${y1}`; }
+  let big = -1; cals.forEach((c, i) => { if (c != null && c - tgt >= BIG && (big < 0 || c > cals[big])) big = i; });
+  const dots = pts.map(([x, y], i) => { const c = cals[i];
+    if (c == null) return days[i] === T ? `<circle cx="${x}" cy="${y}" r="7" class="tr-now"/>` : `<circle cx="${x}" cy="${y}" r="5.5" class="tr-e"/>`;
+    if (c - tgt >= BIG) return `<path d="M${x - 9},${y + 2} q2,-11 10,-10 q9,1 8,10 q-2,8 -10,7 q-9,-1 -8,-7z" class="tr-big"><title>${f0(c)} cal</title></path>`;
+    return `<circle cx="${x}" cy="${y}" r="${Math.abs(c - tgt) <= Math.max(150, tgt * 0.06) ? 6.5 : 5}" class="${Math.abs(c - tgt) <= Math.max(150, tgt * 0.06) ? "tr-on" : "tr-off"}"><title>${f0(c)} cal</title></circle>`; }).join("");
+  let note = "";
+  if (big >= 0) { const [x, y] = pts[big], end = x > 200, tx = end ? x + 20 : x - 20, a = end ? "end" : "start";
+    note = `<path d="M${x},${y + 13} l0,9" class="tr-arrow"/><text x="${tx}" y="${y + 36}" text-anchor="${a}" class="tr-note">${esc(WDN(days[big]).slice(0, 3))} the ${parse(days[big]).getDate()}: one stone</text><text x="${tx}" y="${y + 52}" text-anchor="${a}" class="tr-note">on a long trail</text>`; }
+  const L = pts[pts.length - 1];
+  return `<svg class="trail" viewBox="-12 0 384 ${H + 22}" width="100%" role="img" aria-label="This month as a trail, one dot per day"><path d="${path}" class="tr-path"/>${dots}${note}
+    <text x="${pts[0][0] - 8}" y="${pts[0][1] - 14}" class="tr-lab">${esc(fmtD(days[0], { month: "short", day: "numeric" }))}</text><text x="${L[0] - 10}" y="${L[1] + 24}" class="tr-lab tr-today">today</text></svg>`;
+}
+function bpHero(B) {
+  const ok = B.mAvg != null && Math.abs(B.mAvg - B.tgt) <= B.tgt * 0.05, down = B.mChg != null && B.mChg <= -0.3 && st0().goal !== "Bulk";
+  const h = B.mlog.length < 4 ? "Every log adds to the picture." : ok || down ? "You're further along than you think." : "One week at a time. You're still on the trail.";
+  const sub = `${B.mlog.length} of ${B.mdays.length} days on the trail this month.${B.mAvg != null ? ` Averaging ${f0(B.mAvg)} a day against your ${f0(B.tgt)}.` : ""}`;
+  return `<div class="bphero"><h1>${esc(h)}</h1><p>${esc(sub)}</p></div>`;
+}
+const st0 = () => S.settings;
+function bigPicHtml() {
+  if (!Object.keys(S.entries).length) return "";
+  let B; try { B = bpData(); } catch { return ""; }
+  const tab = S.bpTab || "week", tgt = B.tgt, ce = closeEnough(), MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" });
+  const st = c => c == null ? "s-e" : c - tgt >= BIG ? "s-big" : Math.abs(c - tgt) <= Math.max(150, tgt * 0.06) ? "s-on" : Math.abs(c - tgt) <= 400 ? "s-off" : "s-far";
+  const seg = `<div class="bpseg" role="tablist" aria-label="Time range">${[["week", "Week"], ["month", "Month"], ["year", "Year"]].map(([k, n]) => `<button type="button" role="tab" data-bptab="${k}" aria-selected="${tab === k}">${n}</button>`).join("")}</div>`;
+  const diff = a => a == null ? "" : Math.abs(a - tgt) <= Math.max(100, tgt * 0.04) ? "right around your goal" : a < tgt ? `${f0(tgt - a)} under your goal` : `${f0(a - tgt)} over your goal, and that's fine`;
+  let num, unit, pill, body, line;
+  if (tab === "week") {
+    const dn = ["M", "T", "W", "T", "F", "S", "S"];
+    num = B.wAvg; unit = B.wLast7 ? "avg cal a day, last 7 days" : "avg cal a day this week"; pill = `${B.wlog.length} of ${B.w.idx + 1} days logged`;
+    body = `<div class="bpweek">${B.w.days.map((d, i) => { const fut = i > B.w.idx, c = fut ? null : calOf(d); return `<span class="${fut ? "fut" : st(c)}${i === B.w.idx ? " now" : ""}"><b>${c == null ? (fut ? "" : "·") : f0(c)}</b>${dn[i]}</span>`; }).join("")}</div>`;
+    line = B.wAvg == null ? "Log a meal or two and your week shows up here." : B.wLast7 ? `New week, fresh start. Your last 7 days averaged ${diff(B.wAvg)}.` : `Averaging ${diff(B.wAvg)} so far. ${B.w.left > 1 ? `${B.w.left} days left, including today.` : "Last day of the week."}`;
+  } else if (tab === "month") {
+    num = B.mAvg; unit = "avg cal a day this month"; pill = `${B.mlog.length} of ${B.mdays.length} days logged`;
+    body = `${trailSvg(B.mdays, B.mc, tgt, B.T)}<div class="bpleg"><span><em class="s-on"></em>Near goal</span><span><em class="s-off"></em>A bit off</span><span><em class="s-big"></em>Big day</span><span><em class="s-e"></em>Skipped, that's fine</span></div>`;
+    line = B.mAvg == null ? "Your month fills in as you log." : `Averaging ${diff(B.mAvg)}.${B.mChg != null ? ` Trend weight ${Math.abs(B.mChg) < 0.2 ? "is holding steady" : `${B.mChg < 0 ? "down" : "up"} ${f1(Math.abs(B.mChg))} lb`} this month.` : ""}`;
+  } else {
+    const have = B.byM.filter(x => x.avg != null), vals = have.map(x => x.avg), lo = Math.min(tgt, ...vals) - 250, hi = Math.max(tgt, ...vals) + 150, Y = v => Math.max(4, Math.round((v - lo) / (hi - lo) * 100));
+    num = B.yAvg; unit = "avg cal a day, last 12 months"; pill = `${have.length} month${have.length === 1 ? "" : "s"} tracked`;
+    body = `<div class="bpyear"><div class="bpgoal" style="bottom:${Y(tgt)}%"><span>goal</span></div>${B.byM.map(x => `<div title="${MN(x.k)}${x.avg != null ? `: ${f0(x.avg)} avg` : ": not enough logs"}"><i class="${x.avg == null ? "none" : x.avg - tgt >= 300 ? "hi" : ""}" style="height:${x.avg == null ? 3 : Y(x.avg)}%"></i></div>`).join("")}</div>
+      <div class="bpylab">${B.byM.map(x => `<span>${MN(x.k).slice(0, 1)}</span>`).join("")}</div>`;
+    const steady = have.filter(x => x.n >= 10).sort((a, b) => Math.abs(a.avg - tgt) - Math.abs(b.avg - tgt))[0];
+    line = `${B.yChg != null ? `Trend weight ${Math.abs(B.yChg) < 0.3 ? "steady" : `${B.yChg < 0 ? "down" : "up"} ${f1(Math.abs(B.yChg))} lb`} since ${fmtD(B.since, { month: "short", day: "numeric" })}. ` : ""}${steady ? `${new Date(+steady.k.slice(0, 4), +steady.k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "long" })} was your steadiest month.` : "Keep going and the year draws itself."}`;
+  }
+  const bd = bigDay(), tr = travelOn();
+  return `${bpHero(B)}<section class="card bp" aria-label="Your big picture">
+    <div class="bphead"><h2>Your trail</h2><small class="muted">${esc(tab === "month" ? parse(B.T).toLocaleDateString(undefined, { month: "long" }) : tab === "week" ? "this week" : "this year")}</small></div>
+    ${seg}
+    <div class="bpnum"><b>${num == null ? "–" : f0(num)}</b><span>${unit}</span><em>${pill}</em></div>
+    ${body}
+    <p class="bplead">${esc(line)}</p>
+    ${bd ? zoomHtml(bd) : ""}
+    <div class="bpfoot"><div class="ce"><div class="cering" style="--v:${ce.score}"><b>${ce.score}</b></div><div><b>Tracking score</b><small>${esc(ce.msg)} ${ce.logged} of 7 days logged.</small></div></div>
+      <button type="button" class="linkbtn" data-travel>${tr ? `Travel mode on until ${esc(WDN(S.settings.travelUntil))} · turn off` : "Traveling? Travel mode"}</button></div>
+  </section>`;
+}
+function welcomeHtml() {
+  const T = today(); if (S.entries[T] || S.settings.wbSeen === T) return "";
+  const last = Object.keys(S.entries).filter(d => d < T).sort().pop(); if (!last) return "";
+  const gap = Math.round((parse(T) - parse(last)) / 864e5) - 1; if (gap < 3) return "";
+  return `<section class="card wb"><h2>Welcome back</h2><p>It's been ${gap} days. Nothing reset, and there's nothing to make up. ${S.sample ? "Want to tell me roughly how those days went, or just start fresh today? Both are fine." : "Start fresh today, and your big picture keeps going."}</p>
+    <div class="chips">${S.sample ? `<button type="button" class="btn" data-wbtell>Tell you roughly</button>` : ""}<button type="button" class="btn primary" data-wbfresh>Start fresh today</button></div></section>`;
+}
+const ASKS = [["Big weekend coming up", "I have a big weekend coming up. Help me plan it so I can enjoy it."], ["Why did I go up?", "Why did my weight go up? Look at my last few days and explain it."], ["I'm out, need food", "I'm out and need fast food right now. What are my best options for what I have left today?"], ["Traveling this week", "I'm traveling this week and eating out a lot. How should I handle it?"]];
+const asksHtml = () => S.sample ? `<div class="chips asks">${ASKS.map(([t], i) => `<button type="button" class="chip" data-ask="${i}" ${S.chatBusy ? "disabled" : ""}>${esc(t)}</button>`).join("")}</div>` : "";
+const ROUGH = [["Light", 350], ["Normal", 650], ["Big", 1000], ["Huge", 1500]];
+const roughHtml = () => `<div class="rough"><span class="muted">Didn't track a meal? Rough it in:</span>${ROUGH.map(([l, c], i) => `<button type="button" class="chip" data-rough="${i}">${l} ~${f0(c)}</button>`).join("")}</div>`;
+const CUISINE = [["Mexican", /chipotle|taco bell|qdoba|moe's|del taco|cava/i], ["Burgers", /mcdonald|burger king|wendy|five guys|whataburger|jack in the box|in-n-out|shake shack|red robin|sonic|smashburger|culver/i], ["Chicken", /chick-fil-a|popeyes|cane|kfc|wingstop|wild wings|zaxby|bojangles|el pollo/i], ["Pizza", /pizza|domino|papa john|little caesar/i], ["Subs & bowls", /subway|jersey mike|jimmy john|panera|cava|sweetgreen|firehouse|potbelly|arby|panda/i], ["Breakfast & coffee", /starbucks|dunkin|ihop|denny|waffle/i], ["Sit-down", /chili|applebee|olive garden|cheesecake|texas roadhouse|outback|red robin|ihop|wild wings|longhorn/i]];
+function rollDice() {
+  if (S.dice?.rolling) return;
+  const D = draft(), dv = derive(D.e), tr = travelOn();
+  let tgt = S.settings.target; try { if (D.d === today()) tgt = weekPlan(compute()).todayTarget; } catch {}
+  const g = macroGoals(tgt), left = tr ? { cal: 1100, p: 60, f: 45 } : { cal: Math.max(450, Math.round(tgt - (dv.cal ?? 0))), p: Math.max(20, Math.round(g.p - (dv.p ?? 0))), f: Math.max(15, Math.round(g.f - (dv.f ?? 0))) };
+  const cat = CUISINE.find(c => c[0] === S.diceCat); let chains = chainsList(); if (cat) chains = chains.filter(c => cat[1].test(c));
+  const hist = S.diceHist || (S.diceHist = []), pool = [];
+  chains.forEach(c => { try { chainPicks(c, left).slice(0, 3).forEach(x => { if (tr || x.v.cal <= Math.max(x.budget, left.cal)) pool.push({ ...x, brand: c }); }); } catch {} });
+  const fresh = pool.filter(x => !hist.includes(x.it.name)), from = fresh.length ? fresh : pool;
+  const pick = from.length ? from[Math.floor(Math.random() * from.length)] : null, face = 1 + Math.floor(Math.random() * 6);
+  S.dice = { rolling: true, face }; render();
+  setTimeout(() => { S.dice = { pick, left, face }; if (pick) { hist.push(pick.it.name); if (hist.length > 12) hist.shift(); } render(); }, 950);
+}
+function diceHtml() {
+  const x = S.dice, face = x?.face || 5, F = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] }[face], tr = travelOn();
+  const die = `<button type="button" class="die${x?.rolling ? " rolling" : ""}" data-roll aria-label="Roll the dice for a meal">${[...Array(9)].map((_, i) => `<span class="${F.includes(i) ? "d" : ""}"></span>`).join("")}</button>`;
+  const p = x?.pick;
+  const res = x?.rolling ? `<div><b>Rolling…</b></div>`
+    : p ? `<div class="dicepick"><span class="label">${esc(p.brand)}</span><b style="display:block">${esc(p.it.name.slice(p.brand.length).trim() || p.it.name)}${p.n > 1 ? `, ${p.n} slices` : ""}</b><span class="muted" style="font-size:13px">${f0(p.v.cal)} cal · ${f0(p.v.p)} g protein. ${tr ? "A solid pick for the road." : x.left.cal - p.v.cal >= 0 ? `Leaves about ${f0(x.left.cal - p.v.cal)} for the rest of today.` : "A little over today, and the week handles that."}</span><div class="chips" style="margin-top:8px"><button type="button" class="btn primary" data-dicelog>Log it</button><button type="button" class="btn" data-roll>Roll again</button></div></div>`
+    : x ? `<div class="muted" style="font-size:14px">Nothing on those menus fits right now. Try another type.</div>`
+    : `<div><b>Can't decide?</b><span class="muted" style="display:block;font-size:13px">Tap the die and I'll pick a meal that fits what's left today${tr ? " (travel mode: any chain, a balanced pick)" : ""}.</span></div>`;
+  return `<div class="dicebox"><span class="label">Roll the dice</span><div class="chips scrollx">${[["", "Anything"], ...CUISINE.map(c => [c[0], c[0]])].map(([k, n]) => `<button type="button" class="chip" data-dicecat="${esc(k)}" aria-pressed="${(S.diceCat || "") === k}">${esc(n)}</button>`).join("")}</div><div class="dierow">${die}${res}</div></div>`;
+}
+document.addEventListener("click", ev => {
+  const t = ev.target;
+  const bt = t.closest("[data-bptab]"); if (bt) { S.bpTab = bt.dataset.bptab; render(); return; }
+  const ak = t.closest("[data-ask]"); if (ak) { const a = ASKS[+ak.dataset.ask]; if (a && S.sample && !S.chatBusy) sendChat(draft(), a[1]); return; }
+  const rl = t.closest("[data-rough]"); if (rl) {
+    const [lab, cal] = ROUGH[+rl.dataset.rough], D = draft(), ms = Array.isArray(D.e.meals) ? D.e.meals : [];
+    if (!ms.length && num(D.e.food) != null) { ms.push({ name: "Earlier food (typed total)", cal: num(D.e.food), p: num(D.e.p) || 0, c: num(D.e.c) || 0, f: num(D.e.f) || 0 }); delete D.e.food; }
+    D.e.meals = ms.concat([{ name: `Rough log: ${lab.toLowerCase()} meal`, cal, p: Math.round(cal * 0.25 / 4), c: Math.round(cal * 0.45 / 4), f: Math.round(cal * 0.3 / 9), src: "rough" }]);
+    autosave(); render(); toast(`Added about ${f0(cal)} cal. Rough logs still count.`); return;
+  }
+  if (t.closest("[data-travel]")) { S.settings.travelUntil = travelOn() ? null : addD(today(), 6); saveSettings(); render(); toast(travelOn() ? "Travel mode on for a week. Rough logs are plenty." : "Travel mode off. Welcome home."); return; }
+  if (t.closest("[data-wbfresh]")) { S.settings.wbSeen = today(); saveSettings(); render(); return; }
+  if (t.closest("[data-wbtell]")) { S.settings.wbSeen = today(); saveSettings(); S.chatDraft = "I was away for a few days. Roughly, "; render(); const q = document.getElementById("chat-q"); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } return; }
+  const dc = t.closest("[data-dicecat]"); if (dc) { S.diceCat = dc.dataset.dicecat || null; S.dice = null; render(); return; }
+  if (t.closest("[data-roll]")) { rollDice(); return; }
+  if (t.closest("[data-dicelog]")) { const x = S.dice?.pick; if (!x) return; const D = draft(); S.fs = { d: D.d, q: "", pick: x.it, ...defAmt(x.it), amt: x.n || 1 }; S.dice = null; addFood(D); return; }
+});
+
 // ----- eating out: the best orders at each chain for what's left today -----
 const NOT_MEAL = /sauce|dressing|dip\b|lemonade|soda|tea\b|coffee|latte|frost|shake|milkshake|cookie|brownie|pie\b|fries|tots|hash brown$|chips|drink|syrup|creamer|ketchup|mayo|kid|cup of|cookie|dessert|toast$|tortilla|rice$|beans$|salsa|cheese$|guac|queso|sour cream|lettuce|fajita veg|bread$|bun$|patty$|donut|muffin|frappuccino|refresher|macchiato|cappuccino|mocha|chai|matcha|cold brew|coolatta|fritter|churro|turnover|onion rings|potato cakes|loaf|croissant$|bagel$/i;
 function chainsList() { return [...new Set(foodDb().filter(x => x.src === "rest").map(x => x.brand))]; }
@@ -3415,6 +3713,7 @@ function eatOutHtml(D) {
     <div class="chips scrollx">${chains.map(c => `<button type="button" class="chip" data-eatbrand="${esc(c)}" aria-pressed="${c === S.eatBrand}">${esc(c)}</button>`).join("")}</div>
     <p class="muted" style="margin:0;font-size:13px">Most protein per calorie for what you have left (${f0(Math.max(0, left.cal))} cal, ${f0(Math.max(0, left.p))}g protein).</p>
     ${picks.length ? `<ol class="picks">${picks.slice(0, S.eatAll ? 6 : 3).map((x, i) => `<li><div class="pn"><b>${esc(x.it.name.slice(S.eatBrand.length).trim() || x.it.name)}${x.n > 1 ? `, ${x.n} slices` : ""}</b><span class="mono">${f0(x.v.cal)} cal · ${f0(x.v.p)}p ${f0(x.v.c)}c ${f0(x.v.f)}f</span><span class="ptags"><em class="pp">${f0(x.pp)}% protein</em>${x.over > 0 ? `<em class="ov">${f0(x.over)} over</em>` : x.v.cal <= x.budget ? `<em class="ok">fits</em>` : ""}</span></div><button type="button" class="btn" data-eatlog="${i}">Log</button></li>`).join("")}</ol>${picks.length > 3 ? `<button type="button" class="linkbtn" id="eatmore" style="justify-self:start">${S.eatAll ? "Show fewer" : `Show ${picks.length - 3} more`}</button>` : ""}` : `<p class="muted" style="margin:0;font-size:14px">No full meals with 15g+ protein on this menu.</p>`}
+  ${diceHtml()}
 </section>`;
 }
 function foodBox() {
@@ -3497,7 +3796,8 @@ function estHtml(est) {
   if (est.result) { const R = est.result, t = { cal: 0, p: 0, c: 0, f: 0 }; R.items.forEach(x => { for (const k in t) t[k] += x[k] || 0; });
     return `<div class="estres"><span class="label">What I see${R.conf ? ` · ${esc(R.conf)} confidence` : ""}</span><p>${esc(R.desc || "")}</p>
       <ul class="estitems">${R.items.map(x => `<li><span>${esc(x.name)}</span><b class="mono">${f0(x.cal)} cal · ${f0(x.p)}p ${f0(x.c)}c ${f0(x.f)}f</b></li>`).join("")}<li class="tot"><span>Total</span><b class="mono">${f0(t.cal)} cal · ${f0(t.p)}p ${f0(t.c)}c ${f0(t.f)}f</b></li></ul>
-      ${R.note ? `<p class="muted" style="font-size:13px">${esc(R.note)}</p>` : ""}</div>
+      ${R.note ? `<p class="muted" style="font-size:13px">${esc(R.note)}</p>` : ""}
+      <p class="closeok">About ${f0(t.cal)} cal, give or take ${f0(Math.max(20, Math.round(t.cal * 0.1 / 10) * 10))}. That's accurate enough: over a week your trend weight evens out a margin like this.</p></div>
       <div class="chips"><button type="button" class="btn primary" id="estadd">Add to log</button><button type="button" class="btn" id="estredo">Fix it</button><button type="button" class="btn ghost" id="estcancel">Cancel</button></div>`; }
   if (est.ask) return `${ph.length ? `<div class="thumbs estthumbs">${ph.map((p, i) => `<span><img src="${p.url}" alt="Food photo ${i + 1}"><button type="button" class="x" data-estdel="${i}" aria-label="Remove photo">×</button></span>`).join("")}${ph.length < EST_MAX ? `<label class="addang" for="est-more"><b>+</b>Add angle</label>` : ""}<input id="est-more" type="file" accept="image/*" capture="environment" hidden></div>
       <p class="muted" style="margin:0;font-size:13px">${ph.length < 2 ? "For the best read add 1 or 2 more angles: one from the side so I can see how tall it is, and one close up. A fork or your hand in a shot helps with size." : `${ph.length} angles. ${ph.length < 3 ? "A close-up or straight-down shot can help too." : "That's plenty for a solid read."}`}</p>` : ""}
