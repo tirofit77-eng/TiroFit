@@ -387,6 +387,9 @@ details.rmore { margin-top: 12px } details.rmore > summary { font-size: 14px; co
 .ghostchip { display: inline-flex; align-items: center; gap: 5px; margin-top: 4px; font-size: 12px; font-family: var(--mono); color: var(--muted); padding: 2px 9px; border-radius: 999px; background: var(--surface-2); width: fit-content; max-width: 100% }
 .ghostchip em { font-style: normal; font-family: var(--body); font-weight: 700 } .ghostchip.win { color: var(--good); background: color-mix(in srgb, var(--good) 15%, var(--surface-2)) } .ghostchip.tie em { color: var(--fg) } .ghostchip.behind em { color: var(--warn) }
 .menusnap .mhead { font-weight: 700; font-size: 14px } .picks em.mn { font-style: normal; color: var(--muted) }
+.estthumbs { align-items: stretch } .estthumbs > span { position: relative } .estthumbs .x { position: absolute; top: 2px; right: 2px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgba(0,0,0,.65); color: #fff; font-size: 16px; line-height: 1; cursor: pointer }
+.addang { display: grid; place-items: center; align-content: center; gap: 2px; width: 72px; height: 96px; border-radius: 8px; border: 1.5px dashed var(--a); color: var(--a); font-size: 12px; font-weight: 600; cursor: pointer; text-align: center } .addang b { font-size: 24px; line-height: 1 }
+.estres { display: grid; gap: 6px } .estres p { margin: 0; font-size: 14px } .estitems { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px } .estitems li { display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; padding: 6px 0; border-bottom: 1px solid var(--line) } .estitems li b { font-size: 12px; white-space: nowrap; font-weight: 500 } .estitems li.tot { border: 0; font-weight: 700 } .estitems li.tot b { font-weight: 700 }
 .cweek { display: grid; gap: 10px } .cdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px } .cdays span { display: grid; justify-items: center; gap: 2px; padding: 6px 2px; border-radius: 8px; background: var(--surface-2); font-size: 11px; color: var(--muted) } .cdays span b { font: 600 13px var(--mono); color: var(--muted) } .cdays span.on b { color: var(--p-green) } .cdays span.sel { outline: 1.5px solid var(--line) }
 .recline { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit }
 .recline > b { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--rc); font: 700 20px var(--mono); color: var(--rc) }
@@ -3154,7 +3157,7 @@ function vToday() {
       <div class="chips">
         <button type="button" class="btn primary" id="fsopen">Search foods</button>
         <label class="btn" for="quickscan" data-quickscan>Scan barcode</label>
-        ${S.sample && S.imgOK ? `<label class="btn" for="f-photo" style="display:inline-flex;align-items:center;gap:6px">Photo</label><input id="f-photo" type="file" accept="image/*" capture="environment" hidden>` : ""}
+        ${S.sample && S.imgOK ? `<label class="btn" for="f-photo" style="display:inline-flex;align-items:center;gap:6px">Photo</label><input id="f-photo" type="file" accept="image/*" multiple hidden>` : ""}
         ${S.sample ? `<button type="button" class="btn" id="describe">Describe it</button>` : ""}
         <button type="button" class="btn ghost" id="addmeal">Add manually</button>
       </div>
@@ -3270,7 +3273,7 @@ function vFood() {
     <div class="chips">
       <button type="button" class="btn primary" id="fsopen">Search</button>
       <label class="btn" for="quickscan" data-quickscan>Scan barcode</label>
-      ${S.sample && S.imgOK ? `<label class="btn" for="f-photo" style="display:inline-flex;align-items:center;gap:6px">Photo</label><input id="f-photo" type="file" accept="image/*" capture="environment" hidden>` : ""}
+      ${S.sample && S.imgOK ? `<label class="btn" for="f-photo" style="display:inline-flex;align-items:center;gap:6px">Photo</label><input id="f-photo" type="file" accept="image/*" multiple hidden>` : ""}
       ${S.sample ? `<button type="button" class="btn" id="describe">Describe it</button>` : ""}
       <button type="button" class="btn ghost" id="addmeal">Add manually</button>
     </div>
@@ -3295,35 +3298,67 @@ function vFood() {
   <div class="savebar"><span class="msg" id="savemsg">${S.entries[d] ? "Saved. Changes save as you go." : "Changes save as you go."}</span></div>
   </form>`;
 }
+const EST_MAX = 4;
+const estPhotos = est => est.photos || (est.photo ? (est.photos = [{ file: est.photo, url: est.photoUrl }]) : []);
 function estHtml(est) {
-  if (est.busy) return `<div><b>Estimating…</b> <span class="muted">This takes a few seconds.</span></div><button type="button" class="btn ghost" id="eststop">Stop</button>`;
-  if (est.ask) return `<div class="field"><label for="f-desc">${est.target === "after" ? "What did you eat after drinking?" : est.photo ? "Anything to add? (optional)" : "What did you eat?"}</label><textarea id="f-desc" placeholder="${est.target === "after" ? "2 slices pepperoni pizza and a Gatorade" : "Chipotle bowl: double chicken, white rice, black beans, cheese, salsa"}">${esc(est.text || "")}</textarea></div>
-    ${est.photo ? `<div class="thumbs"><img src="${est.photoUrl}" alt="Food photo to estimate"></div>` : ""}
+  const ph = estPhotos(est);
+  if (est.busy) return `<div><b>Looking at ${ph.length > 1 ? `all ${ph.length} angles` : "it"}…</b> <span class="muted">Describing the food, then estimating. This takes a few seconds.</span></div><button type="button" class="btn ghost" id="eststop">Stop</button>`;
+  if (est.result) { const R = est.result, t = { cal: 0, p: 0, c: 0, f: 0 }; R.items.forEach(x => { for (const k in t) t[k] += x[k] || 0; });
+    return `<div class="estres"><span class="label">What I see${R.conf ? ` · ${esc(R.conf)} confidence` : ""}</span><p>${esc(R.desc || "")}</p>
+      <ul class="estitems">${R.items.map(x => `<li><span>${esc(x.name)}</span><b class="mono">${f0(x.cal)} cal · ${f0(x.p)}p ${f0(x.c)}c ${f0(x.f)}f</b></li>`).join("")}<li class="tot"><span>Total</span><b class="mono">${f0(t.cal)} cal · ${f0(t.p)}p ${f0(t.c)}c ${f0(t.f)}f</b></li></ul>
+      ${R.note ? `<p class="muted" style="font-size:13px">${esc(R.note)}</p>` : ""}</div>
+      <div class="chips"><button type="button" class="btn primary" id="estadd">Add to log</button><button type="button" class="btn" id="estredo">Fix it</button><button type="button" class="btn ghost" id="estcancel">Cancel</button></div>`; }
+  if (est.ask) return `${ph.length ? `<div class="thumbs estthumbs">${ph.map((p, i) => `<span><img src="${p.url}" alt="Food photo ${i + 1}"><button type="button" class="x" data-estdel="${i}" aria-label="Remove photo">×</button></span>`).join("")}${ph.length < EST_MAX ? `<label class="addang" for="est-more"><b>+</b>Add angle</label>` : ""}<input id="est-more" type="file" accept="image/*" capture="environment" hidden></div>
+      <p class="muted" style="margin:0;font-size:13px">${ph.length < 2 ? "For the best read add 1 or 2 more angles: one from the side so I can see how tall it is, and one close up. A fork or your hand in a shot helps with size." : `${ph.length} angles. ${ph.length < 3 ? "A close-up or straight-down shot can help too." : "That's plenty for a solid read."}`}</p>` : ""}
+    <div class="field"><label for="f-desc">${est.target === "after" ? "What did you eat after drinking?" : ph.length ? "Anything I can't see? (optional)" : "What did you eat?"}</label><textarea id="f-desc" placeholder="${est.target === "after" ? "2 slices pepperoni pizza and a Gatorade" : ph.length ? "Cooked in butter, ranch on the side, about 8 oz of steak" : "Chipotle bowl: double chicken, white rice, black beans, cheese, salsa"}">${esc(est.text || "")}</textarea></div>
     <div class="chips"><button type="button" class="btn primary" id="estgo">Estimate</button><button type="button" class="btn ghost" id="estcancel">Cancel</button></div>${est.err ? `<div class="muted" style="color:var(--bad)">${esc(est.err)}</div>` : ""}`;
   return "";
 }
+// more photos than the AI takes at once: tile them into one picture
+async function collage(files) {
+  const imgs = await Promise.all(files.map(f => createImageBitmap(f).catch(() => null))).then(a => a.filter(Boolean));
+  if (!imgs.length) return null;
+  const cols = imgs.length > 1 ? 2 : 1, rows = Math.ceil(imgs.length / cols), cell = 760;
+  const cv = document.createElement("canvas"); cv.width = cols * cell; cv.height = rows * cell; const g = cv.getContext("2d"); g.fillStyle = "#000"; g.fillRect(0, 0, cv.width, cv.height);
+  imgs.forEach((im, i) => { const k = Math.min(cell / im.width, cell / im.height), w = im.width * k, h = im.height * k, x = (i % cols) * cell + (cell - w) / 2, y = Math.floor(i / cols) * cell + (cell - h) / 2; g.drawImage(im, x, y, w, h); g.fillStyle = "rgba(0,0,0,.6)"; g.fillRect((i % cols) * cell + 8, Math.floor(i / cols) * cell + 8, 120, 40); g.fillStyle = "#fff"; g.font = "bold 26px sans-serif"; g.fillText(`Angle ${i + 1}`, (i % cols) * cell + 16, Math.floor(i / cols) * cell + 37); });
+  return await new Promise(r => cv.toBlob(r, "image/jpeg", 0.88));
+}
 async function runEstimate() {
   const est = S.est; if (!est || !S.sample) return;
-  const desc = (document.getElementById("f-desc")?.value || "").trim();
-  if (!desc && !est.photo) { est.err = "Describe the food first."; render(); return; }
+  const desc = (document.getElementById("f-desc")?.value || "").trim(), ph = estPhotos(est);
+  if (!desc && !ph.length) { est.err = "Describe the food first."; render(); return; }
   est.text = desc; est.busy = true; est.err = null; est.ctl = new AbortController(); render();
-  const prompt = `You estimate food for a calorie log. ${est.photo ? "The photo shows a meal or food." : ""} ${desc ? `The person says: "${desc.slice(0, 1500)}".` : ""}
-Identify each food item, estimate a realistic portion (say it in the name, e.g. "Chicken breast, ~6 oz"), and estimate calories, grams of protein, carbs and fat, plus fiber (g), sugar (g), saturated fat (g) and sodium (mg). Use typical US restaurant or home portions when unsure. Don't count drinks with alcohol.
-Reply with only JSON: {"items":[{"name":string,"cal":number,"p":number,"c":number,"f":number,"fib":number,"sug":number,"sat":number,"na":number}],"note":string}  where note is one short sentence on what would change the estimate most.`;
   try {
-    const out = await S.sample.json(prompt, { images: est.photo ? [est.photo] : undefined, signal: est.ctl.signal });
-    const items = (Array.isArray(out?.items) ? out.items : []).map(x => ({ name: String(x.name || "Food").slice(0, 80), cal: Math.round(+x.cal || 0), p: Math.round(+x.p || 0), c: Math.round(+x.c || 0), f: Math.round(+x.f || 0), ...microIn(x), src: est.photo ? "photo" : "described" })).filter(x => x.cal > 0);
+    let images, tiled = false;
+    if (ph.length) { if (ph.length <= (S.imgMax || 1)) images = ph.map(p => p.file); else { const c = await collage(ph.map(p => p.file)); images = [c || ph[0].file]; tiled = !!c; } }
+    const prompt = `You estimate food for a calorie log, as accurately as possible.
+${ph.length > 1 ? `You have ${ph.length} photos of the SAME meal from different angles${tiled ? ", tiled into one image and labeled Angle 1 to " + ph.length : ""}. Use them together: top views show area, side views show height and depth, close-ups show texture, oil and sauce. Count each food once, not once per photo.` : ph.length ? "The photo shows a meal or food." : ""}
+${desc ? `The person says: "${desc.slice(0, 1500)}". Trust what they tell you over what you guess.` : ""}
+Step 1, describe: name each food, how it looks to be cooked (fried, grilled, buttered, breaded), visible oils, sauces, cheese and toppings, and the portion. Judge size from the plate (a dinner plate is about 10 to 11 inches), utensils, hands, cups and packaging.
+Step 2, estimate each item: portion in the name (e.g. "Ribeye, ~10 oz cooked"), calories, protein, carbs, fat (g), fiber (g), sugar (g), saturated fat (g), sodium (mg). Restaurant food usually has more oil and butter than it looks. Don't count drinks with alcohol.
+Reply with only JSON: {"description": "2 or 3 plain sentences on what you see and the portion sizes", "items":[{"name":string,"cal":number,"p":number,"c":number,"f":number,"fib":number,"sug":number,"sat":number,"na":number}], "confidence": "high" | "medium" | "low", "note": "one short sentence on what would change the estimate most"}`;
+    const out = await S.sample.json(prompt, { images, signal: est.ctl.signal, modelTier: "complex" });
+    const items = (Array.isArray(out?.items) ? out.items : []).map(x => ({ name: String(x.name || "Food").slice(0, 80), cal: Math.round(+x.cal || 0), p: Math.round(+x.p || 0), c: Math.round(+x.c || 0), f: Math.round(+x.f || 0), ...microIn(x), src: ph.length ? "photo" : "described" })).filter(x => x.cal > 0);
     if (!items.length) throw { code: "invalid_json" };
-    const D = draft();
-    if (est.target === "after") { D.e.ateAfter = "Y"; D.e.afterCal = sum(items.map(x => x.cal)); D.e.afterNote = items.map(x => x.name).join(", "); toast(`About ${f0(D.e.afterCal)} cal after drinking`); }
-    else { const meals = Array.isArray(D.e.meals) ? D.e.meals : []; if (!meals.length && num(D.e.food) != null) meals.push({ name: "Earlier food (typed total)", cal: num(D.e.food), p: num(D.e.p) || 0, c: num(D.e.c) || 0, f: num(D.e.f) || 0 }); D.e.meals = meals.concat(items); delete D.e.food; toast(`Added ${items.length} item${items.length > 1 ? "s" : ""}${out.note ? ". " + out.note : ""}`); }
-    if (est.photoUrl) URL.revokeObjectURL(est.photoUrl);
-    S.est = null; render();
+    est.busy = false; est.result = { items, desc: String(out.description || "").slice(0, 500), note: String(out.note || "").slice(0, 200), conf: /^(high|medium|low)$/i.test(out.confidence || "") ? String(out.confidence).toLowerCase() : "" }; render();
   } catch (err) {
     if (err?.code === "cancelled") { est.busy = false; render(); return; }
     est.busy = false; est.err = errCopy(err?.code); render();
   }
 }
+function addEstimate() {
+  const est = S.est, R = est?.result; if (!R) return; const items = R.items, D = draft();
+  if (est.target === "after") { D.e.ateAfter = "Y"; D.e.afterCal = sum(items.map(x => x.cal)); D.e.afterNote = items.map(x => x.name).join(", "); toast(`About ${f0(D.e.afterCal)} cal after drinking`); }
+  else { const meals = Array.isArray(D.e.meals) ? D.e.meals : []; if (!meals.length && num(D.e.food) != null) meals.push({ name: "Earlier food (typed total)", cal: num(D.e.food), p: num(D.e.p) || 0, c: num(D.e.c) || 0, f: num(D.e.f) || 0 }); const slot = defSlot(D.d); D.e.meals = meals.concat(items.map(x => ({ ...x, slot }))); delete D.e.food; toast(`Added ${items.length} item${items.length > 1 ? "s" : ""}`); }
+  estPhotos(est).forEach(p => URL.revokeObjectURL(p.url)); S.est = null; autosave(); render();
+}
+document.addEventListener("change", ev => { if (ev.target.id !== "est-more" || !S.est) return; const ph = estPhotos(S.est); [...ev.target.files].slice(0, EST_MAX - ph.length).forEach(f => ph.push({ file: f, url: URL.createObjectURL(f) })); S.est.text = document.getElementById("f-desc")?.value || S.est.text; render(); });
+document.addEventListener("click", ev => {
+  if (!S.est) return;
+  const del = ev.target.closest("[data-estdel]"); if (del) { const ph = estPhotos(S.est), [p] = ph.splice(+del.dataset.estdel, 1); if (p) URL.revokeObjectURL(p.url); S.est.text = document.getElementById("f-desc")?.value || S.est.text; render(); return; }
+  if (ev.target.closest("#estadd")) { addEstimate(); return; }
+  if (ev.target.closest("#estredo")) { S.est.result = null; S.est.ask = true; render(); document.getElementById("f-desc")?.focus(); }
+});
 
 // ----- History -----
 function vHistory() {
@@ -3657,11 +3692,11 @@ function bindLog(form) {
   document.getElementById("prevd").onclick = () => { flushSave(); S.editDate = addD(D.d, -1); S.draft = null; render(); };
   document.getElementById("nextd").onclick = () => { const n = addD(D.d, 1); if (n <= addD(today(), 1)) { flushSave(); S.editDate = n; S.draft = null; render(); } };
   const ph = document.getElementById("f-photo");
-  if (ph) ph.onchange = () => { const f = ph.files[0]; if (!f) return; S.fs = null; S.est = { d: D.d, target: "food", ask: true, photo: f, photoUrl: URL.createObjectURL(f) }; render(); };
+  if (ph) ph.onchange = () => { const fl = [...ph.files].slice(0, EST_MAX); if (!fl.length) return; S.fs = null; S.est = { d: D.d, target: "food", ask: true, photos: fl.map(f => ({ file: f, url: URL.createObjectURL(f) })) }; render(); };
   const ds = document.getElementById("describe"); if (ds) ds.onclick = () => { S.fs = null; S.est = { d: D.d, target: "food", ask: true }; render(); document.getElementById("f-desc")?.focus(); };
   const da = document.getElementById("describeAfter"); if (da) da.onclick = () => { S.est = { d: D.d, target: "after", ask: true }; render(); document.getElementById("f-desc")?.focus(); };
   const eg = document.getElementById("estgo"); if (eg) eg.onclick = runEstimate;
-  const ec = document.getElementById("estcancel"); if (ec) ec.onclick = () => { if (S.est?.photoUrl) URL.revokeObjectURL(S.est.photoUrl); S.est = null; render(); };
+  const ec = document.getElementById("estcancel"); if (ec) ec.onclick = () => { if (S.est) estPhotos(S.est).forEach(p => URL.revokeObjectURL(p.url)); S.est = null; render(); };
   const es = document.getElementById("eststop"); if (es) es.onclick = () => S.est?.ctl?.abort();
   bindWorkout(form, D);
   bindFoodSearch(D);
