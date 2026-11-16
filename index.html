@@ -2,7 +2,7 @@
 <title>Bad Day Okay</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Kalam:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Kalam:wght@400;700&family=DM+Sans:opsz,wght@9..40,400..800&display=swap">
 <style>
 /* Layout: phone-first app shell — sticky top bar, one view at a time, bottom tab bar; widens to a two-column dashboard on desktop. */
 :root {
@@ -884,6 +884,47 @@ body.noscroll { overflow: hidden }
 .restline b { display: block; font-size: 14px }
 :root[data-look="sunrise"] .card.board { border: 1px solid var(--line) !important; border-radius: 22px !important; box-shadow: 0 8px 22px -16px rgba(70, 55, 20, .35) !important }
 :root[data-look="sunrise"] .board .streakbox { border: 0 !important; border-radius: 16px !important; box-shadow: none !important }
+/* ---- v60: the "big picture" mock design, DM Sans, pastel ---- */
+:root[data-look="sunrise"] { --display: "DM Sans", system-ui, sans-serif; --numf: "DM Sans", system-ui, sans-serif }
+:root[data-look="sunrise"] body, :root[data-look="sunrise"] body *:not(svg):not(path) { font-family: "DM Sans", system-ui, sans-serif !important }
+:root[data-look="sunrise"] .trail text { font-family: "DM Sans", system-ui, sans-serif !important; font-style: italic; font-size: 13px }
+:root[data-look="sunrise"] body { background: linear-gradient(170deg, #FCE6C9 0, #FCF3D9 220px, #FBF8F0 420px) no-repeat, #FBF8F0 }
+:root[data-look="sunrise"] .dayname b { text-transform: none; letter-spacing: -.01em; font-weight: 800 }
+:root[data-look="sunrise"] .dayname span { text-transform: none; letter-spacing: 0 }
+:root[data-look="sunrise"] .label { letter-spacing: .02em }
+:root[data-look="sunrise"] h2 { font-weight: 800; letter-spacing: -.01em }
+:root[data-look="sunrise"] .card { border-radius: 20px; padding: 16px }
+.bphero { margin: 6px 4px 14px }
+.bphero h1 { font-size: 25px; font-weight: 800; line-height: 1.2; letter-spacing: -.02em }
+.bphero p { font-size: 14px; line-height: 1.45 }
+:root[data-look="sunrise"] .bpseg { display: flex; background: #E3F3E6; padding: 3px; gap: 2px; border-radius: 999px }
+:root[data-look="sunrise"] .bpseg button { flex: 1; font-size: 13px; font-weight: 700; padding: 7px 0; color: var(--muted); border-radius: 999px; border: 0 }
+:root[data-look="sunrise"] .bpseg button[aria-selected=true] { background: var(--bp-g); color: var(--fg); box-shadow: none }
+.bpnum b { font-size: 40px; font-weight: 800; letter-spacing: -.03em }
+.bpnum em { background: #E3F3E6 }
+.bpcal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px }
+.bpcal span { font-size: 10px; font-weight: 700; color: var(--muted); text-align: center }
+.bpcal i { font-style: normal; aspect-ratio: 1; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 600; color: var(--fg) }
+.bpcal .pad { background: none }
+.bpcal .s-on { background: var(--bp-g) } .bpcal .s-off { background: #BFE3C8 } .bpcal .s-far { background: #E3F3E6 } .bpcal .s-big { background: var(--bp-p) }
+.bpcal .s-e { border: 1.5px dashed var(--line); color: var(--muted) } .bpcal .fut { color: var(--muted); opacity: .45 }
+.bpcal .now { outline: 2px solid var(--bp-pt); outline-offset: 1px }
+.bpleg em { border-radius: 3px } .bpleg .s-off { background: #BFE3C8 }
+:root[data-look="sunrise"] .bpzoom { background: #FDE3CD; border: 0; border-radius: 14px }
+:root[data-look="sunrise"] .bpzoom p { font-size: 13px; line-height: 1.45 }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.duo .half { display: flex; flex-direction: column; min-width: 0 }
+.duo h2 { font-size: 16px; margin: 0 0 8px }
+.duo .ring { --v: 0; width: 84px; height: 84px; border-radius: 50%; background: conic-gradient(var(--bp-g) calc(var(--v) * 1%), #E3F3E6 0); display: grid; place-items: center; margin: 2px auto 8px; position: relative }
+.duo .ring::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: var(--surface) }
+.duo .ring b { position: relative; font-size: 22px; font-weight: 800 }
+.duo .small, .bp .small { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.35; margin: 0 }
+.duo .big2 { font-size: 28px; font-weight: 800; text-align: center; margin-top: 4px; letter-spacing: -.02em }
+.duo .range { height: 12px; border-radius: 99px; background: #E3F3E6; position: relative; margin: 14px 0 8px }
+.duo .range b { position: absolute; top: 0; bottom: 0; background: #BFE3C8; border-radius: 99px }
+.duo .range i { position: absolute; top: -5px; width: 4px; height: 22px; background: var(--bp-gt); border-radius: 4px }
+.duo .ends { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--muted); gap: 4px }
+:root[data-look="sunrise"] .brand small { font-style: normal !important }
 
 </style>
 
@@ -3560,8 +3601,8 @@ function vToday() {
   return `<form class="view" id="dayform" autocomplete="off">
   <div class="dayrow"><button type="button" class="btn ghost" id="prevd" aria-label="Previous day">‹</button><div class="dayname"><b>${isT ? "Today" : esc(parse(d).toLocaleDateString(undefined, { weekday: "long" }))}</b><span>${esc(parse(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }))}${S.entries[d] ? " · saved" : ""}</span></div><input id="f-date" type="date" value="${d}" max="${addD(today(), 1)}" aria-label="Pick a day"><button type="button" class="btn ghost" id="nextd" aria-label="Next day">›</button></div>
   ${isT ? intakeCta() + welcomeHtml() + bigPicHtml() : ""}
-  <section class="card board" aria-label="Day totals"><div id="todaybox">${todayBox()}</div></section>
   ${tilesHtml(d, e, dv, F)}
+  ${!isT || S.tile === "food" ? `<section class="card board" aria-label="Day totals"><div id="todaybox">${todayBox()}</div></section>` : ""}
   ${S.tile === "checkin" ? `<section class="card tilebody">${zh(Z(), "Check-in", isT ? "this morning" : "")}
     <div class="view" style="gap:12px">
     ${S.settings.weighOff ? "" : `<div class="field"><label for="f-w">Morning weight (lb)</label><div class="bignum"><button type="button" data-bump="w" data-by="-0.2" aria-label="Down 0.2">−</button><input id="f-w" data-k="w" type="number" inputmode="decimal" step="any" value="${esc(v("w"))}" placeholder="${f1(compute().trend ?? 155)}"><button type="button" data-bump="w" data-by="0.2" aria-label="Up 0.2">+</button></div></div>`}
@@ -3662,16 +3703,28 @@ function trailSvg(days, cals, tgt, T) {
     <text x="${pts[0][0] - 8}" y="${pts[0][1] - 14}" class="tr-lab">${esc(fmtD(days[0], { month: "short", day: "numeric" }))}</text><text x="${L[0] - 10}" y="${L[1] - 14}" class="tr-lab tr-today">today</text></svg>`;
 }
 function bpHero(B) {
-  const ok = B.mAvg != null && Math.abs(B.mAvg - B.tgt) <= B.tgt * 0.05, down = B.mChg != null && B.mChg <= -0.3 && st0().goal !== "Bulk";
-  const h = B.mlog.length < 4 ? "Every log adds to the picture." : ok || down ? "You're further along than you think." : "One week at a time. You're still on the trail.";
-  const sub = `${B.mlog.length} of ${B.mdays.length} days on the trail this month.${B.mAvg != null ? ` Averaging ${f0(B.mAvg)} a day against your ${f0(B.tgt)}.` : ""}`;
-  return `<div class="bphero"><h1>${esc(h)}</h1><p>${esc(sub)}</p></div>`;
+  const ok = B.mAvg != null && Math.abs(B.mAvg - B.tgt) <= B.tgt * 0.05, down = B.mChg != null && B.mChg <= -0.3 && !/bulk/i.test(st0().goal), nm = st0().name ? `Hey ${st0().name}, ` : "";
+  const h = B.mlog.length < 4 ? `${nm}every log adds to the picture.` : ok || down ? `${nm}you're doing better than you think.` : `${nm}one week at a time. You're still on track.`;
+  const rel = a => Math.abs(a - B.tgt) <= Math.max(100, B.tgt * 0.04) ? "right around" : a < B.tgt ? `${f0(B.tgt - a)} under` : `${f0(a - B.tgt)} over`;
+  const sub = B.mAvg == null ? "Log a few days and your month shows up here." : `This month you're averaging ${f0(B.mAvg)} a day, ${rel(B.mAvg)} your ${f0(B.tgt)} goal.${B.mChg != null && Math.abs(B.mChg) >= 0.2 && !st0().weighOff ? ` Trend weight is ${B.mChg < 0 ? "down" : "up"} ${f1(Math.abs(B.mChg))} lb.` : ""}`;
+  return `<div class="bphero"><h1>${esc(h.charAt(0).toUpperCase() + h.slice(1))}</h1><p>${esc(sub)}</p></div>`;
+}
+function calHtml(B, st) {
+  const first = parse(B.mdays[0]), pad = (first.getDay() + 6) % 7, y = first.getFullYear(), mo = first.getMonth(), n = new Date(y, mo + 1, 0).getDate();
+  const cells = [...Array(n)].map((_, k) => { const d = addD(B.mdays[0], k), fut = d > B.T, c = fut ? null : calOf(d); return `<i class="${fut ? "fut" : st(c)}${d === B.T ? " now" : ""}" title="${c == null ? (fut ? "" : "Not logged") : f0(c) + " cal"}">${k + 1}</i>`; });
+  return `<div class="bpcal">${["M", "T", "W", "T", "F", "S", "S"].map(x => `<span>${x}</span>`).join("")}${'<i class="pad"></i>'.repeat(pad)}${cells.join("")}</div>`;
+}
+function duoHtml(B, ce) {
+  const e = S.entries[B.T] || {}, eaten = derive(e).cal || 0; let t = B.tgt; try { t = B.w.todayTarget || t; } catch {}
+  const [a, b] = goodRange(t), lo = a - 700, hi = b + 500, P = v => Math.max(0, Math.min(100, (v - lo) / (hi - lo) * 100));
+  return `<div class="duo"><section class="card half"><h2>Tracking score</h2><div class="ring" style="--v:${ce.score}"><b>${ce.score}</b></div><p class="small">${esc(ce.logged >= 5 ? `You logged ${ce.logged} of 7 days. That's plenty to work with.` : ce.msg)}</p></section>
+    <section class="card half"><h2>Today</h2><div class="big2">${f0(eaten)}</div><p class="small" style="margin-top:-2px">eaten so far</p><div class="range"><b style="left:${P(a)}%;right:${100 - P(b)}%"></b><i style="left:calc(${P(eaten)}% - 2px)"></i></div><div class="ends"><span>${f0(a)}</span><span>good range</span><span>${f0(b)}</span></div></section></div>`;
 }
 const st0 = () => S.settings;
 function bigPicHtml() {
   if (!Object.keys(S.entries).length) return "";
   let B; try { B = bpData(); } catch { return ""; }
-  const tab = S.bpTab || "week", tgt = B.tgt, ce = closeEnough(), MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" });
+  const tab = S.bpTab || "month", tgt = B.tgt, ce = closeEnough(), MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" });
   const st = c => c == null ? "s-e" : c - tgt >= BIG ? "s-big" : Math.abs(c - tgt) <= Math.max(150, tgt * 0.06) ? "s-on" : Math.abs(c - tgt) <= 400 ? "s-off" : "s-far";
   const seg = `<div class="bpseg" role="tablist" aria-label="Time range">${[["week", "Week"], ["month", "Month"], ["year", "Year"]].map(([k, n]) => `<button type="button" role="tab" data-bptab="${k}" aria-selected="${tab === k}">${n}</button>`).join("")}</div>`;
   const diff = a => a == null ? "" : Math.abs(a - tgt) <= Math.max(100, tgt * 0.04) ? "right around your goal" : a < tgt ? `${f0(tgt - a)} under your goal` : `${f0(a - tgt)} over your goal, and that's fine`;
@@ -3679,11 +3732,12 @@ function bigPicHtml() {
   if (tab === "week") {
     const dn = ["M", "T", "W", "T", "F", "S", "S"];
     num = B.wAvg; unit = B.wLast7 ? "avg cal a day, last 7 days" : "avg cal a day this week"; pill = `${B.wlog.length} of ${B.w.idx + 1} days logged`;
-    body = `<div class="bpweek">${B.w.days.map((d, i) => { const fut = i > B.w.idx, c = fut ? null : calOf(d); return `<span class="${fut ? "fut" : st(c)}${i === B.w.idx ? " now" : ""}"><b>${c == null ? (fut ? "" : "·") : f0(c)}</b>${dn[i]}</span>`; }).join("")}</div>`;
+    const p14 = [...Array(14)].map((_, i) => addD(B.T, i - 13));
+    body = `${trailSvg(p14, p14.map(calOf), tgt, B.T)}<p class="small" style="text-align:left;margin:-4px 0 0">Your last two weeks as a path, one dot a day.</p>`;
     line = B.wAvg == null ? "Log a meal or two and your week shows up here." : B.wLast7 ? `New week, fresh start. Your last 7 days averaged ${diff(B.wAvg)}.` : `Averaging ${diff(B.wAvg)} so far. ${B.w.left > 1 ? `${B.w.left} days left, including today.` : "Last day of the week."}`;
   } else if (tab === "month") {
     num = B.mAvg; unit = "avg cal a day this month"; pill = `${B.mlog.length} of ${B.mdays.length} days logged`;
-    body = `${trailSvg(B.mdays, B.mc, tgt, B.T)}<div class="bpleg"><span><em class="s-on"></em>Near goal</span><span><em class="s-off"></em>A bit off</span><span><em class="s-big"></em>Big day</span><span><em class="s-e"></em>Skipped, that's fine</span></div>`;
+    body = `${calHtml(B, st)}<div class="bpleg"><span><em class="s-on"></em>Near goal</span><span><em class="s-off"></em>A bit off</span><span><em class="s-big"></em>Big day</span><span><em class="s-e"></em>Not logged, that's fine</span></div>`;
     line = B.mAvg == null ? "Your month fills in as you log." : `Averaging ${diff(B.mAvg)}.${B.mChg != null ? ` Trend weight ${Math.abs(B.mChg) < 0.2 ? "is holding steady" : `${B.mChg < 0 ? "down" : "up"} ${f1(Math.abs(B.mChg))} lb`} this month.` : ""}`;
   } else {
     const have = B.byM.filter(x => x.avg != null), vals = have.map(x => x.avg), lo = Math.min(tgt, ...vals) - 250, hi = Math.max(tgt, ...vals) + 150, Y = v => Math.max(4, Math.round((v - lo) / (hi - lo) * 100));
@@ -3695,15 +3749,15 @@ function bigPicHtml() {
   }
   const bd = bigDay(), tr = travelOn();
   return `${bpHero(B)}<section class="card bp" aria-label="Your big picture">
-    <div class="bphead"><h2>Your trail</h2><small class="muted">${esc(tab === "month" ? parse(B.T).toLocaleDateString(undefined, { month: "long" }) : tab === "week" ? "this week" : "this year")}</small></div>
+    <div class="bphead"><h2>Your big picture</h2><small class="muted">${esc(tab === "month" ? parse(B.T).toLocaleDateString(undefined, { month: "long" }) : tab === "week" ? "this week" : "this year")}</small></div>
     ${seg}
     <div class="bpnum"><b>${num == null ? "–" : f0(num)}</b><span>${unit}</span><em>${pill}</em></div>
     ${body}
     <p class="bplead">${esc(line)}</p>
     ${bd ? zoomHtml(bd) : ""}
-    <div class="bpfoot"><div class="ce"><div class="cering" style="--v:${ce.score}"><b>${ce.score}</b></div><div><b>Tracking score</b><small>${esc(ce.msg)} ${ce.logged} of 7 days logged.</small></div></div>
-      <button type="button" class="linkbtn" data-travel>${tr ? `Travel mode on until ${esc(WDN(S.settings.travelUntil))} · turn off` : "Traveling? Travel mode"}</button></div>
-  </section>`;
+    <div class="bpfoot"><button type="button" class="linkbtn" data-travel>${tr ? `Travel mode on until ${esc(WDN(S.settings.travelUntil))} · turn off` : "Traveling? Travel mode"}</button></div>
+  </section>
+  ${duoHtml(B, ce)}`;
 }
 function welcomeHtml() {
   const T = today(); if (S.entries[T] || S.settings.wbSeen === T) return "";
