@@ -925,6 +925,47 @@ body.noscroll { overflow: hidden }
 .duo .range i { position: absolute; top: -5px; width: 4px; height: 22px; background: var(--bp-gt); border-radius: 4px }
 .duo .ends { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--muted); gap: 4px }
 :root[data-look="sunrise"] .brand small { font-style: normal !important }
+/* ---- v61: progress beyond calories ---- */
+.pchips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px }
+.pchips div { border-radius: 16px; padding: 10px 12px; display: flex; flex-direction: column; min-width: 0 }
+.pchips b { font-size: 22px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15 }
+.pchips span { font-size: 12.5px; font-weight: 700 } .pchips small { font-size: 11px; color: var(--muted) }
+.tpic { display: grid; grid-template-columns: 1.15fr 1fr; gap: 6px; align-items: center }
+.petals { width: 100%; overflow: visible }
+.pt-o { fill: none; stroke: var(--line); stroke-width: 1.4; stroke-dasharray: 3 4 }
+.pt-f { stroke: rgba(38,35,29,.18); stroke-width: 1; transform-origin: 130px 120px; animation: petal .6s cubic-bezier(.3,1.4,.5,1) both; animation-delay: calc(var(--i) * 70ms) }
+@keyframes petal { from { transform: scale(.2); opacity: 0 } }
+.pt-c { fill: var(--surface); stroke: var(--line) }
+.pt-n { font-size: 15px; font-weight: 800; fill: var(--fg) } .pt-s { font-size: 8.5px; fill: var(--muted) }
+.pt-l { font-size: 10.5px; font-weight: 700; fill: var(--muted) }
+.tleg { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px }
+.tleg li { display: grid; grid-template-columns: 12px 1fr; column-gap: 7px; font-size: 13px; line-height: 1.2 }
+.tleg i { width: 12px; height: 12px; border-radius: 4px; border: 1px solid rgba(38,35,29,.2); grid-row: span 2; margin-top: 2px }
+.tleg span { font-size: 11.5px; color: var(--muted); grid-column: 2 }
+.bpcal i { position: relative } .bpcal i.wo::after { content: ""; position: absolute; right: 3px; top: 3px; width: 5px; height: 5px; border-radius: 50%; background: var(--bp-pt) }
+.bpleg em.wo { width: 6px; height: 6px; border-radius: 50%; background: var(--bp-pt) }
+.mtrend .label { font-size: 11px } .mtrend .ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted) }
+.mt-a, .ym-a { fill: #E3F3E6 } .mt-l, .ym-l { fill: none; stroke: var(--bp-gt); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round } .mt-d, .ym-d { fill: var(--bp-gt); stroke: #fff; stroke-width: 2 } .ym-s { fill: #fff; stroke: var(--bp-gt); stroke-width: 2 }
+.yb { fill: #BFE3C8; opacity: .8 } .yb-hi { fill: var(--bp-p); opacity: .85 } .yb-n { fill: var(--line) }
+.ym-m { font-size: 10px; fill: var(--muted) } .ym-t { font-size: 11px; font-weight: 700; fill: var(--muted) } .ym-t.b { fill: var(--bp-gt) }
+.wins { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 8px }
+.wins li { background: #FCF1C7; border-radius: 12px; padding: 8px 10px 8px 28px; font-size: 13px; font-weight: 700; position: relative; line-height: 1.25 }
+.wins li::before { content: "★"; position: absolute; left: 10px; color: var(--bp-pt) }
+:root[data-look="sunrise"] .bpseg button { font-size: 12.5px }
+.tpic { grid-template-columns: 1fr; justify-items: center; gap: 4px }
+.petals { max-width: 270px }
+.tleg { grid-template-columns: repeat(3, 1fr); width: 100%; gap: 10px 8px }
+.tleg li { font-size: 12.5px }
+.yb { opacity: .75 }
+.popf { position: relative; height: 210px; border-radius: 16px; background: linear-gradient(#FCF6E4, #FBF8F0); overflow: hidden; touch-action: manipulation }
+.pdot { position: absolute; border: 0; border-radius: 50%; transform: translate(-50%, -50%); cursor: pointer; animation: pfade linear forwards; box-shadow: 0 4px 10px -4px rgba(0,0,0,.3) }
+@keyframes pfade { from { transform: translate(-50%, -50%) scale(1) } to { transform: translate(-50%, -50%) scale(.35); opacity: .35 } }
+.egrid { display: grid; grid-template-columns: repeat(2, 96px); gap: 10px; justify-content: center; margin: 6px 0 }
+.egrid button { height: 96px; border: 0; border-radius: 22px; background: color-mix(in srgb, var(--c) 45%, #fff); cursor: pointer; transition: transform .12s, background .12s }
+.egrid button.lit { background: var(--c); transform: scale(1.06); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 40%, transparent) }
+.scans { display: flex; gap: 5px; justify-content: center; margin: 4px 0 10px } .scans span { width: 32px; height: 38px; border-bottom: 2.5px solid var(--fg); display: grid; place-items: center; font-weight: 800; font-size: 20px }
+.sclet { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap } .sclet button { width: 40px; height: 44px; border: 0; border-radius: 12px; background: #FCF1C7; font: inherit; font-weight: 800; font-size: 18px; color: var(--fg); cursor: pointer } .sclet button:disabled { opacity: .25 }
+.rgames { border-radius: 18px } .rgames button { font-size: 12.5px }
 
 </style>
 
@@ -3648,7 +3689,7 @@ function bpData() {
   for (let i = 0; i < 12; i++) { months.unshift(`${y}-${String(mo).padStart(2, "0")}`); if (--mo < 1) { mo = 12; y--; } }
   const byM = months.map(k => { const v = Object.keys(S.entries).filter(d => d.startsWith(k)).map(calOf).filter(c => c != null); return { k, avg: v.length >= 3 ? avg(v) : null, n: v.length, all: v }; });
   const yall = byM.flatMap(x => x.all), first = m.days.find(x => x.trend != null), before = trendAt(addD(ms, -1));
-  return { tgt: st.target, T, m, w, wlog, mdays, mc, mlog, byM,
+  return { tgt: st.target, T, m, w, wlog, trendAt, mdays, mc, mlog, byM,
     wLast7, wAvg: wDone.length ? avg(wDone) : null, mAvg: mDone.length ? avg(mDone) : mlog.length ? avg(mlog) : null, yAvg: yall.length ? avg(yall) : null,
     mChg: m.trend != null && before != null ? m.trend - before : null,
     yChg: m.trend != null && first && first.d < T ? m.trend - first.trend : null, since: first?.d || null };
@@ -3711,50 +3752,51 @@ function bpHero(B) {
 }
 function calHtml(B, st) {
   const first = parse(B.mdays[0]), pad = (first.getDay() + 6) % 7, y = first.getFullYear(), mo = first.getMonth(), n = new Date(y, mo + 1, 0).getDate();
-  const cells = [...Array(n)].map((_, k) => { const d = addD(B.mdays[0], k), fut = d > B.T, c = fut ? null : calOf(d); return `<i class="${fut ? "fut" : st(c)}${d === B.T ? " now" : ""}" title="${c == null ? (fut ? "" : "Not logged") : f0(c) + " cal"}">${k + 1}</i>`; });
+  const cells = [...Array(n)].map((_, k) => { const d = addD(B.mdays[0], k), fut = d > B.T, c = fut ? null : calOf(d); return `<i class="${fut ? "fut" : st(c)}${d === B.T ? " now" : ""}${didMove(S.entries[d]) ? " wo" : ""}" title="${c == null ? (fut ? "" : "Not logged") : f0(c) + " cal"}">${k + 1}</i>`; });
   return `<div class="bpcal">${["M", "T", "W", "T", "F", "S", "S"].map(x => `<span>${x}</span>`).join("")}${'<i class="pad"></i>'.repeat(pad)}${cells.join("")}</div>`;
 }
 function duoHtml(B, ce) {
   const e = S.entries[B.T] || {}, eaten = derive(e).cal || 0; let t = B.tgt; try { t = B.w.todayTarget || t; } catch {}
   const [a, b] = goodRange(t), lo = a - 700, hi = b + 500, P = v => Math.max(0, Math.min(100, (v - lo) / (hi - lo) * 100));
   return `<div class="duo"><section class="card half"><h2>Tracking score</h2><div class="ring" style="--v:${ce.score}"><b>${ce.score}</b></div><p class="small">${esc(ce.logged >= 5 ? `You logged ${ce.logged} of 7 days. That's plenty to work with.` : ce.msg)}</p></section>
-    <section class="card half"><h2>Today</h2><div class="big2">${f0(eaten)}</div><p class="small" style="margin-top:-2px">eaten so far</p><div class="range"><b style="left:${P(a)}%;right:${100 - P(b)}%"></b><i style="left:calc(${P(eaten)}% - 2px)"></i></div><div class="ends"><span>${f0(a)}</span><span>good range</span><span>${f0(b)}</span></div></section></div>`;
+    ${winsHtml(B)}</div>`;
 }
 const st0 = () => S.settings;
 function bigPicHtml() {
   if (!Object.keys(S.entries).length) return "";
   let B; try { B = bpData(); } catch { return ""; }
-  const tab = S.bpTab || "month", tgt = B.tgt, ce = closeEnough(), MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" });
+  const tab = S.bpTab || "today", tgt = B.tgt, ce = closeEnough(), MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" });
   const st = c => c == null ? "s-e" : c - tgt >= BIG ? "s-big" : Math.abs(c - tgt) <= Math.max(150, tgt * 0.06) ? "s-on" : Math.abs(c - tgt) <= 400 ? "s-off" : "s-far";
-  const seg = `<div class="bpseg" role="tablist" aria-label="Time range">${[["week", "Week"], ["month", "Month"], ["year", "Year"]].map(([k, n]) => `<button type="button" role="tab" data-bptab="${k}" aria-selected="${tab === k}">${n}</button>`).join("")}</div>`;
+  const seg = `<div class="bpseg" role="tablist" aria-label="Time range">${[["today", "Today"], ["week", "Week"], ["month", "Month"], ["year", "Year"]].map(([k, n]) => `<button type="button" role="tab" data-bptab="${k}" aria-selected="${tab === k}">${n}</button>`).join("")}</div>`;
   const diff = a => a == null ? "" : Math.abs(a - tgt) <= Math.max(100, tgt * 0.04) ? "right around your goal" : a < tgt ? `${f0(tgt - a)} under your goal` : `${f0(a - tgt)} over your goal, and that's fine`;
   let num, unit, pill, body, line;
-  if (tab === "week") {
+  if (tab === "today") {
+    body = todayPic(B); line = "";
+  } else if (tab === "week") {
     const dn = ["M", "T", "W", "T", "F", "S", "S"];
     num = B.wAvg; unit = B.wLast7 ? "avg cal a day, last 7 days" : "avg cal a day this week"; pill = `${B.wlog.length} of ${B.w.idx + 1} days logged`;
     const p14 = [...Array(14)].map((_, i) => addD(B.T, i - 13));
-    body = `${trailSvg(p14, p14.map(calOf), tgt, B.T)}<p class="small" style="text-align:left;margin:-4px 0 0">Your last two weeks as a path, one dot a day.</p>`;
+    body = `${trailSvg(p14, p14.map(calOf), tgt, B.T)}<p class="small" style="text-align:left;margin:-4px 0 0">Your last two weeks as a path, one dot a day.</p>${progChips(rangeStats(B, B.w.idx ? B.w.days.slice(0, B.w.idx + 1) : [...Array(7)].map((_, i) => addD(B.T, i - 6))), B.w.idx ? "this week" : "last 7 days")}`;
     line = B.wAvg == null ? "Log a meal or two and your week shows up here." : B.wLast7 ? `New week, fresh start. Your last 7 days averaged ${diff(B.wAvg)}.` : `Averaging ${diff(B.wAvg)} so far. ${B.w.left > 1 ? `${B.w.left} days left, including today.` : "Last day of the week."}`;
   } else if (tab === "month") {
     num = B.mAvg; unit = "avg cal a day this month"; pill = `${B.mlog.length} of ${B.mdays.length} days logged`;
-    body = `${calHtml(B, st)}<div class="bpleg"><span><em class="s-on"></em>Near goal</span><span><em class="s-off"></em>A bit off</span><span><em class="s-big"></em>Big day</span><span><em class="s-e"></em>Not logged, that's fine</span></div>`;
+    body = `${calHtml(B, st)}<div class="bpleg"><span><em class="wo"></em>Workout</span><span><em class="s-on"></em>Near goal</span><span><em class="s-off"></em>A bit off</span><span><em class="s-big"></em>Big day</span><span><em class="s-e"></em>Not logged, that's fine</span></div>${monthTrendSvg(B)}${progChips(rangeStats(B, B.mdays), "this month")}`;
     line = B.mAvg == null ? "Your month fills in as you log." : `Averaging ${diff(B.mAvg)}.${B.mChg != null ? ` Trend weight ${Math.abs(B.mChg) < 0.2 ? "is holding steady" : `${B.mChg < 0 ? "down" : "up"} ${f1(Math.abs(B.mChg))} lb`} this month.` : ""}`;
   } else {
     const have = B.byM.filter(x => x.avg != null), vals = have.map(x => x.avg), lo = Math.min(tgt, ...vals) - 250, hi = Math.max(tgt, ...vals) + 150, Y = v => Math.max(4, Math.round((v - lo) / (hi - lo) * 100));
     num = B.yAvg; unit = "avg cal a day, last 12 months"; pill = `${have.length} month${have.length === 1 ? "" : "s"} tracked`;
-    body = `<div class="bpyear"><div class="bpgoal" style="bottom:${Y(tgt)}%"><span>goal</span></div>${B.byM.map(x => `<div title="${MN(x.k)}${x.avg != null ? `: ${f0(x.avg)} avg` : ": not enough logs"}"><i class="${x.avg == null ? "none" : x.avg - tgt >= 300 ? "hi" : ""}" style="height:${x.avg == null ? 3 : Y(x.avg)}%"></i></div>`).join("")}</div>
-      <div class="bpylab">${B.byM.map(x => `<span>${MN(x.k).slice(0, 1)}</span>`).join("")}</div>`;
+    body = `${yearSvg(B)}${progChips(rangeStats(B, [...Array(365)].map((_, k) => addD(B.T, k - 364)).filter(d => d >= (B.since || B.T))), "past year")}`;
     const steady = have.filter(x => x.n >= 10).sort((a, b) => Math.abs(a.avg - tgt) - Math.abs(b.avg - tgt))[0];
     line = `${B.yChg != null ? `Trend weight ${Math.abs(B.yChg) < 0.3 ? "steady" : `${B.yChg < 0 ? "down" : "up"} ${f1(Math.abs(B.yChg))} lb`} since ${fmtD(B.since, { month: "short", day: "numeric" })}. ` : ""}${steady ? `${new Date(+steady.k.slice(0, 4), +steady.k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "long" })} was your steadiest month.` : "Keep going and the year draws itself."}`;
   }
   const bd = bigDay(), tr = travelOn();
   return `${bpHero(B)}<section class="card bp" aria-label="Your big picture">
-    <div class="bphead"><h2>Your big picture</h2><small class="muted">${esc(tab === "month" ? parse(B.T).toLocaleDateString(undefined, { month: "long" }) : tab === "week" ? "this week" : "this year")}</small></div>
+    <div class="bphead"><h2>Your big picture</h2><small class="muted">${esc(tab === "month" ? parse(B.T).toLocaleDateString(undefined, { month: "long" }) : tab === "week" ? "this week" : tab === "today" ? fmtD(B.T, { weekday: "long" }) : "this year")}</small></div>
     ${seg}
-    <div class="bpnum"><b>${num == null ? "–" : f0(num)}</b><span>${unit}</span><em>${pill}</em></div>
+    ${tab === "today" ? "" : `<div class="bpnum"><b>${num == null ? "–" : f0(num)}</b><span>${unit}</span><em>${pill}</em></div>`}
     ${body}
-    <p class="bplead">${esc(line)}</p>
-    ${bd ? zoomHtml(bd) : ""}
+    ${line ? `<p class="bplead">${esc(line)}</p>` : ""}
+    ${bd && (tab === "week" || tab === "month") ? zoomHtml(bd) : ""}
     <div class="bpfoot"><button type="button" class="linkbtn" data-travel>${tr ? `Travel mode on until ${esc(WDN(S.settings.travelUntil))} · turn off` : "Traveling? Travel mode"}</button></div>
   </section>
   ${duoHtml(B, ce)}`;
@@ -3811,6 +3853,86 @@ document.addEventListener("click", ev => {
   if (t.closest("[data-roll]")) { rollDice(); return; }
   if (t.closest("[data-dicelog]")) { const x = S.dice?.pick; if (!x) return; const D = draft(); S.fs = { d: D.d, q: "", pick: x.it, ...defAmt(x.it), amt: x.n || 1 }; S.dice = null; addFood(D); return; }
 });
+
+// ----- Big picture beyond calories: weight trend, training, steps, sleep, and a picture of today -----
+const didMove = e => !!e && ((e.lift && e.lift !== "Rest") || (Array.isArray(e.sets) && e.sets.length) || (Array.isArray(e.xc) && e.xc.length) || num(e.cardio) > 0 || num(e.cardioMi) > 0);
+function rangeStats(B, ds) {
+  ds = ds.filter(d => d <= B.T);
+  const E = ds.map(d => S.entries[d]).filter(Boolean), A = a => a.length ? avg(a) : null;
+  const pg = (() => { try { return macroGoals(B.tgt).p; } catch { return null; } })();
+  const t1 = B.trendAt(ds[ds.length - 1]), t0 = B.trendAt(addD(ds[0], -1)) ?? (B.m.days.find(x => x.d >= ds[0] && x.trend != null) || {}).trend;
+  return { n: ds.length, logged: ds.filter(d => calOf(d) != null).length, moves: E.filter(didMove).length,
+    steps: A(E.map(e => num(e.steps)).filter(v => v != null)), sleep: A(E.map(e => num(e.sleep)).filter(v => v != null)),
+    pDays: pg ? E.filter(e => (derive(e).p || 0) >= pg * 0.9).length : null, wChg: t1 != null && t0 != null ? t1 - t0 : null };
+}
+function progChips(x, period) {
+  const st = S.settings, F = st.fields, cut = !/bulk/i.test(st.goal), C = [];
+  if (!st.weighOff && x.wChg != null) C.push(["t-g", `${x.wChg <= -0.05 ? "−" : x.wChg >= 0.05 ? "+" : ""}${f1(Math.abs(x.wChg))} lb`, "trend weight", Math.abs(x.wChg) < 0.2 ? "holding steady" : (x.wChg < 0) === cut ? "the right way" : "worth a look"]);
+  C.push(["t-o", `${x.moves}`, F.lift ? (x.moves === 1 ? "workout" : "workouts") : (x.moves === 1 ? "active day" : "active days"), period]);
+  if (x.steps != null) C.push(["t-y", x.steps >= 1000 ? `${f1(x.steps / 1000)}k` : f0(x.steps), "steps a day", st.stepsWk ? (x.steps >= st.stepsWk / 7 ? "on target" : `goal ${f1(st.stepsWk / 7000)}k`) : "average"]);
+  if (x.sleep != null) C.push(["t-g", `${f1(x.sleep)} h`, "sleep a night", x.sleep >= 7 ? "well rested" : "room to grow"]);
+  if (C.length < 4 && x.pDays != null && F.macros) C.push(["t-y", `${x.pDays}`, "protein days", "hit 90%+"]);
+  if (C.length < 4) C.push(["t-o", `${x.logged}/${x.n}`, "days logged", "every log counts"]);
+  return `<div class="pchips">${C.slice(0, 4).map(([c, v, l, s]) => `<div class="${c}"><b>${esc(v)}</b><span>${esc(l)}</span><small>${esc(s)}</small></div>`).join("")}</div>`;
+}
+function todayPic(B) {
+  const st = S.settings, F = st.fields, e = S.entries[B.T] || {}, dv = derive(e);
+  let tgt = B.tgt; try { tgt = B.w.todayTarget || tgt; } catch {}
+  const pg = (() => { try { return macroGoals(tgt).p; } catch { return 150; } })(), rc = (() => { try { return recovery(B.T, e); } catch { return null; } })();
+  const moodV = { Stressed: 0.25, Okay: 0.5, Good: 0.8, Great: 1 }[e.mood];
+  const stepT = st.stepsWk ? st.stepsWk / 7 : 8000;
+  const P = [["Food", dv.cal ? Math.min(1, dv.cal / tgt) : null, dv.cal ? `${f0(dv.cal)} of ${f0(tgt)}` : "nothing yet", "#F5A25D", "Log your next meal, even roughly."],
+    F.macros && ["Protein", dv.p ? Math.min(1, dv.p / pg) : null, dv.p ? `${f0(dv.p)} of ${f0(pg)} g` : "not yet", "#F3D36B", "A protein-heavy next meal rounds out the day."],
+    ["Move", didMove(e) || num(e.steps) != null ? Math.min(1, Math.max(didMove(e) ? 1 : 0, (num(e.steps) || 0) / stepT)) : null, didMove(e) ? (e.lift && e.lift !== "Rest" ? esc(e.lift) : "active") : num(e.steps) != null ? `${f0(e.steps)} steps` : "not yet", "#7CC08F", "A short walk counts. Ten minutes is plenty."],
+    F.sleep && ["Sleep", num(e.sleep) != null ? Math.min(1, e.sleep / 8) : null, num(e.sleep) != null ? `${f1(e.sleep)} h` : "not logged", "#BFE3C8", "Log last night's sleep in Check-in."],
+    F.recovery && rc && ["Recovery", rc.score / 100, `${rc.score} · ${rc.label}`, "#FDE3CD", ""],
+    ["Mood", moodV ?? null, e.mood || "how are you?", "#FCF1C7", "Tap how you're feeling in Check-in."]].filter(Boolean);
+  const N = P.length, cx = 130, cy = 120, r0 = 18, LMAX = 78;
+  const petals = P.map(([l, f, , col], i) => { const a = i * 360 / N, L = f == null ? 0 : 16 + (LMAX - 16) * f;
+    return `<g transform="rotate(${a} ${cx} ${cy})"><ellipse cx="${cx}" cy="${cy - r0 - LMAX / 2}" rx="17" ry="${LMAX / 2}" class="pt-o"/>${L ? `<ellipse cx="${cx}" cy="${cy - r0 - L / 2}" rx="${Math.min(17, 6 + L / 5)}" ry="${L / 2}" fill="${col}" class="pt-f" style="--i:${i}"/>` : ""}</g>`; }).join("");
+  const labs = P.map(([l], i) => { const a = i * 2 * Math.PI / N, R = r0 + LMAX + 14; return `<text x="${(cx + Math.sin(a) * R).toFixed(1)}" y="${(cy - Math.cos(a) * R + 4).toFixed(1)}" text-anchor="middle" class="pt-l">${l}</text>`; }).join("");
+  const filled = P.filter(p => p[1] != null && p[1] >= 0.5).length;
+  const low = P.filter(p => p[4]).sort((a, b) => (a[1] ?? -1) - (b[1] ?? -1))[0];
+  const line = filled >= N - 1 ? "A full day. This is what a good day looks like, and it doesn't need to be perfect." : low ? `${low[0] === "Food" && !dv.cal ? "Fresh day." : `${filled} of ${N} parts of today are filling in.`} ${low[4]}` : "";
+  return `<div class="tpic"><svg viewBox="0 -12 260 262" class="petals" role="img" aria-label="Today's picture: ${P.map(p => `${p[0]} ${p[2]}`).join(", ")}">${petals}<circle cx="${cx}" cy="${cy}" r="${r0 + 6}" class="pt-c"/><text x="${cx}" y="${cy + 2}" text-anchor="middle" class="pt-n">${filled}/${N}</text><text x="${cx}" y="${cy + 14}" text-anchor="middle" class="pt-s">filling in</text>${labs}</svg>
+    <ul class="tleg">${P.map(([l, f, v, col]) => `<li><i style="background:${f == null ? "transparent" : col}"></i><b>${l}</b><span>${v}</span></li>`).join("")}</ul></div><p class="bplead">${esc(line)}</p>`;
+}
+function monthTrendSvg(B) {
+  if (S.settings.weighOff) return "";
+  const pts = B.mdays.map(d => B.trendAt(d)).map((v, i) => [i, v]).filter(p => p[1] != null); if (pts.length < 3) return "";
+  const n = new Date(+B.T.slice(0, 4), +B.T.slice(5, 7), 0).getDate(), vs = pts.map(p => p[1]), lo = Math.min(...vs) - 0.4, hi = Math.max(...vs) + 0.4;
+  const X = i => 8 + i / (n - 1) * 304, Y = v => 8 + (hi - v) / (hi - lo) * 44, d = pts.map(([i, v], k) => `${k ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+  const a = pts[0], z = pts[pts.length - 1];
+  return `<div class="mtrend"><span class="label">Trend weight this month</span><svg viewBox="0 0 320 60" width="100%"><path d="${d} L${X(z[0]).toFixed(1)},56 L${X(a[0]).toFixed(1)},56 Z" class="mt-a"/><path d="${d}" class="mt-l"/><circle cx="${X(z[0]).toFixed(1)}" cy="${Y(z[1]).toFixed(1)}" r="4" class="mt-d"/></svg><div class="ends"><span>${f1(a[1])} lb</span><span>now ${f1(z[1])} lb</span></div></div>`;
+}
+function yearSvg(B) {
+  const T = B.T, start = addD(T, -364), wk = [...Array(53)].map((_, i) => addD(start, i * 7)).map(d => [d, B.trendAt(d)]);
+  const pts = wk.filter(p => p[1] != null && p[0] >= (B.since || T));
+  const months = B.byM, W = 320, H = 130, base = 112;
+  const bars = months.map((x, i) => { const h = x.avg == null ? 0 : Math.max(4, Math.min(40, 20 + (x.avg - B.tgt) / 25)); return `<rect x="${(8 + i * 25.5).toFixed(1)}" y="${base - h}" width="19" height="${h}" rx="5" class="${x.avg == null ? "yb-n" : x.avg - B.tgt >= 300 ? "yb-hi" : "yb"}"><title>${x.avg == null ? "" : f0(x.avg) + " cal avg"}</title></rect>`; }).join("");
+  let mtn = "", area = "";
+  if (!S.settings.weighOff && pts.length >= 3) {
+    const vs = pts.map(p => p[1]), lo = Math.min(...vs) - 1, hi = Math.max(...vs) + 1, X = d => 8 + (parse(d) - parse(start)) / (parse(T) - parse(start)) * (W - 16), Y = v => 14 + (hi - v) / (hi - lo) * 62;
+    const dd = pts.map(([d, v], k) => `${k ? "L" : "M"}${X(d).toFixed(1)},${Y(v).toFixed(1)}`).join(" "), a = pts[0], z = pts[pts.length - 1];
+    area = `<path d="${dd} L${X(z[0]).toFixed(1)},${base} L${X(a[0]).toFixed(1)},${base} Z" class="ym-a"/>`;
+    mtn = `<path d="${dd}" class="ym-l"/><circle cx="${X(a[0]).toFixed(1)}" cy="${Y(a[1]).toFixed(1)}" r="4" class="ym-s"/><circle cx="${X(z[0]).toFixed(1)}" cy="${Y(z[1]).toFixed(1)}" r="5" class="ym-d"/>
+      <text x="${Math.max(10, X(a[0])).toFixed(1)}" y="${(Y(a[1]) - 9).toFixed(1)}" class="ym-t">${f1(a[1])}</text><text x="${Math.min(W - 10, X(z[0])).toFixed(1)}" y="${(Y(z[1]) - 10).toFixed(1)}" text-anchor="end" class="ym-t b">${f1(z[1])} now</text>`;
+  }
+  const MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" }).slice(0, 1);
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" class="yearsvg" role="img" aria-label="Your year: monthly calorie averages with your trend weight line">${area}${bars}${mtn}${months.map((x, i) => `<text x="${(17.5 + i * 25.5).toFixed(1)}" y="${H - 4}" text-anchor="middle" class="ym-m">${MN(x.k)}</text>`).join("")}</svg>
+    <div class="bpleg"><span><em class="s-off"></em>Monthly calories</span><span><em class="s-big"></em>Higher month</span>${mtn ? `<span><em style="background:var(--bp-gt)"></em>Trend weight</span>` : ""}</div>`;
+}
+function winsHtml(B) {
+  const st = S.settings, ds = B.w.idx ? B.w.days.slice(0, B.w.idx + 1) : [...Array(7)].map((_, i) => addD(B.T, i - 6)), x = rangeStats(B, ds), W = [];
+  if (x.moves >= 2) W.push(`${x.moves} ${st.fields.lift ? "workouts" : "active days"}`);
+  if (x.logged >= 4) W.push(`Logged ${x.logged} of ${x.n} days`);
+  if (x.pDays >= 3 && st.fields.macros) W.push(`Protein hit ${x.pDays} days`);
+  if (x.steps != null && st.stepsWk && x.steps >= st.stepsWk / 7) W.push("Steps on target");
+  if (x.sleep >= 7) W.push(`Sleep ${f1(x.sleep)} h a night`);
+  if (!st.weighOff && x.wChg != null && Math.abs(x.wChg) >= 0.2 && (x.wChg < 0) === !/bulk/i.test(st.goal)) W.push(`Trend ${x.wChg < 0 ? "down" : "up"} ${f1(Math.abs(x.wChg))} lb`);
+  if (!W.length) W.push("You showed up today. That counts.");
+  return `<section class="card half"><h2>Wins this week</h2><ul class="wins">${W.slice(0, 3).map(w => `<li>${esc(w)}</li>`).join("")}</ul></section>`;
+}
 
 // ----- Goals intake: a few questions, and the app reshapes itself around the answers -----
 const INTAKE = [
@@ -3898,7 +4020,7 @@ document.addEventListener("click", ev => { const t = ev.target.closest("[data-ti
 const REST = { on: false, end: 0, len: 90, min: false, g: {}, raf: 0, iv: 0, beeped: false };
 const restLen = () => S.settings.restSec || 90;
 const mmss = s => `${Math.floor(s / 60)}:${String(Math.max(0, s % 60)).padStart(2, "0")}`;
-const GAMES = { hoops: "Hoops", word: "Five letters", match: "Match", slide: "Slide" };
+const GAMES = { hoops: "Hoops", word: "Five letters", match: "Match", slide: "Slide", stack: "Stack", pop: "Pop", echo: "Echo", scramble: "Scramble" };
 function startRest(sec) {
   REST.len = sec || restLen(); REST.end = Date.now() + REST.len * 1000; REST.on = true; REST.beeped = false; REST.min = false;
   REST.game = REST.game || S.settings.restGame || "hoops";
@@ -4029,6 +4151,89 @@ const GAME = {
       if (ev.target.closest("[data-snew]")) { REST.g.slide = null; GAME.slide(box); return; }
       const b = ev.target.closest("[data-sl]"); if (!b || won) return; const i = +b.dataset.sl, z = g.b.indexOf(0);
       if ((Math.abs(i - z) === 3) || (Math.abs(i - z) === 1 && Math.floor(i / 3) === Math.floor(z / 3))) { [g.b[i], g.b[z]] = [g.b[z], g.b[i]]; g.moves++; if (g.b.join("") === "123456780") restBest("slide", g.moves, true); GAME.slide(box); }
+    };
+  },
+  // Stack: tap to drop the sliding block. Only the overlap stays, so line it up.
+  stack(box) {
+    const g = REST.g.stack || (REST.g.stack = { rows: [{ x: 110, w: 100 }], cur: null, over: false, t: 0 });
+    box.innerHTML = `<div class="gtop"><span>Height <b data-sh>${g.rows.length - 1}</b></span><span class="muted">Best ${S.settings.restBest?.stack ?? 0}</span></div><canvas width="640" height="480" class="hoopc stackc" aria-label="Stacking game. Tap to drop."></canvas><div class="gmsg muted" data-sm>${g.over ? "Tower down. Tap to build again." : "Tap to drop the block."}</div>`;
+    const cv = box.querySelector("canvas"), x = cv.getContext("2d"), W = 320, H = 240, BH = 18, COLS = ["#7CC08F", "#F3D36B", "#F5A25D", "#BFE3C8", "#FDE3CD"];
+    x.scale(2, 2);
+    const spawn = () => { const top = g.rows[g.rows.length - 1]; g.cur = { x: 0, w: top.w, dir: 1, sp: 1.6 + Math.min(3, g.rows.length * 0.12) }; };
+    if (!g.cur && !g.over) spawn();
+    cv.onpointerdown = () => {
+      if (g.over) { REST.g.stack = null; GAME.stack(box); return; }
+      const top = g.rows[g.rows.length - 1], c = g.cur, l = Math.max(top.x, c.x), r = Math.min(top.x + top.w, c.x + c.w);
+      if (r - l < 4) { g.over = true; box.querySelector("[data-sm]").textContent = restBest("stack", g.rows.length - 1) ? "New best! Tap to build again." : "Tower down. Tap to build again."; return; }
+      g.rows.push({ x: Math.abs(c.x - top.x) < 3 ? top.x : l, w: Math.abs(c.x - top.x) < 3 ? top.w : r - l });
+      box.querySelector("[data-sm]").textContent = Math.abs(c.x - top.x) < 3 ? "Perfect!" : "Nice.";
+      box.querySelector("[data-sh]").textContent = g.rows.length - 1; spawn();
+    };
+    const frame = () => {
+      if (!document.body.contains(cv)) return;
+      const c = g.cur; if (c && !g.over) { c.x += c.dir * c.sp; if (c.x < 0 || c.x + c.w > W) { c.dir *= -1; c.x = Math.max(0, Math.min(W - c.w, c.x)); } }
+      const off = Math.max(0, (g.rows.length + 2) * BH - H + 20);
+      x.clearRect(0, 0, W, H);
+      g.rows.forEach((r, i) => { x.fillStyle = COLS[i % 5]; x.fillRect(r.x, H - (i + 1) * BH + off, r.w, BH - 2); });
+      if (c && !g.over) { x.fillStyle = COLS[g.rows.length % 5]; x.globalAlpha = .9; x.fillRect(c.x, H - (g.rows.length + 1) * BH + off, c.w, BH - 2); x.globalAlpha = 1; }
+      REST.raf = requestAnimationFrame(frame);
+    };
+    frame();
+  },
+  // Pop: tap the dots before they fade. They get quicker as you go.
+  pop(box) {
+    const g = REST.g.pop || (REST.g.pop = { score: 0, lives: 3, over: false });
+    box.innerHTML = `<div class="gtop"><span>Score <b data-ps>${g.score}</b></span><span>Lives <b data-pl>${"♥".repeat(g.lives)}</b></span><span class="muted">Best ${S.settings.restBest?.pop ?? 0}</span></div><div class="popf" data-pf></div><div class="gmsg muted" data-pm>${g.over ? "" : "Tap the dots before they fade."}</div>${g.over ? `<div class="chips" style="justify-content:center"><button type="button" class="btn" data-pnew>Play again</button></div>` : ""}`;
+    if (g.over) { box.querySelector("[data-pm]").textContent = `${g.score} popped.`; box.onclick = ev => { if (ev.target.closest("[data-pnew]")) { REST.g.pop = null; GAME.pop(box); } }; return; }
+    const f = box.querySelector("[data-pf]"), COLS = ["#7CC08F", "#F3D36B", "#F5A25D"];
+    const next = () => {
+      if (!document.body.contains(f) || g.over) return;
+      const life = Math.max(550, 1400 - g.score * 35), sz = Math.max(30, 54 - g.score);
+      const d = document.createElement("button"); d.type = "button"; d.className = "pdot"; d.setAttribute("aria-label", "Pop");
+      d.style.cssText = `left:${Math.random() * 82 + 4}%;top:${Math.random() * 76 + 6}%;width:${sz}px;height:${sz}px;background:${COLS[g.score % 3]};animation-duration:${life}ms`;
+      let hit = false;
+      d.onpointerdown = ev => { ev.stopPropagation(); hit = true; g.score++; d.remove(); box.querySelector("[data-ps]").textContent = g.score; setTimeout(next, 120); };
+      f.appendChild(d);
+      setTimeout(() => { if (hit || !document.body.contains(f)) return; d.remove(); g.lives--; box.querySelector("[data-pl]").textContent = "♥".repeat(g.lives); if (g.lives <= 0) { g.over = true; restBest("pop", g.score); GAME.pop(box); } else next(); }, life);
+    };
+    setTimeout(next, 400);
+  },
+  // Echo: watch the pads light up, then tap them back in the same order.
+  echo(box) {
+    const g = REST.g.echo || (REST.g.echo = { seq: [], i: 0, busy: false, over: false, started: false });
+    const COLS = ["#7CC08F", "#F3D36B", "#F5A25D", "#A9C7E8"];
+    box.innerHTML = `<div class="gtop"><span>Level <b data-el>${Math.max(0, g.seq.length - (g.over ? 1 : 0))}</b></span><span class="muted">Best ${S.settings.restBest?.echo ?? 0}</span></div>
+      <div class="egrid">${COLS.map((c, k) => `<button type="button" data-ep="${k}" style="--c:${c}" aria-label="Pad ${k + 1}"></button>`).join("")}</div>
+      <div class="gmsg muted" data-em>${g.over ? "Missed one. Tap Start to go again." : g.started ? "" : "Watch, then repeat."}</div>${!g.started || g.over ? `<div class="chips" style="justify-content:center"><button type="button" class="btn primary" data-estart>Start</button></div>` : ""}`;
+    const pads = [...box.querySelectorAll("[data-ep]")], msg = t => { const m = box.querySelector("[data-em]"); if (m) m.textContent = t; };
+    const flash = k => { const p = pads[k]; if (!p) return; p.classList.add("lit"); setTimeout(() => p.classList.remove("lit"), 280); };
+    const play = () => { g.busy = true; g.i = 0; msg("Watch…"); g.seq.forEach((k, n) => setTimeout(() => { if (document.body.contains(box)) flash(k); }, 500 + n * 520)); setTimeout(() => { g.busy = false; msg("Your turn."); }, 500 + g.seq.length * 520); };
+    const grow = () => { g.seq.push(Math.floor(Math.random() * 4)); const l = box.querySelector("[data-el]"); if (l) l.textContent = g.seq.length - 1; play(); };
+    box.onclick = ev => {
+      if (ev.target.closest("[data-estart]")) { REST.g.echo = { seq: [], i: 0, busy: false, over: false, started: true }; GAME.echo(box); return; }
+      const p = ev.target.closest("[data-ep]"); if (!p || g.busy || !g.started || g.over) return; const k = +p.dataset.ep; flash(k);
+      if (k !== g.seq[g.i]) { g.over = true; restBest("echo", g.seq.length - 1); GAME.echo(box); return; }
+      if (++g.i >= g.seq.length) { msg("Nice!"); g.busy = true; setTimeout(() => { if (document.body.contains(box)) grow(); }, 600); }
+    };
+    if (g.started && !g.over && !g.seq.length) grow();
+  },
+  // Scramble: unscramble the word. Tap letters in order.
+  scramble(box) {
+    const WORDS = ["PROTEIN", "SQUATS", "BANANA", "RECOVER", "WORKOUT", "SPINACH", "BALANCE", "STRETCH", "OATMEAL", "MUSCLE", "HEALTHY", "AVOCADO", "SUNRISE", "PROGRESS", "BURRITO", "PANCAKE", "WALKING", "HYDRATE", "CHICKEN", "WEEKEND"];
+    const mk = () => { const w = WORDS[Math.floor(Math.random() * WORDS.length)]; let l; do { l = w.split("").sort(() => Math.random() - .5); } while (l.join("") === w); return { w, l, pick: [], score: REST.g.scramble?.score || 0, msg: "Tap the letters in order." }; };
+    const g = REST.g.scramble || (REST.g.scramble = mk());
+    box.innerHTML = `<div class="gtop"><span>Solved <b>${g.score}</b></span><span class="muted">${g.w.length} letters</span></div>
+      <div class="scans">${g.w.split("").map((_, k) => `<span>${g.pick[k] != null ? g.l[g.pick[k]] : ""}</span>`).join("")}</div>
+      <div class="sclet">${g.l.map((c, k) => `<button type="button" data-sc="${k}" ${g.pick.includes(k) ? "disabled" : ""}>${c}</button>`).join("")}</div>
+      <div class="gmsg muted">${esc(g.msg)}</div><div class="chips" style="justify-content:center"><button type="button" class="btn" data-scundo>Undo</button><button type="button" class="btn" data-schint>Hint</button><button type="button" class="btn" data-scskip>New word</button></div>`;
+    box.onclick = ev => {
+      const t = ev.target;
+      if (t.closest("[data-scskip]")) { REST.g.scramble = mk(); GAME.scramble(box); return; }
+      if (t.closest("[data-scundo]")) { g.pick.pop(); GAME.scramble(box); return; }
+      if (t.closest("[data-schint]")) { g.msg = `Starts with ${g.w[0]}${g.w.length > 6 ? g.w[1] : ""}.`; GAME.scramble(box); return; }
+      const b = t.closest("[data-sc]"); if (!b) return; g.pick.push(+b.dataset.sc);
+      if (g.pick.length === g.w.length) { const guess = g.pick.map(k => g.l[k]).join(""); if (guess === g.w) { const sc = g.score + 1; REST.g.scramble = mk(); REST.g.scramble.score = sc; REST.g.scramble.msg = `${g.w}! Here's another.`; restBest("scramble", sc); } else { g.pick = []; g.msg = "Not quite. Try again."; } }
+      GAME.scramble(box);
     };
   },
 };
