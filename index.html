@@ -3586,7 +3586,7 @@ function trailSvg(days, cals, tgt, T) {
     note = `<path d="M${x},${y + 13} l0,9" class="tr-arrow"/><text x="${tx}" y="${y + 36}" text-anchor="${a}" class="tr-note">${esc(WDN(days[big]).slice(0, 3))} the ${parse(days[big]).getDate()}: one stone</text><text x="${tx}" y="${y + 52}" text-anchor="${a}" class="tr-note">on a long trail</text>`; }
   const L = pts[pts.length - 1];
   return `<svg class="trail" viewBox="-12 0 384 ${H + 22}" width="100%" role="img" aria-label="This month as a trail, one dot per day"><path d="${path}" class="tr-path"/>${dots}${note}
-    <text x="${pts[0][0] - 8}" y="${pts[0][1] - 14}" class="tr-lab">${esc(fmtD(days[0], { month: "short", day: "numeric" }))}</text><text x="${L[0] - 10}" y="${L[1] + 24}" class="tr-lab tr-today">today</text></svg>`;
+    <text x="${pts[0][0] - 8}" y="${pts[0][1] - 14}" class="tr-lab">${esc(fmtD(days[0], { month: "short", day: "numeric" }))}</text><text x="${L[0] - 10}" y="${L[1] - 14}" class="tr-lab tr-today">today</text></svg>`;
 }
 function bpHero(B) {
   const ok = B.mAvg != null && Math.abs(B.mAvg - B.tgt) <= B.tgt * 0.05, down = B.mChg != null && B.mChg <= -0.3 && st0().goal !== "Bulk";
