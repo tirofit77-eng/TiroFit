@@ -368,6 +368,7 @@ details.rmore { margin-top: 12px } details.rmore > summary { font-size: 14px; co
 .dfac { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px } .dfac li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 8px; font-size: 13.5px; align-items: start }
 .dfac .dlb { font-family: var(--mono); font-size: 12px; padding: 2px 0; text-align: center; border-radius: 6px; background: var(--surface); border: 1px solid var(--line) } .dfac li.opp { opacity: .72 }
 .decoder .dfat { color: var(--muted); font-size: 13px }
+.decoder .rely { display: grid; gap: 6px; padding-top: 8px; border-top: 1px dashed var(--line) } .decoder .rely p { font-size: 13px } .decoder .rely.low p b { color: var(--warn) }
 .dqs { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 8px } .dq { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13.5px } .dq .chips { flex-wrap: nowrap; gap: 6px } .dq .chip { padding: 4px 12px; min-height: 32px }
 .bank { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 12px } .bankhead { display: flex; justify-content: space-between; align-items: center; gap: 10px } .bankhead small, .bankrow small { display: block; color: var(--muted); font-size: 12.5px }
 .bankrow { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--surface-2) } .bankrow .bday { font: 800 15px var(--display); text-align: center; color: var(--a); letter-spacing: .06em }
@@ -1216,8 +1217,9 @@ function compute() {
   const lastW = dates.filter(d => num(E[d].w) != null).pop() || null;
   const endDay = dates[dates.length - 1] > T ? dates[dates.length - 1] : T;
   let t = null;
+  const dvC = {}, getDv = k => dvC[k] || (dvC[k] = derive(E[k] || {})), rOpt = { dv: getDv, maint: S._maint ?? st.maint0 };
   for (let d = first; d <= endDay; d = addD(d, 1)) {
-    const e = E[d] || {}, p = E[addD(d, -1)] || {}, dv = derive(e), pv = derive(p);
+    const e = E[d] || {}, p = E[addD(d, -1)] || {}, dv = getDv(d), pv = getDv(addD(d, -1));
     const w = num(e.w), flags = [];
     const afterDrinks = pv.alcN >= st.drinkThr;
     if (w != null) {
@@ -1227,10 +1229,11 @@ function compute() {
       if (lateMeal(p.meal)) flags.push("Late meal");
       if (num(e.sleep) != null && num(e.sleep) < 6) flags.push("Short sleep");
     }
-    const used = w == null ? null : (st.skipFlagged && afterDrinks ? null : w);
+    const rely = w == null ? null : wRely(d, e, rOpt), low = !!rely?.low && st.skipFlagged !== false, wt = w == null ? 0 : low ? RELY_WT : 1;
+    const used = w;
     const bloatCause = e.bloat === "Y" ? [pv.alcN > 0 ? "drinks" : null, lateMeal(p.meal) ? "late meal" : null, p.ateAfter === "Y" ? "eating after drinking" : null, num(e.sleep) != null && num(e.sleep) < 6 ? "short sleep" : null].filter(Boolean) : [];
-    if (lastW && d <= lastW && used != null) t = t == null ? used : t + st.alpha * (used - t);
-    m.days.push({ d, e, dv, w, used, flags, bloatCause, trend: lastW && d <= lastW ? t : null });
+    if (lastW && d <= lastW && used != null) t = t == null ? used : t + st.alpha * wt * (used - t);
+    m.days.push({ d, e, dv, w, used, wt, low, rely, flags, bloatCause, trend: lastW && d <= lastW ? t : null });
   }
   m.trend = t;
   const byDate = Object.fromEntries(m.days.map(x => [x.d, x]));
@@ -1240,7 +1243,7 @@ function compute() {
     const ws_ = ds.filter(x => x.w != null), us = ds.filter(x => x.used != null);
     const cals = ds.map(x => x.dv.cal);
     const wk = { i, start: ws, end: addD(ws, 6), wi: ws_.length,
-      avgw: ws_.length ? (us.length >= 3 ? avg(us.map(x => x.used)) : avg(ws_.map(x => x.w))) : null,
+      avgw: ws_.length ? sum(ws_.map(x => x.w * x.wt)) / sum(ws_.map(x => x.wt)) : null, lowN: ws_.filter(x => x.low).length,
       cd: cals.filter(x => x != null).length, avgc: avg(cals), totc: sum(cals), prot: avg(ds.map(x => x.dv.p)),
       drinks: sum(ds.map(x => x.dv.alcN)), alcCal: sum(ds.map(x => x.dv.alcCal)), ddays: ds.filter(x => x.dv.alcN > 0).length,
       sleep: avg(g("sleep")), rec: avg(g("rec")),
@@ -1264,6 +1267,7 @@ function compute() {
   });
   const okW = W.filter(w => w.ok);
   m.last = okW.length ? okW[okW.length - 1] : null;
+  if (m.last?.msm) S._maint = m.last.msm;
   return m;
 }
 
@@ -2834,7 +2838,7 @@ function vCoach() {
   </div>
   <div class="cols">
     <div class="view">
-      <section class="card"><h2>Weight</h2>${chartWeight(m)}<div class="legend"><span><i style="background:var(--muted)"></i>Scale</span><span><i style="background:var(--a)"></i>Trend</span><span><i style="background:var(--bad)"></i>Left out (after drinking)</span></div></section>
+      <section class="card"><h2>Weight</h2>${chartWeight(m)}<div class="legend"><span><i style="background:var(--muted)"></i>Scale</span><span><i style="background:var(--a)"></i>Trend</span><span><i style="background:var(--surface);box-shadow:inset 0 0 0 1.6px var(--warn)"></i>Counts less (mostly water)</span></div></section>
     </div>
     <div class="view">
     </div>
@@ -2883,7 +2887,7 @@ function chartWeight(m) {
   const tr = days.map((x, i) => x.trend != null ? [X(i), Y(x.trend)] : null).filter(Boolean);
   const path = tr.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
   const area = tr.length ? path + ` L${tr[tr.length - 1][0].toFixed(1)} ${H - b} L${tr[0][0].toFixed(1)} ${H - b} Z` : "";
-  const dots = pts.map(x => `<circle cx="${X(idx[x.d])}" cy="${Y(x.w)}" r="3.2" fill="${x.used == null ? "var(--bad)" : "var(--muted)"}" opacity="${x.used == null ? 1 : .75}"><title>${fmtD(x.d)}: ${x.w} lb${x.flags.length ? " (" + x.flags.join(", ") + ")" : ""}</title></circle>`).join("");
+  const dots = pts.map(x => `<circle cx="${X(idx[x.d])}" cy="${Y(x.w)}" r="3.2" fill="${x.low ? "var(--surface)" : "var(--muted)"}" stroke="${x.low ? "var(--warn)" : "none"}" stroke-width="1.6" opacity="${x.low ? 1 : .75}"><title>${fmtD(x.d)}: ${x.w} lb${x.low ? " · less reliable, counts less" : ""}${x.flags.length ? " (" + x.flags.join(", ") + ")" : ""}</title></circle>`).join("");
   const lastT = tr[tr.length - 1];
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily weight and trend, last 8 weeks">${grid}${xl}
     <path d="${area}" fill="var(--a)" opacity=".08"/><path d="${path}" fill="none" stroke="var(--a)" stroke-width="2.5" stroke-linejoin="round"/>${dots}
@@ -2926,7 +2930,7 @@ function coachContext() {
   tryit("this_week", () => { const w = weekPlan(compute()); return { eat_today: w.todayTarget, eaten_so_far: w.weekEaten, week_budget: w.weekBudget, steps: w.stepsSum, cardio: w.cardioSum }; });
   tryit("recovery_today", () => { const rc = recovery(T, S.entries[T] || {}); return { score: rc.score, label: rc.label, headline: rc.headline, training_days_in_a_row: rc.run, upper_days_since: rc.upper.days, lower_days_since: rc.lower.days, drinks_yesterday: rc.yAlc }; });
   tryit("last_21_days", () => Object.keys(S.entries).sort().slice(-21).map(d => { const e = S.entries[d], dv = derive(e); const sets = Array.isArray(e.sets) ? e.sets.filter(x => num(x.w) != null && num(x.r) != null) : [];
-    return { d, w: e.w ?? null, cal: dv.cal ?? null, p: dv.p ?? null, c: dv.c ?? null, f: dv.f ?? null, drinks: dv.alcN || 0, sleep: e.sleep ?? null, feel_1to5: e.rec ?? null, bloated: e.bloat === "Y" || null, steps: e.steps ?? null, cardio: e[cKey()] ?? null, other_cardio: Array.isArray(e.xc) && e.xc.length ? e.xc.map(x => `${ACT[x.a]?.[0] || x.a} ${x.min} min (${x.cal} cal)`) : null, workout: e.lift ?? null, sets: sets.length || null, top_sets: sets.slice(0, 6).map(x => `${x.ex || ""} ${x.w}x${x.r}`.trim()), notes: e.notes || null }; }));
+    return { d, w: e.w ?? null, cal: dv.cal ?? null, p: dv.p ?? null, c: dv.c ?? null, f: dv.f ?? null, drinks: dv.alcN || 0, sleep: e.sleep ?? null, feel_1to5: e.rec ?? null, bloated: e.bloat === "Y" || null, less_reliable_weigh_in: (() => { try { return wRely(d, e)?.low || null; } catch { return null; } })(), steps: e.steps ?? null, cardio: e[cKey()] ?? null, other_cardio: Array.isArray(e.xc) && e.xc.length ? e.xc.map(x => `${ACT[x.a]?.[0] || x.a} ${x.min} min (${x.cal} cal)`) : null, workout: e.lift ?? null, sets: sets.length || null, top_sets: sets.slice(0, 6).map(x => `${x.ex || ""} ${x.w}x${x.r}`.trim()), notes: e.notes || null }; }));
   tryit("planned_big_nights", () => { const p = (S.settings.plans || []).filter(x => x.d >= T); return p.length ? p.map(x => ({ date: x.d, label: x.label, extra_cal: x.extra })) : null; });
   tryit("scale_today", () => { const x = decode(T, S.entries[T] || {}); return x && !x.none ? { change_lb: x.delta, since: x.pd, reasons: x.F.map(f => `${f.key} ${f.lb > 0 ? "+" : ""}${f.lb} lb`), answers_about_yesterday: (S.entries[T] || {}).dq || null } : null; });
   tryit("split", () => templates().map(t => ({ day: t.name, exercises: t.ex.map(x => parseEx(x).name) })));
@@ -3276,14 +3280,15 @@ const DQ = {
   late: "Ate late last night?", salty: "Salty or takeout dinner?", hard: "Hard or new workout, or sore today?",
   drinks: "Drinks last night?", potty: "Weighed before the bathroom?", light: "Lighter or earlier dinner than usual?", sweat: "Sweated a lot (long cardio, heat, sauna)?",
 };
-function decode(d, e) {
+function decode(d, e, opt) {
+  const dvOf = opt?.dv || (k => derive(S.entries[k] || {}));
   const w = num(e?.w); if (w == null) return null;
   let pd = null, pw = null;
   for (let i = 1; i <= 4; i++) { const k = addD(d, -i), x = num(S.entries[k]?.w); if (x != null) { pd = k; pw = x; break; } }
   if (pd == null) return { none: true };
   const delta = Math.round((w - pw) * 10) / 10; if (Math.abs(delta) > 8) return null;
-  const up = delta > 0, flat = Math.abs(delta) < 0.4, yd = addD(d, -1), Y = S.entries[yd] || {}, yv = derive(Y), ans = e.dq || {};
-  const base = []; for (let i = 2; i <= 15; i++) { const x = S.entries[addD(d, -i)]; if (x) base.push(derive(x)); }
+  const up = delta > 0, flat = Math.abs(delta) < 0.4, yd = addD(d, -1), Y = S.entries[yd] || {}, yv = dvOf(yd), ans = e.dq || {};
+  const base = []; for (let i = 2; i <= 15; i++) { const k = addD(d, -i); if (S.entries[k]) base.push(dvOf(k)); }
   const bAvg = k => { const v = base.map(b => k === "na" ? b.micro?.na : b[k]).filter(v => v != null && v > 0); return v.length >= 3 ? avg(v) : null; };
   const F = [], add = (key, lb, why) => { lb = Math.round(lb * 10) / 10; if (Math.abs(lb) >= 0.1) F.push({ key, lb, why }); };
   const cA = bAvg("c"); if (yv.c != null && cA != null) add("carbs", clamp((yv.c - cA) * 4 / 454, -2.5, 2.5), `${f0(yv.c)}g carbs yesterday vs your usual ${f0(cA)}g. Each gram your muscles store holds about 3 g of water.`);
@@ -3297,7 +3302,7 @@ function decode(d, e) {
   else if (lt != null && lt <= 18.5 && !up) add("late", -0.3, `Last meal at ${hm12(mt)}. A long overnight gap means less in you at weigh-in.`);
   else if (lt == null && ans.late === "Y") add("late", 0.5, "You ate late. That food hasn't cleared yet this morning.");
   else if (lt == null && ans.light === "Y") add("late", -0.4, "Lighter or earlier dinner, so less food in you at weigh-in.");
-  const aY = yv.alcN || 0, a2 = derive(S.entries[addD(d, -2)]).alcN || 0;
+  const aY = yv.alcN || 0, a2 = dvOf(addD(d, -2)).alcN || 0;
   if (aY >= 1) add("drinks", up ? Math.min(1.2, 0.25 * aY) : -Math.min(1, 0.2 * aY), up ? `${f1n(aY)} drink${aY === 1 ? "" : "s"} last night. Mixers, bar food and inflammation tend to show up the next morning.` : `${f1n(aY)} drink${aY === 1 ? "" : "s"} last night. Alcohol flushes water first, so the scale can dip today and bounce back tomorrow.`);
   else if (a2 >= 2 && up) add("drinks", Math.min(0.8, 0.2 * a2), `${f1n(a2)} drinks two nights ago. The dip the day after drinking often rebounds on day two.`);
   else if (ans.drinks === "Y" && !Y.alc) add("drinks", up ? 0.5 : -0.4, up ? "Drinks last night. They tend to show up as water the next morning." : "Drinks last night. Alcohol flushes water first, so this dip may bounce back.");
@@ -3310,7 +3315,7 @@ function decode(d, e) {
   if (ans.sweat === "Y") add("sweat", -0.6, "Lots of sweating. That water comes back once you drink and eat normally.");
   if (ans.potty === "Y") add("potty", 0.4, "Weighed before the bathroom. That alone can be half a pound or more.");
   if (e.bloat === "Y") add("bloat", 0.4, "You felt bloated at weigh-in. That's gut contents and gas, not fat.");
-  let maint = null; try { maint = recommend(compute()).maint; } catch {}
+  let maint = opt?.maint ?? null; if (maint == null) try { maint = recommend(compute()).maint; } catch {}
   const fat = yv.cal != null && maint ? (yv.cal - maint) / 3500 : null;
   F.sort((a, b) => ((Math.sign(b.lb) === Math.sign(delta)) - (Math.sign(a.lb) === Math.sign(delta))) || Math.abs(b.lb) - Math.abs(a.lb));
   const qs = [];
@@ -3319,6 +3324,33 @@ function decode(d, e) {
     else { if (lt == null) qs.push("light"); qs.push("sweat"); if (!Y.alc && !Y.drinks) qs.push("drinks"); }
   }
   return { w, pw, pd, yd, delta, up, flat, F, fat, qs: qs.slice(0, 4), ans };
+}
+// A weigh-in is "less reliable" when the scale moved 1 lb or more, the decoder's water and food factors cover
+// at least half of the move, and real fat from yesterday's food covers under 40% of it. A huge eating day
+// still counts in full, because then the jump is likely real. It is always kept; it just pulls the
+// trend and the weekly average at RELY_WT strength. e.wRel = "low" | "ok" is the person's own override.
+const RELY_WT = 0.3;
+const RELY_LBL = { carbs: "big carb day", salt: "salty food", food: "big food day", late: "late meal", drinks: "drinks", sleep: "short sleep", train: "hard workout", sweat: "sweating", potty: "before the bathroom", bloat: "bloated" };
+function wRely(d, e, opt) {
+  if (num(e?.w) == null) return null;
+  const man = e.wRel === "low" || e.wRel === "ok" ? e.wRel : null, x = decode(d, e, opt);
+  let auto = false, why = [], expl = 0, fatPart = 0;
+  if (x && !x.none && !x.flat && Math.abs(x.delta) >= 1) {
+    const same = x.F.filter(f => Math.sign(f.lb) === Math.sign(x.delta)), mag = Math.abs(x.delta);
+    expl = Math.abs(sum(same.map(f => f.lb)));
+    fatPart = x.fat == null ? 0 : Math.max(0, x.up ? x.fat : -x.fat);
+    auto = expl >= mag * 0.5 && fatPart < mag * 0.4;
+    why = same.slice(0, 3).map(f => RELY_LBL[f.key] || f.key);
+  }
+  return { low: man === "low" || (man !== "ok" && auto), auto, man, why, expl, fatPart, delta: x && !x.none ? x.delta : null };
+}
+function relyHtml(d, e) {
+  if (S.settings.skipFlagged === false) return "";
+  const r = wRely(d, e); if (!r || r.delta == null) return "";
+  const btn = (v, t) => `<button type="button" class="chip" data-wrel="${v}">${t}</button>`;
+  if (r.low) return `<div class="rely low"><p><b>Less reliable weigh-in.</b> ${r.man === "low" ? "You marked this one." : `Most of this ${r.delta > 0 ? "jump" : "drop"} looks like water${r.why.length ? ` (${esc(r.why.join(", "))})` : ""}, not fat.`} It's saved, but it only counts about a third as much in your trend and weekly average.</p>
+    <div class="chips">${r.man === "low" ? btn("", "Undo") : btn("ok", "Count it fully")}</div></div>`;
+  return `<div class="rely"><p class="muted">${r.man === "ok" ? "You set this weigh-in to count fully." : "This weigh-in counts fully in your trend."}</p><div class="chips">${r.man === "ok" ? btn("", "Undo") : btn("low", "Mark as less reliable")}</div></div>`;
 }
 function decoderHtml(d, e) {
   if (travelOn() && d === today()) return `<div class="decoder flat"><div class="dch"><span class="label">Scale decoder</span></div><p class="muted" style="font-size:13px">Travel mode is on, so the scale can wait. Swings on the road are mostly water and salt.</p></div>`;
@@ -3340,6 +3372,7 @@ function decoderHtml(d, e) {
     ${!x.flat && x.F.length ? `<ul class="dfac">${same.map(f => li(f, "")).join("")}${opp.map(f => li(f, "opp")).join("")}</ul>` : ""}
     ${!x.flat && fatTxt ? `<p class="dfat">${esc(fatTxt)}</p>` : ""}
     ${x.qs.length ? `<div class="dqs"><span class="label">About yesterday</span>${x.qs.map(qrow).join("")}</div>` : ""}
+    ${relyHtml(d, e)}
   </div>`;
 }
 // ----- plan ahead: bank calories for a big night -----
@@ -3456,9 +3489,10 @@ async function runMenu(file) {
 document.addEventListener("change", ev => { if (ev.target.id === "menu-photo") { const f = ev.target.files?.[0]; ev.target.value = ""; runMenu(f); } });
 document.addEventListener("input", ev => { if (ev.target.id === "plan-extra" && S.planForm) S.planForm.extra = num(ev.target.value); });
 document.addEventListener("click", ev => {
-  const t = ev.target.closest("[data-dq],[data-light],[data-menulog],[data-plan-open],[data-plan-day],[data-plan-pre],[data-plan-save],[data-plan-cancel],[data-plan-del],[data-plan-gp],[data-plan-ai]"); if (!t) return;
+  const t = ev.target.closest("[data-dq],[data-wrel],[data-light],[data-menulog],[data-plan-open],[data-plan-day],[data-plan-pre],[data-plan-save],[data-plan-cancel],[data-plan-del],[data-plan-gp],[data-plan-ai]"); if (!t) return;
   const ds = t.dataset;
   if (ds.dq) { const D = draft(), q = { ...(D.e.dq || {}) }; if (q[ds.dq] === ds.val) delete q[ds.dq]; else q[ds.dq] = ds.val; if (Object.keys(q).length) D.e.dq = q; else delete D.e.dq; autosave(); const dc = document.getElementById("decoder"); if (dc) dc.innerHTML = decoderHtml(D.d, D.e); return; }
+  if ("wrel" in ds) { const D = draft(); if (ds.wrel) D.e.wRel = ds.wrel; else delete D.e.wRel; autosave(); const dc = document.getElementById("decoder"); if (dc) dc.innerHTML = decoderHtml(D.d, D.e); toast(ds.wrel === "low" ? "Got it. It still counts, just less." : ds.wrel === "ok" ? "Counting it fully." : "Back to automatic."); return; }
   if ("light" in ds) { const D = draft(); if (D.e.light) delete D.e.light; else D.e.light = true; autosave(); render(); toast(D.e.light ? "Lighter version on. Smart call." : "Full session back on."); return; }
   if (ds.menulog != null) {
     const x = S.menu?.list?.[+ds.menulog]; if (!x || x.logged) return;
@@ -4701,7 +4735,7 @@ function vHistory() {
     const ws = monday(x.d);
     if (ws !== cur) { cur = ws; const w = wk[ws]; rows += `<tr class="weekrow"><td colspan="2">Week of ${fmtD(ws)}</td><td>${w ? f1(w.avgw) : ""}</td><td>${w && w.avgc != null ? f0(w.avgc) + "/d" : ""}</td><td colspan="4">${w ? `<span class="pill ${w.ok ? "good" : ""}">${w.status}</span>${w.chg != null ? ` ${sgn(w.chg)} lb` : ""}${w.stepDays ? ` · ${f0(w.stepsTot)} steps` : ""}${w.cardio ? ` · ${w.cardio} min cardio` : ""}` : ""}</td></tr>`; }
     const e = x.e, dv = x.dv;
-    rows += `<tr class="click" data-edit="${x.d}"><td>${fmtD(x.d, { weekday: "short", month: "numeric", day: "numeric" })}</td><td class="mono">${x.w ?? "–"}</td><td class="mono">${x.trend != null ? f1(x.trend) : "–"}</td><td class="mono">${dv.cal != null ? f0(dv.cal) : "–"}</td><td>${dv.alcN ? `${dv.alcN} (${f0(dv.alcCal)})` : ""}${e.ateAfter === "Y" ? " +food" : ""}</td><td>${e.steps ? f0(e.steps) : ""}</td><td>${esc(e.lift || "")}</td><td>${x.flags.map(f => `<span class="pill ${f === "Alcohol last night" && x.used == null ? "bad" : "warn"}">${esc(f)}</span>`).join(" ")}</td></tr>`;
+    rows += `<tr class="click" data-edit="${x.d}"><td>${fmtD(x.d, { weekday: "short", month: "numeric", day: "numeric" })}</td><td class="mono">${x.w ?? "–"}</td><td class="mono">${x.trend != null ? f1(x.trend) : "–"}</td><td class="mono">${dv.cal != null ? f0(dv.cal) : "–"}</td><td>${dv.alcN ? `${dv.alcN} (${f0(dv.alcCal)})` : ""}${e.ateAfter === "Y" ? " +food" : ""}</td><td>${e.steps ? f0(e.steps) : ""}</td><td>${esc(e.lift || "")}</td><td>${x.low ? `<span class="pill warn">Counts less</span> ` : ""}${x.flags.map(f => `<span class="pill">${esc(f)}</span>`).join(" ")}</td></tr>`;
   });
   return `<div class="view"><section class="card"><h2>History</h2><p class="muted" style="margin-top:-4px">Tap a day to edit it.</p>
     <div class="tablewrap"><table><thead><tr><th>Day</th><th>Weight</th><th>Trend</th><th>Calories</th><th>Alcohol</th><th>Steps</th><th>Lifted</th><th>Flags</th></tr></thead><tbody>${rows}</tbody></table></div></section>
@@ -4912,8 +4946,8 @@ function vPrefs() {
     ${nf("s-liftsWk", "Workouts per week", st.liftsWk, 1, "Used for your weekly grade")}
   </div>${sw("eatBack", "Adjust the week for extra or missed steps and cardio")}</section>
   <section class="card"><h2>Noisy weigh-ins</h2><div class="grid2">${nf("s-drinkThr", "Alcoholic drinks that make the next weigh-in unreliable", st.drinkThr, 1, "")}</div>
-    ${sw("skipFlagged", "Leave weigh-ins after heavy drinking out of averages")}
-    <p class="muted" style="margin:8px 0 0;font-size:13px">Bloating, late meals, eating after drinking and short sleep are flagged and tracked but always count.</p></section>
+    ${sw("skipFlagged", "Count less-reliable weigh-ins less in your trend and averages")}
+    <p class="muted" style="margin:8px 0 0;font-size:13px">Every weigh-in is kept. When the scale jumps or drops a pound or more and the scale decoder can pin most of it on water (salt, carbs, late food, drinks, short sleep, a hard workout, bloating), and yesterday's food can't explain it as fat, it counts about a third as much. A truly huge eating day still counts in full. You can override any day from the decoder.</p></section>
   <section class="card"><h2>About you</h2><div class="field"><label for="s-about">Used for photo estimates</label><input id="s-about" type="text" value="${esc(st.about)}" placeholder="Age, height, sex, how often you train"></div></section>
   <section class="card"><h2>Backup</h2><p class="muted" style="margin:0 0 10px;font-size:14px">${cloud.auth ? "Your log syncs to your account. A backup file is an extra copy you can keep." : "Your log is saved on this phone. Download a backup now and then, or sign in above so it's saved online."}</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-backup>Download backup</button><button type="button" class="btn" data-restore>Restore from backup</button></div></section>
