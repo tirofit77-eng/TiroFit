@@ -714,6 +714,60 @@ table.wsets td.wbar { width: 34%; min-width: 64px } table.wsets th, table.wsets 
 .bphero h1 { font-family: var(--display); font-size: 27px; line-height: 1.1; margin: 0; letter-spacing: -.02em }
 .bphero p { margin: 6px 0 0; color: var(--muted); font-size: 14.5px }
 .bp { display: grid; gap: 12px }
+.wk { display: grid; gap: 12px }
+.wkhead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap } .wkhead h2 { margin: 0; margin-right: auto }
+.wkrng { display: flex; background: var(--surface-2); border-radius: 999px; padding: 3px }
+.wkrng button { border: 0; background: none; font: inherit; font-size: 12.5px; font-weight: 700; color: var(--muted); padding: 5px 10px; border-radius: 999px; cursor: pointer }
+.wkrng button[aria-pressed=true] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.12) }
+.wkplot { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 120px; margin-top: 4px }
+.wkcol { position: relative; border: 0; background: color-mix(in srgb, var(--fg) 4%, transparent); border-radius: 10px; padding: 0; cursor: pointer; display: flex; align-items: flex-end; overflow: hidden; font: inherit }
+.wkcol.fut { opacity: .45; cursor: default } .wkcol.now { background: color-mix(in srgb, var(--bp-y) 22%, transparent) }
+.wkcol.sel { outline: 2px solid var(--fg); outline-offset: 1px }
+.wkbar { position: relative; width: 100%; border-radius: 10px 10px 6px 6px; background: var(--bp-g); transform-origin: bottom; animation: wkgrow .5s cubic-bezier(.2,.8,.2,1) both; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden }
+.wkcol:nth-child(3) .wkbar { animation-delay: .03s } .wkcol:nth-child(4) .wkbar { animation-delay: .06s } .wkcol:nth-child(5) .wkbar { animation-delay: .09s } .wkcol:nth-child(6) .wkbar { animation-delay: .12s } .wkcol:nth-child(7) .wkbar { animation-delay: .15s } .wkcol:nth-child(8) .wkbar { animation-delay: .18s }
+.wkbar.lo { background: color-mix(in srgb, var(--bp-g) 55%, var(--surface)) } .wkbar.hi, .wkbar.ok { background: var(--bp-y) } .wkbar.big { background: var(--bp-p) }
+.wkbar .wkx { display: block; width: 100%; background: var(--bp-p); opacity: .9 }
+.wkic { font-style: normal; color: #fff; font-size: 10px; text-align: center; margin-top: 6px }
+.wkdot { position: absolute; left: 50%; width: 14px; height: 14px; margin: 0 0 -7px -7px; border-radius: 50%; background: var(--bp-gt, var(--a)); border: 2px solid var(--surface); animation: wkpop .4s both }
+.wkdot.low { background: var(--surface); border: 2px solid var(--warn) }
+.wkgoal { position: absolute; left: 0; right: 0; height: 0; border-top: 2px dashed color-mix(in srgb, var(--fg) 35%, transparent); z-index: 2; pointer-events: none }
+.wkgoal em { position: absolute; right: 0; top: -19px; font-style: normal; font-size: 11px; font-weight: 700; color: var(--muted); background: var(--surface); padding: 0 4px; border-radius: 6px }
+.wklab { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); margin-top: -6px } .wklab .now { color: var(--fg) }
+.wkdet { margin: 0; font-size: 14px; min-height: 2.6em }
+.wkempty { margin: 12px 0; font-size: 14px }
+.wktiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px }
+.wkt { text-align: left; border: 1px solid var(--line); background: var(--surface-2); border-radius: 14px; padding: 10px 12px; font: inherit; color: var(--fg); cursor: pointer; display: flex; flex-direction: column; gap: 1px; min-width: 0 }
+.wkt[aria-pressed=true] { border-color: var(--fg); background: var(--surface); box-shadow: 0 2px 8px rgba(0,0,0,.08) }
+.wktl { font-size: 12px; font-weight: 700; color: var(--muted) } .wkt b { font-size: 22px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15 } .wkt small { font-size: 11.5px; color: var(--muted) }
+.wktp { display: block; height: 5px; border-radius: 9px; background: color-mix(in srgb, var(--fg) 8%, transparent); margin-top: 6px; overflow: hidden } .wktp em { display: block; height: 100%; background: var(--bp-g); border-radius: 9px } .wktp em.over { background: var(--bp-p) }
+.wkxc { display: grid; gap: 6px } .wkxcr { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; flex-wrap: wrap; padding: 8px 10px; border-radius: 10px; background: var(--surface-2) }
+.swap { display: grid; gap: 10px; padding: 12px; border-radius: 14px; border: 1px dashed var(--line) }
+.swaph { display: grid } .swaph b { font-size: 16px }
+.swin { display: grid; gap: 8px } .swin select { width: 100% }
+.swmin { display: grid; grid-template-columns: auto 1fr 3ch; gap: 10px; align-items: center; font-size: 13px; font-weight: 700 } .swmin input { width: 100%; accent-color: var(--bp-gt, var(--a)) } .swmin b { text-align: right; font-size: 16px }
+.swbars { display: grid; gap: 8px } .swbars div { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; font-size: 13px; align-items: center }
+.swbars span { grid-column: 1 / -1; color: var(--muted) } .swbars i { display: block; height: 12px; width: var(--w); border-radius: 9px; transition: width .3s } .swbars i.a { background: var(--bp-p) } .swbars i.b { background: var(--bp-g) }
+.swv { margin: 0; font-size: 14px }
+.swtake { margin: 0; font-size: 13.5px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--bp-y) 22%, var(--surface)); line-height: 1.45 } .swv b { font-size: 18px }
+.swmode { display: grid; gap: 6px } .small { font-size: 12.5px; margin: 0 }
+@keyframes wkgrow { from { transform: scaleY(0) } to { transform: scaleY(1) } }
+@keyframes wkpop { from { transform: scale(0) } to { transform: scale(1) } }
+@media (prefers-reduced-motion: reduce) { .wkbar, .wkdot { animation: none } }
+.tpl { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2) }
+.tplhead { display: flex; gap: 8px } .tplhead input { flex: 1; font-weight: 700 }
+.tplq { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--muted) } .tplq input { width: 4.6em; text-align: center }
+.exrow { display: grid; gap: 6px; padding: 10px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line) }
+.exr1 { display: flex; gap: 6px; align-items: center } .exr1 input { flex: 1; min-width: 0 }
+.exr2 { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center }
+.step { display: inline-flex; align-items: center; gap: 4px; font-size: 13px } .step button, .exmv button { width: 30px; height: 30px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); font: inherit; font-weight: 800; cursor: pointer }
+.step b { min-width: 2.6ch; text-align: center; font-size: 15px } .step small { color: var(--muted) }
+.exreps { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px } .exreps input { width: 3.6em; text-align: center } .exreps .chip { padding: 4px 9px; font-size: 12.5px }
+.exmv { display: inline-flex; gap: 4px }
+.repin { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: var(--muted) }
+.tpl .repin input, .tpl .tplq input { width: 3.4em; min-width: 0; flex: none; padding: 6px 4px; text-align: center }
+.tplq .step { white-space: nowrap }
+.wkleg { display: flex; gap: 12px; font-size: 12px; color: var(--muted); margin-top: -4px } .wkleg em { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px }
+
 .bphead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px }
 .bphead h2 { margin: 0 }
 .bplead { margin: 0; font-size: 14.5px; line-height: 1.45 }
@@ -1046,6 +1100,7 @@ function xcCardio(e) {
   const L = Array.isArray(e?.xc) ? e.xc : []; let t = 0, any = false;
   for (const x of L) {
     const m = num(x.min); if (!(m > 0) || /lift|weight|strength|yoga|stretch/i.test(String(x.a))) continue;
+    if (S.settings.xcCount === "burn" && num(x.cal) > 0) { const r = cRate(S._bw ?? S.settings.fallbackBw); if (r > 0) { t += num(x.cal) / r; any = true; continue; } }
     if (CU()) { const mi = num(x.mi) ?? (x.a in XC_MPH ? m / 60 * (XC_MPH[x.a] || num(S.settings.cardioMph) || 3.1) : null); if (mi != null) { t += mi; any = true; } }
     else { t += m; any = true; }
   }
@@ -1268,6 +1323,7 @@ function compute() {
   const okW = W.filter(w => w.ok);
   m.last = okW.length ? okW[okW.length - 1] : null;
   if (m.last?.msm) S._maint = m.last.msm;
+  S._bw = m.trend ?? null;
   return m;
 }
 
@@ -1366,7 +1422,7 @@ const bfList = () => Object.entries(S.bf).map(([id, v]) => ({ id, ...v })).sort(
 const e1rm = (w, r) => (w > 0 && r > 0) ? (r === 1 ? w : w * (1 + r / 30)) : null;
 const LEVELS = [["Rookie", 0], ["Regular", 300], ["Grinder", 800], ["Lifter", 1500], ["Athlete", 2500], ["Machine", 4000], ["Freak", 6000], ["Legend", 9000]];
 const GENERIC_TEMPLATES = [{ name: "Push", ex: [] }, { name: "Pull", ex: [] }, { name: "Legs", ex: [] }];
-const templates = () => (S.templates && S.templates.length ? S.templates : GENERIC_TEMPLATES);
+const templates = () => (S.templates && S.templates.length ? S.templates : GENERIC_TEMPLATES).map(t => t.ex.includes("") ? { ...t, ex: t.ex.filter(Boolean) } : t);
 const liftChoices = () => templates().map(t => t.name).concat(["Other", "Rest"]);
 // Every session per exercise: the sheet history plus sets logged here (logged here wins on the same day).
 function liftHist() {
@@ -1678,6 +1734,7 @@ const BIG3 = { Squat: { test: n => /squat/i.test(n) && !/belt|^v\b|\bv squat|hac
 
 // ----- set targets: "Hack Squat x3" in the split, else settings.setPlan (his sheet plan, per day then per exercise), else his usual logged count, else the profile default -----
 function parseEx(line) {
+  const at = String(line).match(/^(.*?)\s*@\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?)\s*$/); if (at && at[1].trim()) return { name: at[1].trim(), sets: null, reps: at[2].replace(/\s|–/g, m => m === "–" ? "-" : "") };
   const m = String(line).match(/^(.*?)\s*[-–:]?\s*(\d{1,2})\s*[x×]\s*(\d{1,2}(?:\s*[-–]\s*\d{1,2})?)?\s*$/i) || String(line).match(/^(.*?)\s+[x×]\s*(\d{1,2})\s*$/i);
   if (m && m[1].trim()) return { name: m[1].trim(), sets: +m[2], reps: m[3] ? m[3].replace(/\s/g, "") : null };
   return { name: String(line).trim(), sets: null, reps: null };
@@ -1944,26 +2001,68 @@ function vGains() {
 </div>`;
 }
 
-// ----- templates in Settings -----
+// ----- templates in Settings: an exercise-by-exercise split builder with sets and goal reps -----
+// Each line is still stored as text so everything else keeps working: "Name 3x8-12", "Name 2x10", "Name 3x" (sets only), "Name @8-12" (reps only), or "Name" (auto).
+const exLine = x => { const n = String(x.name || "").trim(); if (!n) return ""; return x.sets ? `${n} ${x.sets}x${x.reps || ""}` : x.reps ? `${n} @${x.reps}` : n; };
+const repMode = r => !r ? "auto" : /-/.test(r) ? "range" : "exact";
+function tplEnsure() { if (!S.templates || !S.templates.length) S.templates = structuredClone(templates()); return S.templates; }
+function exNames() {
+  const s = new Set(); templates().forEach(t => t.ex.forEach(x => s.add(parseEx(x).name)));
+  Object.keys(S.entries).sort().slice(-120).forEach(d => (S.entries[d]?.sets || []).forEach(x => x.ex && s.add(x.ex)));
+  return [...s].filter(Boolean).sort();
+}
+function exRowHtml(i, j, x) {
+  const id = `${i}:${j}`, m = repMode(x.reps), [lo, hi] = m === "range" ? x.reps.split("-") : [x.reps || "", ""];
+  return `<div class="exrow"><div class="exr1"><input data-exn="${id}" list="exlist" value="${esc(x.name)}" placeholder="Exercise" aria-label="Exercise name">
+      <span class="exmv"><button type="button" data-exmv="${id}" data-by="-1" aria-label="Move up">↑</button><button type="button" data-exmv="${id}" data-by="1" aria-label="Move down">↓</button><button type="button" data-exdel="${id}" aria-label="Remove">×</button></span></div>
+    <div class="exr2"><span class="step"><button type="button" data-exs="${id}" data-by="-1" aria-label="Fewer sets">−</button><b>${x.sets || "Auto"}</b><button type="button" data-exs="${id}" data-by="1" aria-label="More sets">+</button><small>${x.sets === 1 ? "set" : "sets"}</small></span>
+      <span class="exreps"><span class="muted">Reps</span>${[["range", "Range"], ["exact", "Exact"], ["auto", "Auto"]].map(([k, n]) => `<button type="button" class="chip" data-exrm="${id}" data-m="${k}" aria-pressed="${m === k}">${n}</button>`).join("")}
+        ${m === "range" ? `<span class="repin"><input data-exlo="${id}" inputmode="numeric" value="${esc(lo)}" aria-label="Low reps">to<input data-exhi="${id}" inputmode="numeric" value="${esc(hi)}" aria-label="High reps"></span>` : m === "exact" ? `<span class="repin"><input data-exr="${id}" inputmode="numeric" value="${esc(lo)}" aria-label="Reps"></span>` : ""}</span></div></div>`;
+}
 function templatesHtml() {
-  const T = templates();
-  return `<section class="card">${zh(1, "My split", `${T.length} days`)}<p class="muted" style="margin-top:-4px;font-size:14px">Pick a day under Workout and its exercises show up with your last numbers. One exercise per line. Add a set target like <span class="mono">Hack Squat x3</span> or <span class="mono">Hack Squat 3x8-12</span>.</p>
-    <div class="view">${T.map((t, i) => `<div class="field"><div style="display:flex;gap:8px"><input data-tname="${i}" value="${esc(t.name)}" aria-label="Template name"><button type="button" class="btn ghost danger" data-tdel="${i}">Remove</button></div><textarea data-tex="${i}" rows="4" aria-label="Exercises for ${esc(t.name)}">${esc(t.ex.join("\n"))}</textarea></div>`).join("")}</div>
-    <div class="chips" style="margin-top:10px"><button type="button" class="btn" id="tadd">Add template</button></div></section>`;
+  const T = S.templates?.length ? S.templates : templates(), q = S.tplQ || {};
+  return `<section class="card">${zh(1, "My split", `${T.length} days`)}<p class="muted" style="margin-top:-4px;font-size:14px">Build each day exercise by exercise. Set how many sets and the reps you're aiming for, a range like 8–12 or an exact number. Auto uses what you usually log.</p>
+    <datalist id="exlist">${exNames().map(n => `<option value="${esc(n)}">`).join("")}</datalist>
+    <div class="view">${T.map((t, i) => { const L = t.ex.map(parseEx), qs = q[i] || { sets: 1, reps: "8-12" }; return `<div class="tpl"><div class="tplhead"><input data-tname="${i}" value="${esc(t.name)}" aria-label="Day name"><button type="button" class="btn ghost danger" data-tdel="${i}">Remove</button></div>
+      <div class="tplq"><span>Every exercise:</span><span class="step"><button type="button" data-tqs="${i}" data-by="-1" aria-label="Fewer sets">−</button><b>${qs.sets}</b><button type="button" data-tqs="${i}" data-by="1" aria-label="More sets">+</button><small>${qs.sets === 1 ? "set" : "sets"} ×</small></span><input data-tqr="${i}" value="${esc(qs.reps)}" aria-label="Reps for every exercise"><span>reps</span><button type="button" class="chip" data-tqa="${i}">Apply</button></div>
+      ${L.map((x, j) => exRowHtml(i, j, x)).join("")}
+      <button type="button" class="btn ghost" data-exadd="${i}">+ Add exercise</button></div>`; }).join("")}</div>
+    <div class="chips" style="margin-top:10px"><button type="button" class="btn" id="tadd">Add a day</button></div></section>`;
 }
 let tplTimer = null;
 function saveTemplates() {
   clearTimeout(tplTimer);
-  tplTimer = setTimeout(async () => { try { if (S.store) await S.store.doc("cfg/templates").set({ list: S.templates }); else { const o = local.read(); o.templates = S.templates; local.write(o); } } catch { toast("Couldn't save templates."); } }, 600);
+  tplTimer = setTimeout(async () => { try { const list = S.templates.map(t => ({ ...t, ex: t.ex.filter(Boolean) })); if (S.store) await S.store.doc("cfg/templates").set({ list }); else { const o = local.read(); o.templates = list; local.write(o); } } catch { toast("Couldn't save templates."); } }, 600);
 }
+const exAt = id => { const [i, j] = id.split(":").map(Number), T = tplEnsure(); return { t: T[i], i, j, x: T[i] ? parseEx(T[i].ex[j] ?? "") : null }; };
+const repsClean = v => String(v || "").replace(/[^\d]/g, "").slice(0, 2);
 function bindTemplates() {
   if (!document.getElementById("tadd")) return;
-  if (!S.templates || !S.templates.length) S.templates = structuredClone(templates());
+  tplEnsure();
   main.querySelectorAll("[data-tname]").forEach(i => i.oninput = () => { S.templates[+i.dataset.tname].name = i.value.slice(0, 30) || "Workout"; saveTemplates(); });
-  main.querySelectorAll("[data-tex]").forEach(i => i.oninput = () => { S.templates[+i.dataset.tex].ex = i.value.split("\n").map(x => x.trim()).filter(Boolean).slice(0, 30); saveTemplates(); });
   main.querySelectorAll("[data-tdel]").forEach(b => b.onclick = () => { S.templates.splice(+b.dataset.tdel, 1); saveTemplates(); render(); });
-  document.getElementById("tadd").onclick = () => { S.templates.push({ name: "New workout", ex: [] }); saveTemplates(); render(); };
+  document.getElementById("tadd").onclick = () => { S.templates.push({ name: "New workout", ex: [""] }); saveTemplates(); render(); };
+  main.querySelectorAll("[data-exn]").forEach(inp => inp.oninput = () => { const a = exAt(inp.dataset.exn); if (!a.t) return; a.x.name = inp.value.slice(0, 60); a.t.ex[a.j] = exLine(a.x) || ""; saveTemplates(); });
+  const reps = (inp, f) => inp.oninput = () => { const a = exAt(inp.dataset[f === "lo" ? "exlo" : f === "hi" ? "exhi" : "exr"]); if (!a.t) return; const v = repsClean(inp.value);
+    if (f === "r") a.x.reps = v || null; else { const [lo, hi] = (a.x.reps || "").split("-"), L = f === "lo" ? v : lo || "", H = f === "hi" ? v : hi || ""; a.x.reps = L && H ? `${L}-${H}` : L || H || null; }
+    if (a.x.name) { a.t.ex[a.j] = exLine(a.x); saveTemplates(); } };
+  main.querySelectorAll("[data-exlo]").forEach(i => reps(i, "lo")); main.querySelectorAll("[data-exhi]").forEach(i => reps(i, "hi")); main.querySelectorAll("[data-exr]").forEach(i => reps(i, "r"));
+  main.querySelectorAll("[data-tqr]").forEach(inp => inp.oninput = () => { const i = +inp.dataset.tqr; S.tplQ = S.tplQ || {}; S.tplQ[i] = { sets: S.tplQ[i]?.sets || 1, reps: inp.value.replace(/[^\d\-–]/g, "").replace("–", "-").slice(0, 5) }; });
 }
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-exs],[data-exrm],[data-exmv],[data-exdel],[data-exadd],[data-tqs],[data-tqa]"); if (!b) return;
+  const ds = b.dataset, T = tplEnsure();
+  if (ds.exadd != null) { const t = T[+ds.exadd]; if (t) { t.ex = t.ex.filter(Boolean).concat([""]); render(); setTimeout(() => { const L = document.querySelectorAll(`[data-exn^="${ds.exadd}:"]`); L[L.length - 1]?.focus(); }, 30); } return; }
+  if (ds.tqs != null) { const i = +ds.tqs; S.tplQ = S.tplQ || {}; const q = S.tplQ[i] || { sets: 1, reps: "8-12" }; S.tplQ[i] = { ...q, sets: clamp(q.sets + +ds.by, 1, 10) }; render(); return; }
+  if (ds.tqa != null) { const i = +ds.tqa, t = T[i], q = (S.tplQ || {})[i] || { sets: 1, reps: "8-12" }; if (!t) return; const r = /^\d{1,2}(-\d{1,2})?$/.test(q.reps) ? q.reps : null; t.ex = t.ex.map(parseEx).filter(x => x.name).map(x => exLine({ name: x.name, sets: q.sets, reps: r })); saveTemplates(); render(); toast(`Every exercise set to ${q.sets} × ${r || "auto"}`); return; }
+  const id = ds.exs || ds.exrm || ds.exmv || ds.exdel, a = exAt(id); if (!a.t) return;
+  if (ds.exdel) { a.t.ex.splice(a.j, 1); saveTemplates(); render(); return; }
+  if (ds.exmv) { const k = a.j + +ds.by; if (k < 0 || k >= a.t.ex.length) return; [a.t.ex[a.j], a.t.ex[k]] = [a.t.ex[k], a.t.ex[a.j]]; saveTemplates(); render(); return; }
+  if (!a.x.name) { toast("Name the exercise first."); return; }
+  if (ds.exs) { const n = (a.x.sets || 0) + +ds.by; a.x.sets = n <= 0 ? null : Math.min(10, n); }
+  if (ds.exrm) { const m = ds.m, cur = repMode(a.x.reps); if (m === cur) return; a.x.reps = m === "auto" ? null : m === "range" ? (cur === "exact" ? `${a.x.reps}-${+a.x.reps + 4}` : "8-12") : (cur === "range" ? a.x.reps.split("-")[0] : "10"); }
+  a.t.ex[a.j] = exLine(a.x); saveTemplates(); render();
+});
 
 // ----- food search, barcodes and nutrition labels -----
 let FOODDB = null;
@@ -3917,9 +4016,9 @@ const st0 = () => S.settings;
 function bigPicHtml() {
   if (!Object.keys(S.entries).length) return "";
   let B; try { B = bpData(); } catch { return ""; }
-  const tab = S.bpTab || "today", tgt = B.tgt, ce = closeEnough(), MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" });
+  const tab = S.bpTab === "week" ? "today" : S.bpTab || "today", tgt = B.tgt, ce = closeEnough(), MN = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "short" });
   const st = c => c == null ? "s-e" : c - tgt >= BIG ? "s-big" : Math.abs(c - tgt) <= Math.max(150, tgt * 0.06) ? "s-on" : Math.abs(c - tgt) <= 400 ? "s-off" : "s-far";
-  const seg = `<div class="bpseg" role="tablist" aria-label="Time range">${[["today", "Today"], ["week", "Week"], ["month", "Month"], ["year", "Year"]].map(([k, n]) => `<button type="button" role="tab" data-bptab="${k}" aria-selected="${tab === k}">${n}</button>`).join("")}</div>`;
+  const seg = `<div class="bpseg" role="tablist" aria-label="Time range">${[["today", "Today"], ["month", "Month"], ["year", "Year"]].map(([k, n]) => `<button type="button" role="tab" data-bptab="${k}" aria-selected="${tab === k}">${n}</button>`).join("")}</div>`;
   const diff = a => a == null ? "" : Math.abs(a - tgt) <= Math.max(100, tgt * 0.04) ? "right around your goal" : a < tgt ? `${f0(tgt - a)} under your goal` : `${f0(a - tgt)} over your goal, and that's fine`;
   let num, unit, pill, body, line;
   if (tab === "today") {
@@ -3942,7 +4041,7 @@ function bigPicHtml() {
     line = `${B.yChg != null ? `Trend weight ${Math.abs(B.yChg) < 0.3 ? "steady" : `${B.yChg < 0 ? "down" : "up"} ${f1(Math.abs(B.yChg))} lb`} since ${fmtD(B.since, { month: "short", day: "numeric" })}. ` : ""}${steady ? `${new Date(+steady.k.slice(0, 4), +steady.k.slice(5, 7) - 1, 1).toLocaleDateString(undefined, { month: "long" })} was your steadiest month.` : "Keep going and the year draws itself."}`;
   }
   const bd = bigDay(), tr = travelOn();
-  return `${bpHero(B)}<section class="card bp" aria-label="Your big picture">
+  return `${bpHero(B)}${weekHtml()}<section class="card bp" aria-label="Your big picture">
     <div class="bphead"><h2>Your big picture</h2><small class="muted">${esc(tab === "month" ? parse(B.T).toLocaleDateString(undefined, { month: "long" }) : tab === "week" ? "this week" : tab === "today" ? fmtD(B.T, { weekday: "long" }) : "this year")}</small></div>
     ${seg}
     ${tab === "today" ? "" : `<div class="bpnum"><b>${num == null ? "–" : f0(num)}</b><span>${unit}</span><em>${pill}</em></div>`}
@@ -3953,6 +4052,221 @@ function bigPicHtml() {
   </section>
   ${duoHtml(B, ce)}`;
 }
+// ----- Your week: the main card on Today. Week averages for food, training and body; tap a tile to chart it, tap a day for details. -----
+const WK_TABS = [["food", "Food"], ["train", "Training"], ["body", "Body"]];
+const WK_DN = ["M", "T", "W", "T", "F", "S", "S"];
+const wkLift = e => !!e && ((e.lift && e.lift !== "Rest" && !/cardio|walk|rest/i.test(e.lift)) || (Array.isArray(e.sets) && e.sets.some(x => num(x.w) != null && num(x.r) != null)));
+const wkBw = () => S._bw ?? S.settings.fallbackBw;
+const cName = () => CTYPES[S.settings.cardioType || "incline"]?.[0] || "Cardio";
+// the person's usual goal-cardio session, in their unit (average of the last 4 weeks, else 30 min or 1 mi)
+function goalSession() {
+  const T = today(), v = []; for (let i = 0; i <= 28; i++) { const x = cMain(S.entries[addD(T, -i)]); if (x > 0) v.push(x); }
+  return v.length >= 2 ? (CU() ? Math.round(avg(v) * 20) / 20 : Math.round(avg(v) / 5) * 5) : CU() ? 1 : 30;
+}
+function wkModel() {
+  const st = S.settings, F = st.fields || {}, T = today(), last = S.wkRange === "last", ws = addD(monday(T), last ? -7 : 0);
+  const days = [...Array(7)].map((_, k) => addD(ws, k)), E = days.map(d => S.entries[d] || null), past = days.map(d => d <= T);
+  const fin = days.map(d => last || d < T), dv = E.map(e => e ? derive(e) : null);
+  const tgt = st.target, g = macroGoals(tgt), rate = cRate(wkBw()) || 0;
+  const pick = (vals, partial) => { const a = vals.filter((v, i) => v != null && (fin[i] || partial)); if (a.length) return a; return vals.filter((v, i) => v != null && past[i]); };
+  const cal = days.map((d, i) => past[i] ? calOf(d) : null);
+  const mac = k => days.map((d, i) => cal[i] != null ? (dv[i][k] ?? null) : null);
+  const main = E.map((e, i) => past[i] ? (cMain(e) || 0) : null), other = E.map((e, i) => past[i] ? (xcCardio(e) || 0) : null);
+  const cardio = main.map((v, i) => v == null ? null : Math.round((v + other[i]) * 100) / 100);
+  const burn = E.map((e, i) => past[i] ? Math.round((main[i] || 0) * rate + xcCal(e)) : null);
+  const lift = E.map((e, i) => past[i] ? (wkLift(e) ? 1 : 0) : null);
+  const steps = E.map((e, i) => past[i] ? num(e?.steps) : null), sleep = E.map((e, i) => past[i] ? num(e?.sleep) : null);
+  const weight = E.map((e, i) => past[i] ? num(e?.w) : null);
+  const rec = days.map((d, i) => { const e = E[i]; if (!past[i] || !e || (num(e.sleep) == null && num(e.rec) == null)) return null; try { return recovery(d, e).score; } catch { return null; } });
+  let m = null; try { m = compute(); } catch {}
+  const wk = m?.weeks.find(w => w.start === ws), pw = m?.weeks.find(w => w.start === addD(ws, -7));
+  const lowDay = days.map(d => !!m?.days.find(x => x.d === d)?.low);
+  const n = days.filter((d, i) => past[i]).length, A = a => a.length ? avg(a) : null;
+  const M = {
+    cal: { tab: "food", lab: "Calories", unit: "cal", vals: cal, goal: tgt, avg: A(pick(cal)), per: "a day" },
+    p: { tab: "food", lab: "Protein", unit: "g", vals: mac("p"), goal: g.p, avg: A(pick(mac("p"))), per: "a day" },
+    c: { tab: "food", lab: "Carbs", unit: "g", vals: mac("c"), goal: g.c, avg: A(pick(mac("c"))), per: "a day" },
+    f: { tab: "food", lab: "Fat", unit: "g", vals: mac("f"), goal: g.f, avg: A(pick(mac("f"))), per: "a day" },
+    lift: { tab: "train", lab: "Workouts", unit: "", vals: lift, goal: null, tot: sum(lift), wkGoal: st.liftsWk, hide: !F.lift },
+    cardio: { tab: "train", lab: "Cardio", unit: cUnit(), vals: cardio, parts: main.map((v, i) => [v, other[i]]), tot: sum(cardio), wkGoal: cGoal(), hide: !F.cardio },
+    burn: { tab: "train", lab: "Active burn", unit: "cal", vals: burn, tot: sum(burn) },
+    steps: { tab: "body", lab: "Steps", unit: "", vals: steps, goal: st.stepsWk ? st.stepsWk / 7 : null, avg: A(pick(steps)), per: "a day", hide: !F.steps },
+    weight: { tab: "body", lab: "Weight", unit: "lb", vals: weight, dots: true, avg: wk?.avgw ?? A(pick(weight, true)), chg: wk?.avgw != null && pw?.avgw != null ? wk.avgw - pw.avgw : null, hide: st.weighOff },
+    sleep: { tab: "body", lab: "Sleep", unit: "h", vals: sleep, goal: 7, avg: A(pick(sleep, true)), per: "a night", hide: !F.sleep },
+    rec: { tab: "body", lab: "Recovery", unit: "", vals: rec, goal: 65, max: 100, avg: A(pick(rec, true)), hide: !F.sleep && !F.recovery },
+  };
+  return { T, ws, days, past, fin, E, dv, M, n, last, lowDay, g, tgt };
+}
+const wkFmt = (k, v) => v == null ? "–" : k === "steps" ? (v >= 1000 ? `${f1(v / 1000)}k` : f0(v)) : k === "weight" || k === "sleep" || (k === "cardio" && CU()) ? f1(v) : f0(v);
+function wkTile(W, k, sel) {
+  const x = W.M[k]; if (x.hide) return "";
+  let big, sub, pct = null;
+  if (k === "lift") { big = `${x.tot}${x.wkGoal ? `/${x.wkGoal}` : ""}`; sub = x.wkGoal ? (x.tot >= x.wkGoal ? "goal hit" : `${x.wkGoal - x.tot} to go`) : "this week"; pct = x.wkGoal ? x.tot / x.wkGoal : null; }
+  else if (k === "cardio") { big = `${wkFmt(k, x.tot)}${x.wkGoal ? `/${wkFmt(k, x.wkGoal)}` : ""}`; sub = `${x.unit}${x.wkGoal ? (x.tot >= x.wkGoal ? " · goal hit" : " this week") : " this week"}`; pct = x.wkGoal ? x.tot / x.wkGoal : null; }
+  else if (k === "burn") { big = f0(x.tot); sub = "cal from cardio"; }
+  else if (k === "weight") { big = wkFmt(k, x.avg); sub = x.chg == null ? "lb, week avg" : `${x.chg <= -0.05 ? "−" : x.chg >= 0.05 ? "+" : "±"}${f1(Math.abs(x.chg))} vs last week`; }
+  else { big = wkFmt(k, x.avg); sub = x.goal ? `goal ${wkFmt(k, x.goal)}${x.unit && x.unit !== "cal" ? " " + x.unit : ""}` : x.per || ""; pct = x.avg != null && x.goal ? x.avg / x.goal : null; }
+  return `<button type="button" class="wkt" data-wkm="${k}" aria-pressed="${sel}"><span class="wktl">${esc(x.lab)}</span><b>${esc(big)}</b><small>${esc(sub)}</small>${pct != null ? `<i class="wktp"><em style="width:${Math.round(clamp(pct, 0, 1) * 100)}%" class="${pct > 1.12 && (k === "cal" || k === "f" || k === "c") ? "over" : ""}"></em></i>` : ""}</button>`;
+}
+function wkChart(W, k, sel) {
+  const x = W.M[k], v = x.vals, have = v.filter(a => a != null);
+  let lo = 0, hi;
+  if (x.dots) { if (!have.length) return `<p class="muted wkempty">No weigh-ins ${W.last ? "last week" : "yet this week"}.</p>`; lo = Math.min(...have) - 0.8; hi = Math.max(...have) + 0.8; }
+  else hi = Math.max(x.max || 0, (x.goal || 0) * 1.1, ...have.map(a => a * 1.08), k === "lift" ? 1 : 1);
+  const H = a => clamp((a - lo) / (hi - lo) * 100, 0, 100);
+  const cls = (a, i) => { if (k === "cal") { const d = a - x.goal; return d >= BIG ? "big" : Math.abs(d) <= Math.max(150, x.goal * 0.06) ? "on" : d > 0 ? "hi" : "lo"; } if (x.goal && k !== "rec") return a >= x.goal * 0.9 ? "on" : "lo"; if (k === "rec") return a >= 80 ? "on" : a >= 65 ? "ok" : "hi"; return "on"; };
+  const cols = W.days.map((d, i) => {
+    const a = v[i], fut = !W.past[i];
+    let inner = "";
+    if (a != null && x.dots) inner = `<span class="wkdot${W.lowDay[i] ? " low" : ""}" style="bottom:${H(a)}%"></span>`;
+    else if (a != null && k === "lift") inner = a ? `<span class="wkbar on" style="height:100%"><em class="wkic">●</em></span>` : "";
+    else if (a != null && a > 0) {
+      const p = x.parts?.[i], top = p && p[1] > 0 ? Math.round(p[1] / a * 100) : 0;
+      inner = `<span class="wkbar ${cls(a, i)}" style="height:${Math.max(3, H(a))}%">${top ? `<i class="wkx" style="height:${top}%"></i>` : ""}</span>`;
+    }
+    return `<button type="button" class="wkcol${sel === i ? " sel" : ""}${W.days[i] === W.T ? " now" : ""}${fut ? " fut" : ""}" data-wkday="${i}" ${fut ? "disabled" : ""} aria-label="${esc(WDN(d))}: ${a == null ? "nothing logged" : wkFmt(k, a) + " " + x.unit}">${inner}</button>`;
+  }).join("");
+  const gl = x.goal && !x.dots ? `<span class="wkgoal" style="bottom:${H(x.goal)}%"><em>${esc(wkFmt(k, x.goal))}</em></span>` : "";
+  return `<div class="wkplot" style="--n:${x.dots ? 0 : 1}">${gl}${cols}</div><div class="wklab">${W.days.map((d, i) => `<span class="${d === W.T ? "now" : ""}">${WK_DN[i]}</span>`).join("")}</div>`;
+}
+function wkDetail(W, k, i) {
+  const d = W.days[i], e = W.E[i] || {}, dv = W.dv[i], x = W.M[k], day = d === W.T ? "Today" : WDN(d);
+  if (W.fin[i] === false && !W.past[i]) return "";
+  const parts = [];
+  if (x.tab === "food") { if (dv?.cal == null || dv.cal <= 0) return `${day}: nothing logged. That's okay, a rough log counts too.`; parts.push(`${f0(dv.cal)} cal`); if (dv.p != null) parts.push(`${f0(dv.p)}p · ${f0(dv.c || 0)}c · ${f0(dv.f || 0)}f`); if (dv.alcN) parts.push(`${f1n(dv.alcN)} drink${dv.alcN === 1 ? "" : "s"}`); const dd = dv.cal - W.tgt; parts.push(Math.abs(dd) <= Math.max(150, W.tgt * 0.06) ? "right around goal" : dd > 0 ? `${f0(dd)} over` : d === W.T ? `${f0(-dd)} left today` : `${f0(-dd)} under`); }
+  else if (x.tab === "train") {
+    if (wkLift(e)) parts.push(e.lift && e.lift !== "Rest" ? esc(e.lift) : "Lifted");
+    const mn = cMain(e); if (mn > 0) parts.push(`${wkFmt("cardio", mn)} ${cUnit()} ${cName().toLowerCase()}`);
+    (Array.isArray(e.xc) ? e.xc : []).forEach(y => parts.push(`${ACT[y.a]?.[0] || y.a} ${f0(y.min)} min (${f0(y.cal)} cal)`));
+    if (!parts.length) return `${day}: rest day. Rest is part of the plan.`;
+  } else {
+    if (num(e.steps) != null) parts.push(`${f0(e.steps)} steps`);
+    if (num(e.w) != null) parts.push(`${f1(e.w)} lb${W.lowDay[i] ? " (counts less)" : ""}`);
+    if (num(e.sleep) != null) parts.push(`${f1(e.sleep)} h sleep`);
+    if (W.M.rec.vals[i] != null) parts.push(`recovery ${W.M.rec.vals[i]}`);
+    if (!parts.length) return `${day}: nothing logged.`;
+  }
+  return `${day}: ${parts.join(" · ")}`;
+}
+function wkLead(W, k) {
+  const x = W.M[k], u = x.unit;
+  if (k === "cal") { if (x.avg == null) return "Log a meal or two and your week shows up here."; const d = x.avg - x.goal; return `${W.last ? "Last week you averaged" : "Averaging"} ${Math.abs(d) <= Math.max(100, x.goal * 0.04) ? "right around your goal" : d < 0 ? `${f0(-d)} under your goal` : `${f0(d)} over your goal, and that's fine`}. One day never makes or breaks a week.`; }
+  if (k === "p" || k === "c" || k === "f") return x.avg == null ? "Log food with macros to see this." : `${f0(x.avg)} g a day against a ${f0(x.goal)} g goal${k === "p" ? (x.avg >= x.goal * 0.9 ? ". Protein is on point." : ". A protein-forward meal or shake closes the gap.") : "."}`;
+  if (k === "lift") return x.wkGoal ? (x.tot >= x.wkGoal ? `${x.tot} workouts. Goal hit.` : `${x.tot} of ${x.wkGoal} workouts${W.last ? "" : " so far"}.`) : `${x.tot} workout${x.tot === 1 ? "" : "s"}.`;
+  if (k === "cardio") { const o = sum(x.parts.map(p => p?.[1] || 0)); return `${wkFmt(k, x.tot)} of ${wkFmt(k, x.wkGoal)} ${u}${o > 0 ? `, ${wkFmt(k, o)} of it from other cardio ${S.settings.xcCount === "burn" ? `counted by calories as ${cName().toLowerCase()}` : "counted minute for minute"}` : ""}.`; }
+  if (k === "burn") return `About ${f0(x.tot)} cal burned from cardio${W.last ? " last week" : " this week"}, on top of your steps.`;
+  if (k === "steps") return x.avg == null ? "No steps logged yet." : `${f0(x.avg)} steps a day${x.goal ? (x.avg >= x.goal ? ", above your goal." : `, ${f0(x.goal - x.avg)} under your goal.`) : "."}`;
+  if (k === "weight") return x.avg == null ? "No weigh-ins yet." : `Week average ${f1(x.avg)} lb${x.chg != null ? `, ${Math.abs(x.chg) < 0.2 ? "steady with" : x.chg < 0 ? `down ${f1(-x.chg)} from` : `up ${f1(x.chg)} from`} last week` : ""}. Less reliable weigh-ins count less.`;
+  if (k === "sleep") return x.avg == null ? "No sleep logged yet." : `${f1(x.avg)} hours a night${x.avg >= 7 ? ". Well rested." : ". Sleep is the cheapest recovery there is."}`;
+  if (k === "rec") return x.avg == null ? "Log sleep or how you feel to see recovery." : `Recovery averaged ${f0(x.avg)}${x.avg >= 80 ? ". Fresh." : x.avg >= 65 ? ". Ready to train." : ". Go easy where you can."}`;
+  return "";
+}
+function weekHtml() {
+  let W; try { W = wkModel(); } catch { return ""; }
+  const tab = S.wkTab || "food", def = { food: "cal", train: W.M.cardio.hide ? "lift" : "cardio", body: W.M.steps.hide ? "weight" : "steps" };
+  S.wkM = S.wkM || {}; let k = S.wkM[tab]; if (!k || !W.M[k] || W.M[k].hide || W.M[k].tab !== tab) k = def[tab];
+  const keys = Object.keys(W.M).filter(q => W.M[q].tab === tab && !W.M[q].hide), sel = S.wkSel?.ws === W.ws && S.wkSel.k === k ? S.wkSel.i : null;
+  const x = W.M[k], top = k === "lift" || k === "cardio" || k === "burn" ? x.tot : x.avg;
+  const pill = tab === "food" ? `${W.M.cal.vals.filter(v => v != null).length} of ${W.n} days logged` : tab === "train" ? `${W.M.lift.tot} workout${W.M.lift.tot === 1 ? "" : "s"}` : `${W.days.filter((d, i) => W.past[i] && W.E[i]).length} of ${W.n} days`;
+  const unit = k === "cal" ? "avg cal a day" : k === "lift" ? `workout${top === 1 ? "" : "s"}${x.wkGoal ? ` of ${x.wkGoal}` : ""}` : k === "cardio" ? `${x.unit} of cardio${x.wkGoal ? ` of ${wkFmt(k, x.wkGoal)}` : ""}` : k === "burn" ? "cal burned from cardio" : k === "steps" ? "avg steps a day" : k === "weight" ? "lb, week average" : k === "sleep" ? "avg hours a night" : k === "rec" ? "avg recovery" : `avg g ${x.lab.toLowerCase()} a day`;
+  return `<section class="card wk" aria-label="Your week">
+    <div class="wkhead"><h2>Your week</h2><div class="wkrng" role="group" aria-label="Which week">${[["", "This week"], ["last", "Last week"]].map(([r, n]) => `<button type="button" data-wkrange="${r}" aria-pressed="${(S.wkRange || "") === r}">${n}</button>`).join("")}</div></div>
+    <div class="bpseg wktabs" role="tablist" aria-label="Week view">${WK_TABS.map(([t, n]) => `<button type="button" role="tab" data-wktab="${t}" aria-selected="${tab === t}">${n}</button>`).join("")}</div>
+    <div class="bpnum wknum"><b>${esc(wkFmt(k, top))}</b><span>${esc(unit)}</span><em>${esc(pill)}</em></div>
+    ${wkChart(W, k, sel)}
+    ${k === "cardio" && W.M.cardio.parts.some(p => p?.[1] > 0) ? `<div class="wkleg"><span><em style="background:var(--bp-g)"></em>${esc(cName())}</span><span><em style="background:var(--bp-p)"></em>Other cardio</span></div>` : ""}
+    <p class="wkdet">${esc(sel != null ? wkDetail(W, k, sel) : wkLead(W, k))}</p>
+    <div class="wktiles">${keys.map(q => wkTile(W, q, q === k)).join("")}</div>
+    ${tab === "train" ? xcWeekHtml(W) + swapHtml() : ""}
+  </section>`;
+}
+// other cardio this week, each with its goal-cardio equivalent
+function xcWeekHtml(W) {
+  const rate = cRate(wkBw()), L = []; W.days.forEach((d, i) => (Array.isArray(W.E[i]?.xc) ? W.E[i].xc : []).forEach(y => L.push({ d, ...y })));
+  if (!L.length) return "";
+  const u = cUnit();
+  return `<div class="wkxc"><span class="label">Other cardio ${W.last ? "last week" : "this week"}</span>${L.map(y => `<div class="wkxcr"><span><b>${esc(ACT[y.a]?.[0] || y.a)}</b> <small class="muted">${esc(WDN(y.d).slice(0, 3))} · ${f0(y.min)} min</small></span><span class="mono">${f0(y.cal)} cal${rate ? ` ≈ ${wkFmt("cardio", y.cal / rate)} ${u} ${esc(cName().toLowerCase())}` : ""}</span></div>`).join("")}</div>`;
+}
+// ----- cardio swap: compare any activity to your usual goal-cardio session -----
+function swapCalc() {
+  const s = S.swap || (S.swap = { a: "basketball", min: 60, i: "mod" }), bw = wkBw(), kg = bw / 2.2046;
+  const met = (ACT[s.a]?.[1] || 6) * (INTENS[s.i]?.[1] || 1), cal = Math.round((met - 1) * kg * s.min / 60 / 5) * 5;
+  const rate = cRate(bw) || null, sess = goalSession(), sessCal = rate ? Math.round(sess * rate) : null;
+  return { s, cal, rate, sess, sessCal, eq: rate ? cal / rate : null, ratio: sessCal ? cal / sessCal : null, perMin: cal / s.min };
+}
+// a coach's honest read on a swap: how real the estimate is, what it does to recovery, and how to count it
+const SWAP_TAKE = {
+  basketball: "Full-court pickup is real cardio, and often beats an incline walk minute for minute. Half-court or shooting around is closer to Easy. It's sprint-and-stop, so your legs will feel it more than a walk. Treat the next day like a light leg day.",
+  soccer: "Lots of jogging plus sprints, so it's legit cardio. Count it fully if you played most of the time, less if you were on the bench or in goal.",
+  hockey: "Shifts are intense but short, with rests on the bench in between. The estimate already assumes that, so count it as is.",
+  football: "Flag football is bursts and walking back to the huddle. Pick Easy unless you were running routes all game.",
+  tennis: "Singles is solid cardio. Doubles is closer to Easy, since there's a lot more standing.",
+  pickleball: "Fun, and it adds up, but it's about half the burn of an incline walk per minute. Count it as a bonus, not a full swap.",
+  volleyball: "Mostly standing with short bursts, so it's light. Beach volleyball is more like Normal or Hard.",
+  golf: "Walking 18 holes is a good long walk. Riding a cart barely counts as cardio, so skip logging it then.",
+  baseball: "Mostly standing. Count it as a light day, not a cardio swap.",
+  run: "Running burns a lot per minute, but it's harder to recover from than walking. Swap it in, but don't stack it on a heavy leg day.",
+  jog: "A steady jog burns noticeably more than an incline walk. It's a good swap if your knees feel fine.",
+  walk: "A flat walk is light. It takes about twice as long to match an incline walk.",
+  incline: "This is your usual, so it's an even swap.",
+  bike: "Cycling is easy on the joints. The burn depends a lot on effort, so be honest with Easy, Normal or Hard.",
+  spin: "A real spin class is hard work, and a strong swap that's easy on your legs the next day.",
+  stairs: "Stairs burn a lot fast. 20 minutes here often matches 30 or more on the incline.",
+  elliptical: "Machine calorie counters overestimate a lot. This estimate is more honest, and it's a fair swap if you keep a steady pace.",
+  row: "Rowing hits your back and legs too, so it's cardio with a strength bonus. A good swap.",
+  swim: "Swimming is great cardio, and gentle on recovery. Laps at a steady pace count fully.",
+  hike: "Hills and a pack push this way up. A long hike can beat a whole week's worth of incline sessions.",
+  hiit: "Short and hard. The burn per minute is high, but the workout is short, so compare total time, not just intensity.",
+  dance: "Zumba or a dance class is solid moderate cardio. Count it.",
+  boxing: "Bag work and pads are tough cardio with an upper-body bonus. A strong swap.",
+  bjj: "Rolling is brutal cardio. Count it fully, and expect to be sore.",
+  climb: "Climbing is more grip and strength than cardio. It's a good activity, but only a partial cardio swap.",
+};
+function swapTake(x) {
+  const a = x.s.a, nm = cName().toLowerCase();
+  let t = SWAP_TAKE[a] || `That's about ${f1(x.ratio)} of your usual ${nm} sessions.`;
+  if (x.s.i === "hard" && /basketball|soccer|tennis|pickleball|volleyball|football|baseball|golf/.test(a)) t += " Hard means you barely stopped. Most pickup games land on Normal.";
+  const mode = S.settings.xcCount === "burn" ? "burn" : "time";
+  if (x.ratio < 0.8 && mode === "time") t += ` Heads up: you count other cardio minute for minute, so this would fill more of your goal than it burns. "By calories burned" is more honest for this one.`;
+  else if (x.ratio > 1.2 && mode === "time") t += ` You count other cardio minute for minute, so you're underselling it. "By calories burned" gives you full credit.`;
+  return t + " Estimates are within about 20% either way, and that's close enough.";
+}
+function swapRes() {
+  const x = swapCalc(), nm = cName(), u = cUnit(), an = ACT[x.s.a]?.[0] || "That";
+  if (!x.sessCal) return `<p class="muted small">Set the speed and incline of your main cardio under You, and I'll compare.</p>`;
+  const mx = Math.max(x.cal, x.sessCal), need = x.ratio < 0.85 ? Math.ceil((x.sessCal - x.cal) / x.perMin / 5) * 5 : 0;
+  const verdict = x.ratio >= 1.15 ? `Burns more than your usual ${nm.toLowerCase()}. Great swap.` : x.ratio >= 0.85 ? `About the same as your usual ${nm.toLowerCase()}. Fair swap.` : `A little lighter. About ${need} more minutes matches your usual session.`;
+  return `<div class="swbars"><div><span>${esc(an)} · ${x.s.min} min</span><i style="--w:${Math.round(x.cal / mx * 100)}%" class="a"></i><b>${f0(x.cal)} cal</b></div>
+      <div><span>Your usual ${esc(nm.toLowerCase())} · ${wkFmt("cardio", x.sess)} ${u}</span><i style="--w:${Math.round(x.sessCal / mx * 100)}%" class="b"></i><b>${f0(x.sessCal)} cal</b></div></div>
+    <p class="swv"><b>${f1(x.ratio)}×</b> your usual session, like ${wkFmt("cardio", x.eq)} ${u} of ${esc(nm.toLowerCase())}. ${esc(verdict)}</p>
+    <p class="swtake"><b>My take:</b> ${esc(swapTake(x))}</p>`;
+}
+function swapHtml() {
+  const x = swapCalc(), s = x.s, groups = Object.entries(ACTS).filter(([g]) => g !== "Strength"), mode = S.settings.xcCount === "burn" ? "burn" : "time";
+  return `<div class="swap" id="swapbox"><div class="swaph"><b>Cardio swap</b><small class="muted">See how anything stacks up against your ${esc(cName().toLowerCase())}</small></div>
+    <div class="swin"><select id="sw-act" aria-label="Activity">${groups.map(([g, o]) => `<optgroup label="${g}">${Object.entries(o).map(([k2, [n]]) => `<option value="${k2}" ${k2 === s.a ? "selected" : ""}>${esc(n)}</option>`).join("")}</optgroup>`).join("")}</select>
+      <div class="chips">${Object.entries(INTENS).map(([k2, [n]]) => `<button type="button" class="chip" data-swi="${k2}" aria-pressed="${s.i === k2}">${n}</button>`).join("")}</div></div>
+    <label class="swmin"><span>Minutes</span><input type="range" id="sw-min" min="10" max="150" step="5" value="${s.min}"><b id="sw-minv">${s.min}</b></label>
+    <div id="swapres">${swapRes()}</div>
+    <div class="chips"><button type="button" class="btn" data-swlog>Log ${s.min} min today</button></div>
+    <div class="swmode"><span class="label">How other cardio counts toward your cardio goal</span>
+      <div class="chips">${[["time", "Minute for minute"], ["burn", "By calories burned"]].map(([k2, n]) => `<button type="button" class="chip" data-swmode="${k2}" aria-pressed="${mode === k2}">${n}</button>`).join("")}</div>
+      <p class="muted small">${mode === "burn" ? `An hour of basketball counts as however much ${esc(cName().toLowerCase())} burns the same calories.` : `An hour of basketball counts as an hour of cardio.`}${CU() ? "" : ""}</p></div></div>`;
+}
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-wktab],[data-wkm],[data-wkday],[data-wkrange],[data-swi],[data-swmode],[data-swlog]"); if (!t) return;
+  const ds = t.dataset;
+  if (ds.wktab) { S.wkTab = ds.wktab; S.wkSel = null; render(); return; }
+  if (ds.wkm) { S.wkM = { ...(S.wkM || {}), [S.wkTab || "food"]: ds.wkm }; S.wkSel = null; render(); return; }
+  if (ds.wkrange != null) { S.wkRange = ds.wkrange || null; S.wkSel = null; render(); return; }
+  if (ds.wkday != null) { const W = wkModel(), tab = S.wkTab || "food"; let k = (S.wkM || {})[tab]; if (!k || W.M[k]?.tab !== tab || W.M[k]?.hide) k = { food: "cal", train: W.M.cardio.hide ? "lift" : "cardio", body: W.M.steps.hide ? "weight" : "steps" }[tab]; const i = +ds.wkday; S.wkSel = S.wkSel && S.wkSel.i === i && S.wkSel.ws === W.ws && S.wkSel.k === k ? null : { i, ws: W.ws, k }; render(); return; }
+  if (ds.swi) { swapCalc(); S.swap.i = ds.swi; render(); return; }
+  if (ds.swmode) { S.settings.xcCount = ds.swmode === "burn" ? "burn" : null; saveSettings(); render(); toast(ds.swmode === "burn" ? "Other cardio now counts by calories burned." : "Other cardio counts minute for minute."); return; }
+  if ("swlog" in ds) { const x = swapCalc(), D = draft(); D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a: x.s.a, min: x.s.min, cal: x.cal }]; S.xcLast = x.s.a; autosave(); render(); toast(`Logged ${ACT[x.s.a][0]}: ${f0(x.cal)} cal`); }
+});
+document.addEventListener("input", ev => { if (ev.target.id !== "sw-min") return; swapCalc(); S.swap.min = +ev.target.value; const v = document.getElementById("sw-minv"), r = document.getElementById("swapres"), b = document.querySelector("[data-swlog]"); if (v) v.textContent = S.swap.min; if (r) r.innerHTML = swapRes(); if (b) b.textContent = `Log ${S.swap.min} min today`; });
+document.addEventListener("change", ev => { if (ev.target.id !== "sw-act") return; swapCalc(); S.swap.a = ev.target.value; const r = document.getElementById("swapres"); if (r) r.innerHTML = swapRes(); });
+
 function welcomeHtml() {
   const T = today(); if (S.entries[T] || S.settings.wbSeen === T) return "";
   const last = Object.keys(S.entries).filter(d => d < T).sort().pop(); if (!last) return "";
