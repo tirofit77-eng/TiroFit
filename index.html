@@ -4177,7 +4177,7 @@ function weekHtml() {
     ${k === "cardio" && W.M.cardio.parts.some(p => p?.[1] > 0) ? `<div class="wkleg"><span><em style="background:var(--bp-g)"></em>${esc(cName())}</span><span><em style="background:var(--bp-p)"></em>Other cardio</span></div>` : ""}
     <p class="wkdet">${esc(sel != null ? wkDetail(W, k, sel) : wkLead(W, k))}</p>
     <div class="wktiles">${keys.map(q => wkTile(W, q, q === k)).join("")}</div>
-    ${tab === "train" ? xcWeekHtml(W) + swapHtml() : ""}
+    ${tab === "train" ? xcWeekHtml(W) + cswapHtml() : ""}
   </section>`;
 }
 // other cardio this week, each with its goal-cardio equivalent
@@ -4188,8 +4188,8 @@ function xcWeekHtml(W) {
   return `<div class="wkxc"><span class="label">Other cardio ${W.last ? "last week" : "this week"}</span>${L.map(y => `<div class="wkxcr"><span><b>${esc(ACT[y.a]?.[0] || y.a)}</b> <small class="muted">${esc(WDN(y.d).slice(0, 3))} · ${f0(y.min)} min</small></span><span class="mono">${f0(y.cal)} cal${rate ? ` ≈ ${wkFmt("cardio", y.cal / rate)} ${u} ${esc(cName().toLowerCase())}` : ""}</span></div>`).join("")}</div>`;
 }
 // ----- cardio swap: compare any activity to your usual goal-cardio session -----
-function swapCalc() {
-  const s = S.swap || (S.swap = { a: "basketball", min: 60, i: "mod" }), bw = wkBw(), kg = bw / 2.2046;
+function cswapCalc() {
+  const s = S.cswap || (S.cswap = { a: "basketball", min: 60, i: "mod" }), bw = wkBw(), kg = bw / 2.2046;
   const met = (ACT[s.a]?.[1] || 6) * (INTENS[s.i]?.[1] || 1), cal = Math.round((met - 1) * kg * s.min / 60 / 5) * 5;
   const rate = cRate(bw) || null, sess = goalSession(), sessCal = rate ? Math.round(sess * rate) : null;
   return { s, cal, rate, sess, sessCal, eq: rate ? cal / rate : null, ratio: sessCal ? cal / sessCal : null, perMin: cal / s.min };
@@ -4222,7 +4222,7 @@ const SWAP_TAKE = {
   bjj: "Rolling is brutal cardio. Count it fully, and expect to be sore.",
   climb: "Climbing is more grip and strength than cardio. It's a good activity, but only a partial cardio swap.",
 };
-function swapTake(x) {
+function cswapTake(x) {
   const a = x.s.a, nm = cName().toLowerCase();
   let t = SWAP_TAKE[a] || `That's about ${f1(x.ratio)} of your usual ${nm} sessions.`;
   if (x.s.i === "hard" && /basketball|soccer|tennis|pickleball|volleyball|football|baseball|golf/.test(a)) t += " Hard means you barely stopped. Most pickup games land on Normal.";
@@ -4231,23 +4231,23 @@ function swapTake(x) {
   else if (x.ratio > 1.2 && mode === "time") t += ` You count other cardio minute for minute, so you're underselling it. "By calories burned" gives you full credit.`;
   return t + " Estimates are within about 20% either way, and that's close enough.";
 }
-function swapRes() {
-  const x = swapCalc(), nm = cName(), u = cUnit(), an = ACT[x.s.a]?.[0] || "That";
+function cswapRes() {
+  const x = cswapCalc(), nm = cName(), u = cUnit(), an = ACT[x.s.a]?.[0] || "That";
   if (!x.sessCal) return `<p class="muted small">Set the speed and incline of your main cardio under You, and I'll compare.</p>`;
   const mx = Math.max(x.cal, x.sessCal), need = x.ratio < 0.85 ? Math.ceil((x.sessCal - x.cal) / x.perMin / 5) * 5 : 0;
   const verdict = x.ratio >= 1.15 ? `Burns more than your usual ${nm.toLowerCase()}. Great swap.` : x.ratio >= 0.85 ? `About the same as your usual ${nm.toLowerCase()}. Fair swap.` : `A little lighter. About ${need} more minutes matches your usual session.`;
   return `<div class="swbars"><div><span>${esc(an)} · ${x.s.min} min</span><i style="--w:${Math.round(x.cal / mx * 100)}%" class="a"></i><b>${f0(x.cal)} cal</b></div>
       <div><span>Your usual ${esc(nm.toLowerCase())} · ${wkFmt("cardio", x.sess)} ${u}</span><i style="--w:${Math.round(x.sessCal / mx * 100)}%" class="b"></i><b>${f0(x.sessCal)} cal</b></div></div>
     <p class="swv"><b>${f1(x.ratio)}×</b> your usual session, like ${wkFmt("cardio", x.eq)} ${u} of ${esc(nm.toLowerCase())}. ${esc(verdict)}</p>
-    <p class="swtake"><b>My take:</b> ${esc(swapTake(x))}</p>`;
+    <p class="swtake"><b>My take:</b> ${esc(cswapTake(x))}</p>`;
 }
-function swapHtml() {
-  const x = swapCalc(), s = x.s, groups = Object.entries(ACTS).filter(([g]) => g !== "Strength"), mode = S.settings.xcCount === "burn" ? "burn" : "time";
+function cswapHtml() {
+  const x = cswapCalc(), s = x.s, groups = Object.entries(ACTS).filter(([g]) => g !== "Strength"), mode = S.settings.xcCount === "burn" ? "burn" : "time";
   return `<div class="swap" id="swapbox"><div class="swaph"><b>Cardio swap</b><small class="muted">See how anything stacks up against your ${esc(cName().toLowerCase())}</small></div>
     <div class="swin"><select id="sw-act" aria-label="Activity">${groups.map(([g, o]) => `<optgroup label="${g}">${Object.entries(o).map(([k2, [n]]) => `<option value="${k2}" ${k2 === s.a ? "selected" : ""}>${esc(n)}</option>`).join("")}</optgroup>`).join("")}</select>
       <div class="chips">${Object.entries(INTENS).map(([k2, [n]]) => `<button type="button" class="chip" data-swi="${k2}" aria-pressed="${s.i === k2}">${n}</button>`).join("")}</div></div>
     <label class="swmin"><span>Minutes</span><input type="range" id="sw-min" min="10" max="150" step="5" value="${s.min}"><b id="sw-minv">${s.min}</b></label>
-    <div id="swapres">${swapRes()}</div>
+    <div id="swapres">${cswapRes()}</div>
     <div class="chips"><button type="button" class="btn" data-swlog>Log ${s.min} min today</button></div>
     <div class="swmode"><span class="label">How other cardio counts toward your cardio goal</span>
       <div class="chips">${[["time", "Minute for minute"], ["burn", "By calories burned"]].map(([k2, n]) => `<button type="button" class="chip" data-swmode="${k2}" aria-pressed="${mode === k2}">${n}</button>`).join("")}</div>
@@ -4260,12 +4260,12 @@ document.addEventListener("click", ev => {
   if (ds.wkm) { S.wkM = { ...(S.wkM || {}), [S.wkTab || "food"]: ds.wkm }; S.wkSel = null; render(); return; }
   if (ds.wkrange != null) { S.wkRange = ds.wkrange || null; S.wkSel = null; render(); return; }
   if (ds.wkday != null) { const W = wkModel(), tab = S.wkTab || "food"; let k = (S.wkM || {})[tab]; if (!k || W.M[k]?.tab !== tab || W.M[k]?.hide) k = { food: "cal", train: W.M.cardio.hide ? "lift" : "cardio", body: W.M.steps.hide ? "weight" : "steps" }[tab]; const i = +ds.wkday; S.wkSel = S.wkSel && S.wkSel.i === i && S.wkSel.ws === W.ws && S.wkSel.k === k ? null : { i, ws: W.ws, k }; render(); return; }
-  if (ds.swi) { swapCalc(); S.swap.i = ds.swi; render(); return; }
+  if (ds.swi) { cswapCalc(); S.cswap.i = ds.swi; render(); return; }
   if (ds.swmode) { S.settings.xcCount = ds.swmode === "burn" ? "burn" : null; saveSettings(); render(); toast(ds.swmode === "burn" ? "Other cardio now counts by calories burned." : "Other cardio counts minute for minute."); return; }
-  if ("swlog" in ds) { const x = swapCalc(), D = draft(); D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a: x.s.a, min: x.s.min, cal: x.cal }]; S.xcLast = x.s.a; autosave(); render(); toast(`Logged ${ACT[x.s.a][0]}: ${f0(x.cal)} cal`); }
+  if ("swlog" in ds) { const x = cswapCalc(), D = draft(); D.e.xc = [...(Array.isArray(D.e.xc) ? D.e.xc : []), { a: x.s.a, min: x.s.min, cal: x.cal }]; S.xcLast = x.s.a; autosave(); render(); toast(`Logged ${ACT[x.s.a][0]}: ${f0(x.cal)} cal`); }
 });
-document.addEventListener("input", ev => { if (ev.target.id !== "sw-min") return; swapCalc(); S.swap.min = +ev.target.value; const v = document.getElementById("sw-minv"), r = document.getElementById("swapres"), b = document.querySelector("[data-swlog]"); if (v) v.textContent = S.swap.min; if (r) r.innerHTML = swapRes(); if (b) b.textContent = `Log ${S.swap.min} min today`; });
-document.addEventListener("change", ev => { if (ev.target.id !== "sw-act") return; swapCalc(); S.swap.a = ev.target.value; const r = document.getElementById("swapres"); if (r) r.innerHTML = swapRes(); });
+document.addEventListener("input", ev => { if (ev.target.id !== "sw-min") return; cswapCalc(); S.cswap.min = +ev.target.value; const v = document.getElementById("sw-minv"), r = document.getElementById("swapres"), b = document.querySelector("[data-swlog]"); if (v) v.textContent = S.cswap.min; if (r) r.innerHTML = cswapRes(); if (b) b.textContent = `Log ${S.cswap.min} min today`; });
+document.addEventListener("change", ev => { if (ev.target.id !== "sw-act") return; cswapCalc(); S.cswap.a = ev.target.value; const r = document.getElementById("swapres"); if (r) r.innerHTML = cswapRes(); });
 
 function welcomeHtml() {
   const T = today(); if (S.entries[T] || S.settings.wbSeen === T) return "";
